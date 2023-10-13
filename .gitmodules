@@ -1,0 +1,3 @@
+[submodule "lightcas"]
+	path = lightcas
+	url = https://github.com/BreizhGeek/lightcas.git
