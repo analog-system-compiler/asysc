@@ -45,11 +45,15 @@ else
 	LDFLAGS  += -s
 endif
 
+ifeq ($(TEST),1)
+	CPPFLAGS += -D_TEST
+endif
+
 all: $(BUILD_DIR)/$(EXE) rules
 
-rules:
-	echo 'Copying rules'
-	cp $(RULES_DIR)/*.txt $(BUILD_DIR)
+rules: $(RULES_DIR)/*.txt
+	echo 'Copying    $(notdir $^)'
+	cp $^ $(BUILD_DIR)
 
 -include $(EXE_OBJ:.o=.d)
 
@@ -57,7 +61,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	echo 'Compiling  $(notdir $< )'
 	$(CXX) $(CPPFLAGS) -c $< -o $@
 
-$(LIB):
+$(LIB): force
 	$(MAKE) -C $(LIGHTCAS_DIR) --no-print-directory
 
 $(BUILD_DIR)/$(EXE): $(LIB) $(EXE_OBJ)
@@ -69,6 +73,6 @@ clean:
 	rm -rf $(EXE) $(BUILD_DIR)
 	$(MAKE) -C $(LIGHTCAS_DIR) --no-print-directory clean
 
-.PHONY: all clean
+.PHONY: all clean force
 .SILENT:
 #.SECONDARY:

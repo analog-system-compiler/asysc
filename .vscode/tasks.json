@@ -10,7 +10,8 @@
             "command": "make",
             "args": [
                 "all",
-                "DEBUG=1"
+                "DEBUG=1",
+                "TEST=1"
             ],
             "presentation": {
                 "reveal": "always",

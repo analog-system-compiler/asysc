@@ -19,35 +19,66 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
+#include <unistd.h>
 #include "Parser.h"
 #include "Display.h"
 #include "CMathExpressionEx.h"
 
+// #define _TEST
+
 int main(int argc, char *argv[])
 {
-  setlocale(LC_NUMERIC, "C");
-  std::cout << "*************************************\n";
-  std::cout << "*** LighCAS Console               ***\n";
-  std::cout << "*** (C)  Cyril Collineau 2023     ***\n";
-  std::cout << "*************************************\n";
-  std::cout << "Type \"help\" for help.\n";
+  char *input_filename = NULL;
+  char *output_filename = NULL;
+  // char *output_type = NULL;
+
+  while (true)
+  {
+    switch (getopt(argc, argv, "i:o:t:"))
+    {
+    case 'i':
+      input_filename = optarg;
+      continue;
+    case 'o':
+      output_filename = optarg;
+      continue;
+    case 't':
+      //   output_type = optarg;
+      continue;
+    case '?':
+      if (optopt == 'i' or optopt == 'o')
+        fprintf(stderr, "Option -%c requires an argument.\n", optopt);
+      else if (isprint(optopt))
+        fprintf(stderr, "Unknown option `-%c'.\n", optopt);
+      else
+        fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
+      return 1;
+    case -1:
+      break;
+    default:
+      abort();
+    }
+    break;
+  }
 
   CEvaluator eval;
   CElementDataBase db_root("Root", NULL, &eval);
   CElementDataBase db("User", &db_root);
-  // CElement *simplify = db.GetElement("SIMPLIFY");
-  // CElement *ans = db.GetElement("ans");
-  // OP_CODE simplify_op = simplify->ToRef();
   CMathExpressionEx equ(&db);
   CDisplay ds;
   CParser parser;
 
-  if (argc == 1)
-  {
-    parser.LoadFile(argv[1]);    
-    equ.ToPython(parser,ds);
-  }
+#ifdef _TEST
+  db.Test();
+  db.Initialize();
+#endif
+
+  if (!db.IsOK())
+    return 1;
+
+  if (parser.LoadFromFile(input_filename))
+    if (ds.StoreToFile(output_filename))
+      equ.ToPython(parser, ds);
 
   return 0;
 }
-
