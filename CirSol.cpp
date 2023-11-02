@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
   db.Initialize();
 #endif
 
-  if (!db.IsOK())
+  if (!db.IsOK()) 
     return 1;
 
   if (parser.LoadFromFile(input_filename))

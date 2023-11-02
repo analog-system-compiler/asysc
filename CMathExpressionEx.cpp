@@ -71,8 +71,8 @@
 bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds)
 {
   OP_CODE op;
-  CElement *e, *eth, *es, *ec, *et, *ed, *edt;
-  CDisplay ds1, ds2, ds3, ds4;
+  CElement *e, *eth, *es, *ec, *et, *edt;
+  CDisplay ds1, ds2, ds3, ds4, ds5;
 
   Parse(parser);
   Compile();
@@ -82,8 +82,17 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds)
   es = m_ElementDB->GetElement("SIN");
   ec = m_ElementDB->GetElement("COS");
   et = m_ElementDB->GetElement("TIME");
-  ed = m_ElementDB->GetElement("DELAY");
+  // ed = m_ElementDB->GetElement("DELAY");
+  // edd = m_ElementDB->GetElement("DELAY_DER");
   edt = m_ElementDB->GetElement("DELTA_TIME");
+  m_op_hier = m_ElementDB->GetElement("HIER")->ToRef();
+
+  OP_CODE op_concat = m_ElementDB->GetElement("CONCAT")->ToRef();
+  OP_CODE op_vect = m_ElementDB->GetElement("VECT")->ToRef();
+  OP_CODE op_eqv = m_ElementDB->GetElement("EQV")->ToRef();
+  strcpy(m_ElementDB->GetSymbolTable()[26]->m_Syntax, "a_b");
+
+  e = m_ElementDB->GetElement("CIRCUIT");
 
   eth->SetName("tanh");
   eth->SetNumeric();
@@ -92,15 +101,10 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds)
   ec->SetName("cos");
   ec->SetNumeric();
   et->SetName("time");
-  ed->SetName("delay");
+  // ed->SetName("delay");
+  // edd->SetName("delay_der");
   edt->SetName("delta_time");
 
-  OP_CODE op_concat = m_ElementDB->GetElement("CONCAT")->ToRef();
-  OP_CODE op_vect = m_ElementDB->GetElement("VECT")->ToRef();
-  OP_CODE op_eqv = m_ElementDB->GetElement("EQV")->ToRef();
-  strcpy(m_ElementDB->GetSymbolTable()[26]->m_Syntax, "a_b");
-
-  e = m_ElementDB->GetElement("CIRCUIT");
   if (e->IsFunct())
   {
     const CAlgebraRuleArray &rule_array = e->GetFunction()->GetAlgebraRulesArray();
@@ -123,19 +127,29 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds)
         {
           ds1.Append("\t\t");
           ds2.Append("\t\t");
+          ds5.Append("\t\t");
           ds3.Clear();
           ds4.Clear();
           pos = CMathExpression::DisplayBranch(ds3, pos);
           pos = CMathExpression::DisplayBranch(ds4, pos);
           ds2.Append(ds4);
-          ds2.Append(".set(self.time(),");
+          ds2.Append(".set(");
           ds2.Append(ds3);
           ds2.Append(")\n");
           ds1.Append(ds4);
-          ds1.Append(" = element()\n");
+          ds1.Append(" = element('");
+          ds1.Append(ds4);
+          ds1.Append("')\n");
+          ds5.Append(ds4);
+          ds5.Append(".step(self.time())\n");
         }
         else
+        {
+          ds.Clear();
+          Display(ds);
+          ds.Print();
           return false;
+        }
       }
     }
     else
@@ -152,6 +166,8 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds)
     ds.Append(ds1);
     ds.Append("\n\tdef step(self):\n");
     ds.Append(ds2);
+    ds.Append("\n");
+    ds.Append(ds5);
     ds.Print();
   }
   // pos_t pos = equ.GetSize();
@@ -186,10 +202,9 @@ pos_t CMathExpressionEx::DisplaySymbol(CDisplay &ds, pos_t pos, unsigned precede
 {
   pos_t pos1;
   pos_t pos_array[CElementDataBase::MAX_PAR];
-  OP_CODE op_hier = m_ElementDB->GetElement("HIER")->ToRef();
 
-OP_CODE op = Pop(pos);
-  if ( op == op_hier)
+  OP_CODE op = Pop(pos);
+  if (op == m_op_hier)
   {
     pos++;
     pos_t pos2 = pos;
@@ -202,7 +217,7 @@ OP_CODE op = Pop(pos);
       if (pos3 != pos2 - 2)
         ds += '_';
       pos3++;
-      if (Get(pos3) == op_hier)
+      if (Get(pos3) == m_op_hier)
         pos3++;
     }
   }

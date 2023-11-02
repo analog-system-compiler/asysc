@@ -1,12 +1,15 @@
-#inc "Components.txt"
+.inc "components.txt"
 
 delay_line_test( RS ) :=
 {
 	VP.VPULSE( @4, @GND, 1, 10n, 80n, 0, 1n, 1n );
 	R2.CR ( @4, @3, 5 );
-	L1.CL ( @3, @1, 100n );
-	C1.CC ( @1, @2, 1n );
-	R1.CR ( @2, @GND, RS  )
+	L1.CL ( @3, @1, 10n );
+	C1.CC ( @1, @GND, 1n );
+	DL1.DL( @1, @2, @GND, 50, 1e-8, 0, 0 );
+	R1.CR ( @2, @GND, RS  );
+	DL2.DL( @2, @5, @GND, 50, 1e-8, 0, 0 );
+	R3.CR ( @5, @GND, 50  )
 };
 
-CIRCUIT := RESOLVE_TRANS( delay_line_test( 0 ) )
+CIRCUIT := RESOLVE_TRANS( delay_line_test( 50 ) )

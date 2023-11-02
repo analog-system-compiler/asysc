@@ -8,6 +8,7 @@
             "program": "${workspaceFolder}/build/cirsol.exe",
             "args": [
                 "-i",
+             //   "../circuits/RLC.txt",
                 "../circuits/delay_line.txt",
                 "-o",
                 "../circuit.py"
@@ -51,7 +52,7 @@
             "name": "Python: File",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "simulation.py",
             "justMyCode": true
         }
     ]
