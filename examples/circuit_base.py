@@ -3,6 +3,7 @@ import numpy as np
 
 
 class element:
+
     element_list = []
 
     def __init__(self, name):
@@ -23,8 +24,8 @@ class element:
         self.history_x.append(f)
         self.history_y.append(val)
 
-    def step_t(self, t):
-        for e in self.element_list:
+    def step_t(t):
+        for e in element.element_list:
             delta_t = t - e.history_x[-1]
             if delta_t:
                 e.dydx = 2.0 / delta_t
@@ -36,8 +37,6 @@ class element:
 
 
 class circuit_base:
-    # delta_timeval = 1e-9
-    # timeval = 0.0
 
     def __init__(self):
         self.timeval = 0.0
@@ -64,7 +63,7 @@ class circuit_base:
         self.delta_timeval = duration / nb
         for i in range(0, nb):
             self.step()
-            element.step_t()
+            element.step_t(self.timeval)
             self.timeval += self.delta_timeval
             print("Iteration nb {}".format(i), end="\r")
 

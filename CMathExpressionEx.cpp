@@ -72,7 +72,7 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mo
 {
   OP_CODE op;
   CElement *e, *eth, *es, *ec, *et, *edt;
-  CDisplay ds1, ds2, ds3, ds4, ds5;
+  CDisplay ds1, ds2, ds3, ds4;
 
   Parse(parser);
   Compile();
@@ -127,7 +127,6 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mo
         {
           ds1.Append("\t\t");
           ds2.Append("\t\t");
-          ds5.Append("\t\t");
           ds3.Clear();
           ds4.Clear();
           pos = CMathExpression::DisplayBranch(ds3, pos);
@@ -147,9 +146,8 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mo
           {
             ds2.Append(".set_t(");
             ds2.Append(ds3);
-            ds2.Append(")\n");
-            // ds5.Append(ds4);
-            ds5.Append("step_t(self.time())\n");
+            ds2.Append(")\n");            
+            
           }
         }
         else
@@ -170,13 +168,11 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mo
     }
 
     ds.Append("import math\nimport circuit_base\nfrom circuit_base import circuit_base, element\n");
-    ds.Append("\nclass circuit( circuit_base ):\n\n\tdef __init__(self):\n\t\tsuper().__init__()\n");
-    ds.Append("\n\tdef __init__(self):\n");
+    ds.Append("\nclass circuit( circuit_base ):\n\n");
+    ds.Append("\n\tdef __init__(self):\n\t\tsuper().__init__()\n\n");
     ds.Append(ds1);
     ds.Append("\n\tdef step(self):\n");
     ds.Append(ds2);
-    ds.Append("\n");
-    ds.Append(ds5);
     ds.Print();
   }
   // pos_t pos = equ.GetSize();

@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 {
   char *input_filename = NULL;
   char *output_filename = NULL;
-  CAnalysisMode analysis_type;
+  CAnalysisMode analysis_type = TRANS_ANALYSIS;
 
   while (true)
   {

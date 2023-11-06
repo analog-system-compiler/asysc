@@ -25,7 +25,7 @@ CPPFLAGS  = -MMD -Wall -fno-rtti -fno-exceptions $(INCDIR)
 LDFLAGS   = -Wl,-Map=$(EXE).map
 
 EXE_SRC = CirSol.cpp \
-	CMathExpressionEx.cpp    
+	CMathExpressionEx.cpp
 
 ifeq ($(GPROF),1)
 	CPPFLAGS += -pg
@@ -62,7 +62,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CPPFLAGS) -c $< -o $@
 
 $(LIB): force
-	$(MAKE) -C $(LIGHTCAS_DIR) --no-print-directory
+	$(MAKE) -C $(LIGHTCAS_DIR) --no-print-directory DEBUG=$(DEBUG) TEST=$(TEST)
 
 $(BUILD_DIR)/$(EXE): $(LIB) $(EXE_OBJ)
 	echo 'Linking    $(notdir $@)'
