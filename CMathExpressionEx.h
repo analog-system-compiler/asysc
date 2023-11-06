@@ -42,6 +42,12 @@
 //   CElement *m_DerVariable;
 // };
 
+enum CAnalysisMode {
+  AC_ANALYSIS,
+  TRANS_ANALYSIS,
+  DC_ANALYSIS
+};
+
 class CMathExpressionEx : public CMathExpression
 {
   // friend class CEquSystem;
@@ -62,7 +68,7 @@ public:
   // void Neg() { UnaryOperation(CElementDataBase::OP_NEG); }
   // void MakeEval() { UnaryOperation(CElementDataBaseEx::OP_MAKEEVAL); }
 
-  bool ToPython(CParser &parser, CDisplay &ds);
+  bool ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mode );
   // void Display(CDisplay &ds, bool bAll = true) const;
   pos_t DisplayBranch(CDisplay &ds, pos_t pos, unsigned priority = 0) const;
   // pos_t DisplayElement(CDisplay &ds, pos_t pos) const;

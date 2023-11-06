@@ -68,7 +68,7 @@
 // #endif
 // }
 
-bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds)
+bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mode)
 {
   OP_CODE op;
   CElement *e, *eth, *es, *ec, *et, *edt;
@@ -132,16 +132,25 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds)
           ds4.Clear();
           pos = CMathExpression::DisplayBranch(ds3, pos);
           pos = CMathExpression::DisplayBranch(ds4, pos);
-          ds2.Append(ds4);
-          ds2.Append(".set(");
-          ds2.Append(ds3);
-          ds2.Append(")\n");
           ds1.Append(ds4);
           ds1.Append(" = element('");
           ds1.Append(ds4);
           ds1.Append("')\n");
-          ds5.Append(ds4);
-          ds5.Append(".step(self.time())\n");
+          ds2.Append(ds4);
+          if (mode == CAnalysisMode::AC_ANALYSIS)
+          {
+            ds2.Append(".set_f(");
+            ds2.Append(ds3);
+            ds2.Append(", self.freq)\n");
+          }
+          else
+          {
+            ds2.Append(".set_t(");
+            ds2.Append(ds3);
+            ds2.Append(")\n");
+            // ds5.Append(ds4);
+            ds5.Append("step_t(self.time())\n");
+          }
         }
         else
         {

@@ -1,0 +1,8 @@
+RLC() := { 
+  V.CV(@1, @2, 10); 
+  R.CR(@2, @3, 100); 
+  L.CL(@3, @4, 1m); 
+  C.CC(@4, @1, 10u) 
+};
+
+CIRCUIT := RESOLVE_AC( RLC )

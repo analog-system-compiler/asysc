@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 {
   char *input_filename = NULL;
   char *output_filename = NULL;
-  // char *output_type = NULL;
+  CAnalysisMode analysis_type;
 
   while (true)
   {
@@ -43,7 +43,10 @@ int main(int argc, char *argv[])
       output_filename = optarg;
       continue;
     case 't':
-      //   output_type = optarg;
+      if (!strcmp(optarg, "ac"))
+        analysis_type = CAnalysisMode::AC_ANALYSIS;
+      else if (!strcmp(optarg, "trans"))
+        analysis_type = CAnalysisMode::TRANS_ANALYSIS;
       continue;
     case '?':
       if (optopt == 'i' or optopt == 'o')
@@ -62,7 +65,7 @@ int main(int argc, char *argv[])
   }
 
   CEvaluator eval;
-  CElementDataBase db_root("Root", NULL, &eval);
+  CElementDataBase db_root("Root", NULL, &eval, true, argv[0]);
   CElementDataBase db("User", &db_root);
   CMathExpressionEx equ(&db);
   CDisplay ds;
@@ -73,12 +76,12 @@ int main(int argc, char *argv[])
   db.Initialize();
 #endif
 
-  if (!db.IsOK()) 
+  if (!db.IsOK())
     return 1;
 
-  if (parser.LoadFromFile(input_filename))
+  if (parser.LoadFromFile(CParser::GetPath(argv[0]) + input_filename))
     if (ds.StoreToFile(output_filename))
-      equ.ToPython(parser, ds);
+      equ.ToPython(parser, ds, analysis_type);
 
   return 0;
 }

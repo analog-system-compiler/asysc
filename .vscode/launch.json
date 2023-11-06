@@ -9,9 +9,11 @@
             "args": [
                 "-i",
              //   "../circuits/RLC.txt",
-                "../circuits/delay_line.txt",
+                //"../circuits/delay_line.txt",
+                "../examples/ac/sallen_key/sallen_key.cir",
                 "-o",
-                "../circuit.py"
+                //"../circuit.py"
+                "../examples/ac/sallen_key/sallen_key.py"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/build",
@@ -52,7 +54,7 @@
             "name": "Python: File",
             "type": "python",
             "request": "launch",
-            "program": "simulation.py",
+            "program": "${file}",
             "justMyCode": true
         }
     ]
