@@ -53,6 +53,9 @@ class circuit_base:
             self.timeval - delay_arg, element_arg.history_x, element_arg.history_y
         )
 
+    def _get(self, element_arg):
+        return element_arg.value_y
+    
     def _der0(self, element_arg):
         return element_arg.dy
 

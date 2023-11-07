@@ -1,0 +1,11 @@
+
+.inc "components.txt"
+
+RLC( R, L, C ) := {
+  V.CV(@1, @2, 10); 
+  R.CR(@2, @3, R ); 
+  L.CL(@3, @4, L ); 
+  C.CC(@4, @1, C ) 
+};
+
+CIRCUIT := RESOLVE_AC( RLC( _get( R ), _get( L ), _get( C )  ) )

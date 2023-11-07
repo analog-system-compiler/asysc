@@ -5,3 +5,5 @@ examples/transient/delay_line/__pycache__/circuit_base.cpython-311.pyc
 examples/transient/delay_line/__pycache__/delay_line.cpython-311.pyc
 examples/transient/RLC/__pycache__/circuit_base.cpython-311.pyc
 examples/transient/RLC/__pycache__/RLC.cpython-311.pyc
+__pycache__/circuit_base.cpython-311.pyc
+__pycache__/circuit.cpython-311.pyc

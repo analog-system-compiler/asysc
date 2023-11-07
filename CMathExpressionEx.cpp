@@ -77,13 +77,10 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mo
   Parse(parser);
   Compile();
 
-  // char *s = m_ElementDB->GetSymbolTable()[26]->m_Syntax;
   eth = m_ElementDB->GetElement("TANH");
   es = m_ElementDB->GetElement("SIN");
   ec = m_ElementDB->GetElement("COS");
   et = m_ElementDB->GetElement("TIME");
-  // ed = m_ElementDB->GetElement("DELAY");
-  // edd = m_ElementDB->GetElement("DELAY_DER");
   edt = m_ElementDB->GetElement("DELTA_TIME");
   m_op_hier = m_ElementDB->GetElement("HIER")->ToRef();
 
@@ -101,8 +98,6 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mo
   ec->SetName("cos");
   ec->SetNumeric();
   et->SetName("time");
-  // ed->SetName("delay");
-  // edd->SetName("delay_der");
   edt->SetName("delta_time");
 
   if (e->IsFunct())
@@ -147,7 +142,6 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mo
             ds2.Append(".set_t(");
             ds2.Append(ds3);
             ds2.Append(")\n");            
-            
           }
         }
         else
@@ -168,38 +162,14 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mo
     }
 
     ds.Append("import math\nimport circuit_base\nfrom circuit_base import circuit_base, element\n");
-    ds.Append("\nclass circuit( circuit_base ):\n\n");
-    ds.Append("\n\tdef __init__(self):\n\t\tsuper().__init__()\n\n");
+    ds.Append("\nclass circuit( circuit_base ):\n");
+    ds.Append("\n\n\tdef __init__(self):\n\t\tsuper().__init__()\n\n");
     ds.Append(ds1);
     ds.Append("\n\tdef step(self):\n");
     ds.Append(ds2);
     ds.Print();
   }
-  // pos_t pos = equ.GetSize();
-  // ds = "\t";
-  // op = equ.Pop(pos);
-  // if (op != op_sys)
-  //   return false;
-
-  // assert(op_concat);
-  // // op = Pop(pos);
-  // // if (op != op_topython)
-  // //   return false;
-  // //m_StackSize = pos;
-  // CMathExpression equ(*this);
-  // equ.CMathExpression::PushBranch(*this,pos);
-  // equ.OptimizeTree();
-  // pos = equ.m_StackSize;
-  // while (pos != 0)
-  // {
-  //   op = equ.Pop(pos);
-  //   if (op == op_concat)
-  //   {
-  //     equ.CMathExpression::DisplayBranch(ds, pos);
-  //   }
-  //   else
-  //     return false;
-  // }
+  
   return true;
 }
 
