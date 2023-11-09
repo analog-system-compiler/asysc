@@ -1,5 +1,7 @@
 
 
+MAKEFLAGS = --jobs 4
+
 SRC_DIR     = ./
 LIGHTCAS_DIR = lightcas
 RULES_DIR   = $(LIGHTCAS_DIR)/rules

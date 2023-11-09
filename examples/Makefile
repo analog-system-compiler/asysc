@@ -14,8 +14,9 @@ all : $(CIRCUITS_PY)
 	fi; \
 	echo "Generating $@"; \
 	../build/cirsol -i ../examples/$^ -o ../examples/$@ -t $$ANALYSIS_MODE
-	cp -f circuit_base.py $(@D)
-
+	#cp -f circuit_base.py $(@D)
+	-[ -f debug.log ] && mv debug.log $(@D)
+	
 clean:
 	-rm -f $(CIRCUITS_PY)
 	#-rm $(shell find examples -name circuit_base.py)

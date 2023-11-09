@@ -8,7 +8,7 @@ test_NE555() :=
   C1.CC( @1, @0, 10u );
   RB.CR( @2, @1, R);
   RA.CR( @3, @2, 1K );
-  IC.NE555 ( @1, @1, @2, @4, @3, @0  ) //@trigger,  @threshold,  @discharge, @output,  @vcc, @gnd
+  IC.NE555( @1, @1, @2, @4, @3, @0  ) //@trigger,  @threshold,  @discharge, @output,  @vcc, @gnd
   // P1.PROBE ( @4,@0 )
 };
 

@@ -71,7 +71,7 @@
 bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mode)
 {
   OP_CODE op;
-  CElement *e, *eth, *es, *ec, *et, *edt;
+  CElement *e, *eth, *es, *ec, *et, *edt, *ee, *ess;
   CDisplay ds1, ds2, ds3, ds4;
 
   Parse(parser);
@@ -81,7 +81,9 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mo
   es = m_ElementDB->GetElement("SIN");
   ec = m_ElementDB->GetElement("COS");
   et = m_ElementDB->GetElement("TIME");
+  ee = m_ElementDB->GetElement("EXP");
   edt = m_ElementDB->GetElement("DELTA_TIME");
+  ess = m_ElementDB->GetElement("s");
   m_op_hier = m_ElementDB->GetElement("HIER")->ToRef();
 
   OP_CODE op_concat = m_ElementDB->GetElement("CONCAT")->ToRef();
@@ -97,8 +99,11 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mo
   es->SetNumeric();
   ec->SetName("cos");
   ec->SetNumeric();
+  ee->SetName("exp");
+  ee->SetNumeric();
   et->SetName("time");
   edt->SetName("delta_time");
+  ess->SetVar();
 
   if (e->IsFunct())
   {
@@ -130,18 +135,21 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mo
           ds1.Append(" = element('");
           ds1.Append(ds4);
           ds1.Append("')\n");
-          ds2.Append(ds4);
+
           if (mode == CAnalysisMode::AC_ANALYSIS)
           {
+            ds2.Append(ds4);
             ds2.Append(".set_f(");
             ds2.Append(ds3);
             ds2.Append(", self.freq)\n");
           }
           else
           {
-            ds2.Append(".set_t(");
+            ds2.Append("self._setc(");
+            ds2.Append(ds4);
+            ds2.Append(",");
             ds2.Append(ds3);
-            ds2.Append(")\n");            
+            ds2.Append(")\n");
           }
         }
         else
@@ -163,13 +171,13 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mo
 
     ds.Append("import math\nimport circuit_base\nfrom circuit_base import circuit_base, element\n");
     ds.Append("\nclass circuit( circuit_base ):\n");
-    ds.Append("\n\n\tdef __init__(self):\n\t\tsuper().__init__()\n\n");
+    ds.Append("\n\n\tdef __init__(self):\n\t\tsuper().__init__()\n");
     ds.Append(ds1);
     ds.Append("\n\tdef step(self):\n");
     ds.Append(ds2);
     ds.Print();
   }
-  
+
   return true;
 }
 

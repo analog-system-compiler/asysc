@@ -3,14 +3,14 @@
 
 graetz_bridge(RS) :=
 {
-	V.VSIN( @2, @3, 10, 2*PI*600, PI/4 );
-	C.CC( @5, @4, 1u );		
+	V.VSIN( @5, @3, 10, 2*PI*600 );
+	R2.CR( @5, @2, 1 );
 	D1.DD( @1, @2 );
 	D2.DD( @1, @3 );
 	D3.DD( @2, @4 );
-	D4.DD( @3, @4 );
-	R2.CR( @1, @5, 10 );	
-	R1.CR( @4, @5, RS )
+	D4.DD( @3, @4 );	
+	R1.CR( @4, @1, RS );
+	C.CC(  @1, @4, 1u )
 };
 
-CIRCUIT := RESOLVE_TRANS( graetz_bridge( __get( RS ) ) )
+CIRCUIT := RESOLVE_TRANS( graetz_bridge( 50 ) )
