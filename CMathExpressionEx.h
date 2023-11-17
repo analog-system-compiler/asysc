@@ -42,7 +42,8 @@
 //   CElement *m_DerVariable;
 // };
 
-enum CAnalysisMode {
+enum CAnalysisMode
+{
   AC_ANALYSIS,
   TRANS_ANALYSIS,
   DC_ANALYSIS
@@ -53,6 +54,7 @@ class CMathExpressionEx : public CMathExpression
   // friend class CEquSystem;
 private:
   OP_CODE m_op_hier;
+  OP_CODE m_op_getv;
 
 public:
   // void Add(const CMathExpression &equ) { BinaryOperation(CElementDataBaseEx::OP_ADD, equ); }
@@ -68,7 +70,7 @@ public:
   // void Neg() { UnaryOperation(CElementDataBase::OP_NEG); }
   // void MakeEval() { UnaryOperation(CElementDataBaseEx::OP_MAKEEVAL); }
 
-  bool ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mode );
+  bool ToPython(CDisplay &ds, CAnalysisMode mode);
   // void Display(CDisplay &ds, bool bAll = true) const;
   pos_t DisplayBranch(CDisplay &ds, pos_t pos, unsigned priority = 0) const;
   // pos_t DisplayElement(CDisplay &ds, pos_t pos) const;
@@ -139,6 +141,6 @@ public:
 public:
   // Copy Constructor
   // CMathExpressionEx(const CMathExpressionEx &equ) : CMathExpression(NULL) { Copy(equ); }
-  CMathExpressionEx(CElementDataBase *edb = NULL) : CMathExpression(edb){}
+  CMathExpressionEx(CElementDataBase *edb = NULL) : CMathExpression(edb) {};
 };
 #endif

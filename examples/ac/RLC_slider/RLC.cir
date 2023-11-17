@@ -8,4 +8,4 @@ RLC( R, L, C ) := {
   C.CC(@4, @1, C ) 
 };
 
-CIRCUIT := RESOLVE_AC( RLC( _get( R ), _get( L ), _get( C )  ) )
+CIRCUIT := RESOLVE_AC( RLC( _getv( R ), _getv( L ), _getv( C )  ) )

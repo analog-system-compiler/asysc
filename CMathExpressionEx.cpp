@@ -68,15 +68,18 @@
 // #endif
 // }
 
-bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mode)
+bool CMathExpressionEx::ToPython(CDisplay &ds, CAnalysisMode mode)
 {
   OP_CODE op;
   CElement *e, *eth, *es, *ec, *et, *edt, *ee, *ess;
   CDisplay ds1, ds2, ds3, ds4;
+  CElementArray element_array;
 
-  Parse(parser);
-  Compile();
-
+  m_ElementDB->GetElement("RESOLVE_TRANS")->SetMessage("Resolving transient system...");
+  m_ElementDB->GetElement("RESOLVE_AC")->SetMessage("Resolving AC system...");
+  m_ElementDB->GetElement("SIMPLIFY")->SetMessage("Simplifying system...");
+  // m_ElementDB->GetElement("NODE_TRANS")->SetMessage("Applying Kirchhoff’s Current Law...");
+  // m_ElementDB->GetElement("LOOP_TRANS")->SetMessage("Applying Kirchhoff’s Voltage Law...");
   eth = m_ElementDB->GetElement("TANH");
   es = m_ElementDB->GetElement("SIN");
   ec = m_ElementDB->GetElement("COS");
@@ -85,11 +88,11 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mo
   edt = m_ElementDB->GetElement("DELTA_TIME");
   ess = m_ElementDB->GetElement("s");
   m_op_hier = m_ElementDB->GetElement("HIER")->ToRef();
-
+  m_op_getv = m_ElementDB->GetElement("_getv")->ToRef();
   OP_CODE op_concat = m_ElementDB->GetElement("CONCAT")->ToRef();
   OP_CODE op_vect = m_ElementDB->GetElement("VECT")->ToRef();
   OP_CODE op_eqv = m_ElementDB->GetElement("EQV")->ToRef();
-  strcpy(m_ElementDB->GetSymbolTable()[26]->m_Syntax, "a_b");
+  // strcpy(m_ElementDB->GetSymbolTable()[26]->m_Syntax, "a_b");
 
   e = m_ElementDB->GetElement("CIRCUIT");
 
@@ -111,12 +114,36 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mo
     Copy(rule_array.GetAt(0)->m_DstEquation);
     OptimizeTree();
 
+    // Search for getv
     pos_t pos = GetSize();
-    op = Pop(pos);
+    while (pos)
+    {
+      op = Pop(pos);
+      if (op == m_op_getv)
+      {
+        op = Pop(pos);
+        ASSERT(pos);
+        CElement *e = RefToElement(op);
+        if (!element_array.Find(e))
+        {
+          element_array.Append(e);
+          ds4.Clear();
+          e->Display(ds4);
+          ds1.Append("\t\t");
+          ds1.Append(ds4);
+          ds1.Append(" = element('");
+          ds1.Append(ds4);
+          ds1.Append("')\n");
+        }
+      }
+    }
 
+    // Search for results
+    pos = GetSize();
+    op = Pop(pos);
     if (op == op_vect)
     {
-      while (pos != 0)
+      while (pos)
       {
         op = Pop(pos);
         if (op != op_concat)
@@ -125,17 +152,19 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mo
         op = Pop(pos);
         if (op == op_eqv)
         {
-          ds1.Append("\t\t");
-          ds2.Append("\t\t");
+
           ds3.Clear();
           ds4.Clear();
           pos = CMathExpression::DisplayBranch(ds3, pos);
           pos = CMathExpression::DisplayBranch(ds4, pos);
+
+          ds1.Append("\t\t");
           ds1.Append(ds4);
           ds1.Append(" = element('");
           ds1.Append(ds4);
           ds1.Append("')\n");
 
+          ds2.Append("\t\t");
           if (mode == CAnalysisMode::AC_ANALYSIS)
           {
             ds2.Append(ds4);
@@ -171,7 +200,7 @@ bool CMathExpressionEx::ToPython(CParser &parser, CDisplay &ds, CAnalysisMode mo
 
     ds.Append("import math\nimport circuit_base\nfrom circuit_base import circuit_base, element\n");
     ds.Append("\nclass circuit( circuit_base ):\n");
-    ds.Append("\n\n\tdef __init__(self):\n\t\tsuper().__init__()\n");
+    ds.Append("\n\tdef __init__(self):\n\t\tsuper().__init__()\n");
     ds.Append(ds1);
     ds.Append("\n\tdef step(self):\n");
     ds.Append(ds2);
@@ -196,11 +225,16 @@ pos_t CMathExpressionEx::DisplaySymbol(CDisplay &ds, pos_t pos, unsigned precede
     ds += "self.";
     while (pos3 != pos2)
     {
-      RefToElement(Get(pos3))->Display(ds);
-      if (pos3 != pos2 - 2)
-        ds += '_';
+      op = Get(pos3);
+      if (op != m_op_getv)
+      {
+        RefToElement(op)->Display(ds);
+        if (pos3 != pos2 - 2)
+          ds += '_';
+      }
       pos3++;
-      if (Get(pos3) == m_op_hier)
+      op = Get(pos3);
+      if (op == m_op_hier)
         pos3++;
     }
   }
@@ -248,7 +282,7 @@ pos_t CMathExpressionEx::DisplayBranch(CDisplay &ds, pos_t pos, unsigned priorit
   {
     OP_CODE op = Pop(pos);
     e = RefToElement(op);
-    if (e->IsFunct())
+    if (e->IsFunct() || e->IsVar())
       ds += "self.";
     else if (e->IsNumeric())
       ds += "math.";

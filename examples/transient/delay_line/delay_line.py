@@ -4,7 +4,6 @@ from circuit_base import circuit_base, element
 
 class circuit( circuit_base ):
 
-
 	def __init__(self):
 		super().__init__()
 		self.VP_U = element('self.VP_U')

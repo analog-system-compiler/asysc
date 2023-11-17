@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "make debug",
+            "label": "make debug+tests",
             "type": "shell",
             "group": "build",
             "command": "make",
@@ -12,6 +12,21 @@
                 "all",
                 "DEBUG=1",
                 "TEST=1"
+            ],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "make debug",
+            "type": "shell",
+            "group": "build",
+            "command": "make",
+            "args": [
+                "all",
+                "DEBUG=1"
             ],
             "presentation": {
                 "reveal": "always",
