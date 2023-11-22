@@ -80,11 +80,14 @@ int main(int argc, char *argv[])
     return 1;
 
   if (parser.LoadFromFile(CParser::GetPath(argv[0]) + input_filename))
-    if (ds.StoreToFile(output_filename)) {
+  {
+    if (ds.StoreToFile(output_filename))
+    {
       equ.Parse(parser);
       equ.Compile();
       equ.ToPython(ds, analysis_type);
     }
+  }
 
   return 0;
 }

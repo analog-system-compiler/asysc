@@ -94,8 +94,6 @@ bool CMathExpressionEx::ToPython(CDisplay &ds, CAnalysisMode mode)
   OP_CODE op_eqv = m_ElementDB->GetElement("EQV")->ToRef();
   // strcpy(m_ElementDB->GetSymbolTable()[26]->m_Syntax, "a_b");
 
-  e = m_ElementDB->GetElement("CIRCUIT");
-
   eth->SetName("tanh");
   eth->SetNumeric();
   es->SetName("sin");
@@ -108,11 +106,18 @@ bool CMathExpressionEx::ToPython(CDisplay &ds, CAnalysisMode mode)
   edt->SetName("delta_time");
   ess->SetVar();
 
+  e = m_ElementDB->GetElement("CIRCUIT");
   if (e->IsFunct())
   {
     const CAlgebraRuleArray &rule_array = e->GetFunction()->GetAlgebraRulesArray();
     Copy(rule_array.GetAt(0)->m_DstEquation);
+    // Push(e)
     OptimizeTree();
+
+    ds.Append("\'\'\'\n");
+    Display(ds);
+    ds.Append("\n\'\'\'\n");
+     ds.Print();
 
     // Search for getv
     pos_t pos = GetSize();
@@ -249,8 +254,8 @@ pos_t CMathExpressionEx::DisplaySymbol(CDisplay &ds, pos_t pos, unsigned precede
       if (pos1 != pos)
       {
         const char *sp = ss->m_Syntax;
-
-        if ((i < precedence) || (ds.IsDebug() && i <= precedence))
+        if (1)
+        // if ((i < precedence) || (ds.IsDebug() && i <= precedence))
         {
           ds += '(';
           DisplaySymbolString(sp, pos_array, i, ds);

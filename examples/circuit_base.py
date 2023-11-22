@@ -57,7 +57,7 @@ class circuit_base:
     def _last(self, element_arg):
         if element_arg.value_y_prev == 0:
             return element_arg.value_y
-        elif ( abs(element_arg.value_y - element_arg.value_y_prev) / element_arg.value_y_prev ) > res:
+        elif ( abs( (element_arg.value_y - element_arg.value_y_prev) / element_arg.value_y_prev ) ) > res:
             self.conv = False
         return element_arg.value_y * res + element_arg.value_y_prev * (1 - res)
 
