@@ -4,6 +4,7 @@ import numpy as np
 res = 1 / 100000
 
 class element:
+    
     element_list = []
 
     def __init__(self, name):
@@ -38,6 +39,7 @@ class element:
 
 
 class circuit_base:
+
     def __init__(self):
         self.timeval = 0.0
         self.delta_timeval = 0.0
@@ -56,10 +58,12 @@ class circuit_base:
 
     def _last(self, element_arg):
         if element_arg.value_y_prev == 0:
-            return element_arg.value_y
+            self.conv = False
+            element_arg.value_y_prev = element_arg.value_y * res            
         elif ( abs( (element_arg.value_y - element_arg.value_y_prev) / element_arg.value_y_prev ) ) > res:
             self.conv = False
-        return element_arg.value_y * res + element_arg.value_y_prev * (1 - res)
+            element_arg.value_y_prev = element_arg.value_y * res + element_arg.value_y_prev * (1 - res)
+        return element_arg.value_y_prev
 
     def _der0(self, element_arg):
         return element_arg.dy

@@ -9,6 +9,8 @@
             "group": "build",
             "command": "make",
             "args": [
+                "-C", "lightcas",
+                //"clean",
                 "all",
                 "DEBUG=1",
                 "TEST=1"
@@ -25,6 +27,8 @@
             "group": "build",
             "command": "make",
             "args": [
+                "-C", "lightcas",
+                //"clean",
                 "all",
                 "DEBUG=1"
             ],
@@ -40,6 +44,7 @@
             "group": "build",
             "command": "make",
             "args": [
+                "-C", "lightcas",
                 "clean"
             ],
             "presentation": {
