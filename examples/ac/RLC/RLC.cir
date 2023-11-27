@@ -1,5 +1,5 @@
 
-.inc "components.txt"
+.inca "components.txt"
 
 RLC() := {
   V.CV(@1, @2, 10); 

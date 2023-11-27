@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "CirSol DEBUG",
+            "name": "ASysC DEBUG",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/lightcas/asysc.exe",

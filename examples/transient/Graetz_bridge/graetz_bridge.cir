@@ -1,5 +1,5 @@
 
-.inc "components.txt"
+.inca "components.txt"
 
 graetz_bridge(RS) :=
 {
@@ -13,4 +13,4 @@ graetz_bridge(RS) :=
 	C.CC(  @1, @4, 1u )
 };
 
-CIRCUIT := RESOLVE_TRANS( graetz_bridge( 50 ) )
+CIRCUIT := RESOLVE_TRANS( graetz_bridge( 200 ) )

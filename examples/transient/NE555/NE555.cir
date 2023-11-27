@@ -1,6 +1,6 @@
 
-.inc "components.txt"
-.inc "ic.txt"
+.inca "components.txt"
+.inca "ic.txt"
 
 //https://softsolder.com/2012/12/24/getting-20-duty-cycle-from-a-555-timer
 test_NE555( R ) :=

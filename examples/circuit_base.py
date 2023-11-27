@@ -2,6 +2,7 @@
 import numpy as np
 
 res = 1 / 100000
+MAX_ITER = 100
 
 class element:
     
@@ -37,6 +38,9 @@ class element:
             e.history_x.append(t)
             e.history_y.append(e.value_y)
 
+    def _step_c():
+        for e in element.element_list:
+            e.value_y_prev = e.value_y * res + e.value_y_prev * (1 - res)
 
 class circuit_base:
 
@@ -59,12 +63,10 @@ class circuit_base:
     def _last(self, element_arg):
         if element_arg.value_y_prev == 0:
             self.conv = False
-            element_arg.value_y_prev = element_arg.value_y * res            
-        elif ( abs( (element_arg.value_y - element_arg.value_y_prev) / element_arg.value_y_prev ) ) > res:
+        elif abs( (element_arg.value_y - element_arg.value_y_prev) / element_arg.value_y_prev ) > res:
             self.conv = False
-            element_arg.value_y_prev = element_arg.value_y * res + element_arg.value_y_prev * (1 - res)
         return element_arg.value_y_prev
-
+            
     def _der0(self, element_arg):
         return element_arg.dy
 
@@ -79,9 +81,11 @@ class circuit_base:
         for i in range(0, nb):
             self.conv = False
             iter_nb = 0
-            while not self.conv and iter_nb < 100:
+            while not self.conv and iter_nb < MAX_ITER:
                 self.conv = True
                 self.step()
+                if not self.conv:
+                    element._step_c()
                 iter_nb += 1
             element._step_t(self.timeval)
             self.timeval += self.delta_timeval

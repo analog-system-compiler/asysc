@@ -1,8 +1,8 @@
 # import math
 import numpy as np
 
-res = 1 / 10
-MAX_ITER = 1000
+res = 1 / 1000
+MAX_ITER = 100
 
 class element:
     
@@ -89,7 +89,7 @@ class circuit_base:
                 iter_nb += 1
             element._step_t(self.timeval)
             self.timeval += self.delta_timeval
-            print("Iteration nb {}/{}".format(i, iter_nb), end="\r")
+            print("Iteration nb {}/{}   ".format(i, iter_nb), end="\r")
 
     def simulate_f(self, start, end, nb):
         log_end = np.log10(2 * np.pi * end)
