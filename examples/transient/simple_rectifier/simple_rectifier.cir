@@ -1,0 +1,13 @@
+
+.inca "components.txt"
+
+simple_rectifier(RS) :=
+{
+	//V.CV( @5, @1, 10 );	
+	D1.ID( @1, @2 );
+	R2.CR( @5, @2, 1 );
+	V.VSIN( @5, @1, 5, 2*PI*600 )
+	//D1.DD( @1, @2 )
+};
+
+CIRCUIT := RESOLVE_TRANS( simple_rectifier( 200 ) )
