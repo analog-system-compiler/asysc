@@ -1,5 +1,5 @@
 
-.inca "components.txt"
+`include <components.txt>
 
 simple_rectifier(RS) :=
 {

@@ -1,5 +1,5 @@
 
-.inca "components.txt"
+`include <components.txt>
 
 graetz_bridge(RS) :=
 {

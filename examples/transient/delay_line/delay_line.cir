@@ -1,4 +1,4 @@
-.inca "components.txt"
+`include <components.txt>
 
 delay_line_test( RS ) :=
 {
