@@ -18,6 +18,11 @@ class element:
         self.value_y_prev = 0.0
         self.value_y = 0.0
 
+    def _clear():
+        for e in element.element_list:
+            e.history_x = []
+            e.history_y = []
+    
     def set_t(self, val):
         self.value_y = val
 
@@ -84,6 +89,7 @@ class circuit_base:
             print("Iteration nb {}/{}".format(i, iter_nb), end="\r")
 
     def simulate_f(self, start, end, nb):
+        element._clear()
         log_end = np.log10(2 * np.pi * end)
         for i in range(0, nb):
             self.freq = start * 10 ** ((i * log_end) / nb)

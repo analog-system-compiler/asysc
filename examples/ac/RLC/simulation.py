@@ -20,7 +20,7 @@ my_circuit = circuit()
 my_circuit.simulate_f(1, 1e6, 1000)
 
 fig, axs = plt.subplots(1, 1, layout="constrained")
-plt.subplots_adjust(bottom=0.35)
+#plt.subplots_adjust(bottom=0.35)
 add_gain_plot(axs, my_circuit.R_U)
 add_gain_plot(axs, my_circuit.L_U)
 add_gain_plot(axs, my_circuit.C_U)

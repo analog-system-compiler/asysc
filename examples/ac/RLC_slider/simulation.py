@@ -30,13 +30,13 @@ def update_C(val):
     update_all()    
 
 def update_all():    
-    global first_time
+    global first_time, axs
     global lineR, lineC, lineL
     my_circuit.simulate_f(1, 1e6, 100)    
     if first_time:
-        lineR, =add_gain_plot(axs, my_circuit.R_U)
-        lineC, =add_gain_plot(axs, my_circuit.C_U)
-        lineL, =add_gain_plot(axs, my_circuit.L_U)
+        lineR, =add_gain_plot(axs, my_circuit.R1_U)
+        lineC, =add_gain_plot(axs, my_circuit.C1_U)
+        lineL, =add_gain_plot(axs, my_circuit.L1_U)
         axs.set_xlabel("Freq (Hz)")
         axs.set_ylabel("Gain")
         axs.legend(ylabel)
@@ -44,19 +44,19 @@ def update_all():
         axs.set_xscale('log')
         first_time = False
     else:
-        lineR.set_ydata(20 * np.log10(np.absolute(my_circuit.R_U.history_y)))
-        lineL.set_ydata(20 * np.log10(np.absolute(my_circuit.L_U.history_y)))
-        lineC.set_ydata(20 * np.log10(np.absolute(my_circuit.C_U.history_y)))
+        lineR.set_ydata(20 * np.log10(np.absolute(my_circuit.R1_U.history_y)))
+        lineL.set_ydata(20 * np.log10(np.absolute(my_circuit.L1_U.history_y)))
+        lineC.set_ydata(20 * np.log10(np.absolute(my_circuit.C1_U.history_y)))
         fig.canvas.draw_idle()       
 
 my_circuit = circuit()
 
 #plt.ion()
-fig, axs = plt.subplots(1, 1, layout="constrained")
-plt.subplots_adjust(bottom=0.25)
-r_axe= plt.axes([0.25, 0.0, 0.65, 0.03])
-l_axe= plt.axes([0.25, 0.04, 0.65, 0.03])
-c_axe= plt.axes([0.25, 0.08, 0.65, 0.03])
+fig, axs = plt.subplots()
+fig.subplots_adjust(bottom=0.22)
+r_axe= plt.axes([0.1, 0.0, 0.65, 0.03])
+l_axe= plt.axes([0.1, 0.04, 0.65, 0.03])
+c_axe= plt.axes([0.1, 0.08, 0.65, 0.03])
 r_slider = Slider(ax=r_axe, label='R', valmin=1,    valmax=10,   valinit=5)
 c_slider = Slider(ax=l_axe, label='C', valmin=1e-6, valmax=1e-4, valinit=1e-5)
 l_slider = Slider(ax=c_axe, label='L', valmin=1e-6, valmax=1e-4, valinit=1e-5)

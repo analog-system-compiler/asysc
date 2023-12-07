@@ -8,16 +8,19 @@
             "program": "${workspaceFolder}/lightcas/asysc.exe",
             "args": [
                 "-i",
-             //   "../circuits/RLC.txt",
-                //"../circuits/delay_line.txt",
                 //"../examples/ac/sallen_key/sallen_key.cir",
+                //"../examples/ac/RLC/RLC.cir",
+                "../examples/ac/RLC_slider/RLC.cir",
                 //"../examples/transient/NE555/NE555.cir",
-                "../examples/transient/Graetz_bridge/graetz_bridge.cir",
+                //"../examples/transient/Graetz_bridge/graetz_bridge.cir",
                 "-o",
-                //"../circuit.py"
-                //"../examples/ac/sallen_key/sallen_key.py"
+                //"../examples/ac/sallen_key/sallen_key.py",
+                //"../examples/ac/RLC/RLC.py",
+                "../examples/ac/RLC_slider/RLC.py",
                 //"../examples/transient/NE555/NE555.py"
-                "../examples/transient/Graetz_bridge/graetz_bridge.py",
+                //"../examples/transient/Graetz_bridge/graetz_bridge.py",
+                "-t",
+                "ac"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/lightcas",

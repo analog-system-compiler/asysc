@@ -3,9 +3,9 @@
 
 RLC( R, L, C ) := {
   V.CV(@1, @2, 10); 
-  R.CR(@2, @3, R ); 
-  L.CL(@3, @4, L ); 
-  C.CC(@4, @1, C ) 
+  R1.CR(@2, @3, R ); 
+  L1.CL(@3, @4, L ); 
+  C1.CC(@4, @1, C ) 
 };
 
 CIRCUIT := RESOLVE_AC( RLC( _getv( R ), _getv( L ), _getv( C )  ) )
