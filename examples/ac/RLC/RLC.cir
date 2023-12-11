@@ -8,5 +8,4 @@ RLC() := {
   C.CC(@4, @1, 10u) 
 };
 
-CIRCUIT := RESOLVE_AC( RLC )
-//CIRCUIT := AC( REM_DC ( ZERO_SYS_ENTRY( SYS_CONCAT_ENTRY( RLC ) ) ) )
+CIRCUIT := SOLVE_AC( RLC )

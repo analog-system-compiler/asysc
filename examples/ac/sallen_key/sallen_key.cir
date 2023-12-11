@@ -11,4 +11,4 @@ sallen_key() :=
 	A.IAOP( @3, @4, @4, @0 )
 };
 
-CIRCUIT := RESOLVE_AC( sallen_key )
+CIRCUIT := SOLVE_AC( sallen_key )

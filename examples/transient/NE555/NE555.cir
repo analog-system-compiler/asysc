@@ -15,5 +15,5 @@ test_NE555( R ) :=
   P2.PROBE( @2, @0 )
 };
 
-CIRCUIT := RESOLVE_TRANS( test_NE555( 13K ) )
+CIRCUIT := SOLVE_TRANS( test_NE555( 13K ) )
 //CIRCUIT := RESOLVE_TRANS_LEGACY( test_NE555( 13K ) )

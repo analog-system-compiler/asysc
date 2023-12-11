@@ -10,4 +10,4 @@ simple_rectifier(RS) :=
 	//D1.DD( @1, @2 )
 };
 
-CIRCUIT := RESOLVE_TRANS( simple_rectifier( 200 ) )
+CIRCUIT := SOLVE_TRANS( simple_rectifier( 200 ) )
