@@ -13,4 +13,4 @@ graetz_bridge(RS) :=
 	C.CC(  @1, @4, 1u )
 };
 
-CIRCUIT := RESOLVE_TRANS( graetz_bridge( 200 ) )
+CIRCUIT := SOLVE_TRANS( graetz_bridge( 200 ) )

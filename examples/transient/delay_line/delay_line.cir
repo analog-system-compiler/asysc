@@ -12,4 +12,4 @@ delay_line_test( RS ) :=
 	R3.CR ( @5, @GND, 25  )
 };
 
-CIRCUIT := RESOLVE_TRANS( delay_line_test( 50 ) )
+CIRCUIT := SOLVE_TRANS( delay_line_test( 50 ) )
