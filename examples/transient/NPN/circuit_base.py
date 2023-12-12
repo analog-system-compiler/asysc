@@ -62,7 +62,6 @@ class circuit_base:
 
     def _last(self, element_arg):
         self.conv=False
-
         return element_arg.value_y_bias
             
     def _der0(self, element_arg):
