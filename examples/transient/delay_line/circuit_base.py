@@ -1,9 +1,11 @@
 # import math
 import numpy as np
 
-res = 1 / 100000
+res = 1 / 10
+MAX_ITER = 100
 
 class element:
+    
     element_list = []
 
     def __init__(self, name):
@@ -15,7 +17,7 @@ class element:
         self.dy = 0
         self.dydx_prev = 0
         self.dy_prev = 0
-        self.value_y_prev = 0.0
+        self.value_y_bias = 0.0
         self.value_y = 0.0
 
     def set_t(self, val):
@@ -36,8 +38,18 @@ class element:
             e.history_x.append(t)
             e.history_y.append(e.value_y)
 
-
+    def _step_c():
+        conv = True
+        for e in element.element_list:
+            val = e.value_y * res + e.value_y_bias * (1 - res)
+            e.value_y_bias = val            
+            if e.value_y == 0 or abs(val/e.value_y) > (1+res) or abs(val/e.value_y) < (1-res):
+                if e.value_y != 0: print( val/e.value_y )
+                conv=False
+        return conv
+    
 class circuit_base:
+
     def __init__(self):
         self.timeval = 0.0
         self.delta_timeval = 0.0
@@ -48,22 +60,16 @@ class circuit_base:
 
     def _delay(self, element_arg, delay_arg):
         if element_arg.history_x:
-            return np.interp(
-                self.timeval - delay_arg, element_arg.history_x, element_arg.history_y
-            )
-        else:
-            return 0.0
+            return np.interp( self.timeval - delay_arg, element_arg.history_x, element_arg.history_y )
+        return 0.0
 
     def _getv(self, element_arg):
         return element_arg.value_y
 
     def _last(self, element_arg):
-        if element_arg.value_y_prev == 0:
-            return element_arg.value_y
-        elif ( abs(element_arg.value_y - element_arg.value_y_prev) / element_arg.value_y_prev ) > res:
-            self.conv = False
-        return element_arg.value_y * res + element_arg.value_y_prev * (1 - res)
-
+        self.conv=False
+        return element_arg.value_y_bias
+            
     def _der0(self, element_arg):
         return element_arg.dy
 
@@ -78,13 +84,15 @@ class circuit_base:
         for i in range(0, nb):
             self.conv = False
             iter_nb = 0
-            while not self.conv and iter_nb < 100:
+            while not self.conv and iter_nb < MAX_ITER:
                 self.conv = True
                 self.step()
+                if not self.conv:
+                    self.conv=element._step_c()
                 iter_nb += 1
             element._step_t(self.timeval)
             self.timeval += self.delta_timeval
-            print("Iteration nb {}/{}".format(i, iter_nb), end="\r")
+            print("Iteration nb {}/{}   ".format(i, iter_nb), end="\r")
 
     def simulate_f(self, start, end, nb):
         log_end = np.log10(2 * np.pi * end)

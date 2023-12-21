@@ -1,7 +1,7 @@
 # import math
 import numpy as np
 
-res = 1 / 50
+res = 1 / 100
 MAX_ITER = 100
 
 class element:

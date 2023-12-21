@@ -15,12 +15,14 @@ def add_plot( element ):
     ylabel.append(element.name)
 
 my_circuit = circuit()
-my_circuit.simulate_t(1e-2,1000)
+my_circuit.simulate_t(1e-6,200)
 
 plt.subplot(2, 1, 1)
 ylabel = []
 add_plot( my_circuit.P1_U )
 add_plot( my_circuit.P2_U )
+add_plot( my_circuit.C1_U )
+add_plot( my_circuit.C2_U )
 ax = plt.gca()
 ax.set_ylabel('Voltage [V]')
 plt.legend(ylabel)

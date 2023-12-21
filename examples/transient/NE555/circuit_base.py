@@ -17,7 +17,7 @@ class element:
         self.dy = 0
         self.dydx_prev = 0
         self.dy_prev = 0
-        self.value_y_prev = 0.0
+        self.value_y_bias = 0.0
         self.value_y = 0.0
 
     def set_t(self, val):
@@ -39,9 +39,15 @@ class element:
             e.history_y.append(e.value_y)
 
     def _step_c():
+        conv = True
         for e in element.element_list:
-            e.value_y_prev = e.value_y * res + e.value_y_prev * (1 - res)
-
+            val = e.value_y * res + e.value_y_bias * (1 - res)
+            e.value_y_bias = val            
+            if e.value_y == 0 or abs(val/e.value_y) > (1+res) or abs(val/e.value_y) < (1-res):
+                if e.value_y != 0: print( val/e.value_y )
+                conv=False
+        return conv
+    
 class circuit_base:
 
     def __init__(self):
@@ -61,11 +67,8 @@ class circuit_base:
         return element_arg.value_y
 
     def _last(self, element_arg):
-        if element_arg.value_y_prev == 0:
-            self.conv = False
-        elif abs( (element_arg.value_y - element_arg.value_y_prev) / element_arg.value_y_prev ) > res:
-            self.conv = False
-        return element_arg.value_y_prev
+        self.conv=False
+        return element_arg.value_y_bias
             
     def _der0(self, element_arg):
         return element_arg.dy
@@ -85,11 +88,11 @@ class circuit_base:
                 self.conv = True
                 self.step()
                 if not self.conv:
-                    element._step_c()
+                    self.conv=element._step_c()
                 iter_nb += 1
             element._step_t(self.timeval)
             self.timeval += self.delta_timeval
-            print("Iteration nb {}/{}".format(i, iter_nb), end="\r")
+            print("Iteration nb {}/{}   ".format(i, iter_nb), end="\r")
 
     def simulate_f(self, start, end, nb):
         log_end = np.log10(2 * np.pi * end)
