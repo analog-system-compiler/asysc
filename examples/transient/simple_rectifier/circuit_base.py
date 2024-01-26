@@ -1,7 +1,7 @@
 # import math
 import numpy as np
 
-res = 1 / 1000
+res = 1 / 2
 MAX_ITER = 100
 
 class element:
@@ -63,8 +63,11 @@ class circuit_base:
     def _last(self, element_arg):
         if element_arg.value_y_prev == 0:
             self.conv = False
-        elif abs( (element_arg.value_y - element_arg.value_y_prev) / element_arg.value_y_prev ) > res:
-            self.conv = False
+        else:
+            error = abs( (element_arg.value_y - element_arg.value_y_prev) / element_arg.value_y_prev )            
+            if error > res:
+                self.conv = False
+                print(error)
         return element_arg.value_y_prev
             
     def _der0(self, element_arg):
@@ -89,7 +92,7 @@ class circuit_base:
                 iter_nb += 1
             element._step_t(self.timeval)
             self.timeval += self.delta_timeval
-            print("Iteration nb {}/{}".format(i, iter_nb), end="\r")
+            print("Iteration nb {}/{}   ".format(i, iter_nb), end="\r")
 
     def simulate_f(self, start, end, nb):
         log_end = np.log10(2 * np.pi * end)

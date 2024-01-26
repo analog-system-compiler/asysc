@@ -13,7 +13,7 @@ def add_plot( axs, element ):
     ylabel.append(element.name)
 
 my_circuit = circuit()
-my_circuit.simulate(1e-6,1000)
+my_circuit.simulate_t(1e-6,1000)
 
 fig, axs = plt.subplots(1, 1, layout='constrained')
 add_plot( axs, my_circuit.R1_U )

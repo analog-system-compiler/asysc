@@ -5,10 +5,10 @@
 
 	V1.VSAW  ( @1, @GND, 5, 1 );
       V2.CV    ( @VCC, @GND, 5 );
-	R1.CR	   ( @1, @base, 100K );
+	R1.CR	   ( @1, @base, 10K );
 	R2.CR    ( @emitter, @GND, 0 );
       R3.CR    ( @VCC, @collector, 1K );
-	Q1.NPN   ( @base,  @collector, @emitter, 100 );
+	Q1.NPN   ( @base, @collector, @emitter, 100 );
       P1.PROBE ( @1, @GND );
       P2.PROBE ( @collector, @GND )
 };

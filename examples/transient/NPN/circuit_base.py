@@ -1,8 +1,8 @@
 # import math
 import numpy as np
 
-res = 1 / 1000
-MAX_ITER = 10
+res = 1 / 20
+MAX_ITER = 100
 
 class element:
     
@@ -17,7 +17,7 @@ class element:
         self.dy = 0
         self.dydx_prev = 0
         self.dy_prev = 0
-        self.value_y_bias = 0.0
+        self.value_y_prev = 0.0
         self.value_y = 0.0
 
     def set_t(self, val):
@@ -40,7 +40,7 @@ class element:
 
     def _step_c():
         for e in element.element_list:
-            e.value_y_bias = e.value_y * res + e.value_y_bias * (1 - res)
+            e.value_y_prev = e.value_y * res + e.value_y_prev * (1 - res)
 
 class circuit_base:
 
@@ -61,8 +61,14 @@ class circuit_base:
         return element_arg.value_y
 
     def _last(self, element_arg):
-        self.conv=False
-        return element_arg.value_y_bias
+        if element_arg.value_y_prev == 0:
+            self.conv = False
+        else:
+            error = abs( (element_arg.value_y - element_arg.value_y_prev) / element_arg.value_y_prev )            
+            if error > res:
+                self.conv = False
+                #print(error)
+        return element_arg.value_y_prev
             
     def _der0(self, element_arg):
         return element_arg.dy
@@ -79,9 +85,10 @@ class circuit_base:
             self.conv = False
             iter_nb = 0
             while not self.conv and iter_nb < MAX_ITER:
+                self.conv = True
                 self.step()
                 if not self.conv:
-                    self.conv=element._step_c()
+                    element._step_c()
                 iter_nb += 1
             element._step_t(self.timeval)
             self.timeval += self.delta_timeval
