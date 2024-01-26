@@ -1,14 +1,13 @@
 
 
-MAKEFLAGS = --jobs 1
-
+SHELL = /bin/bash
 CIRCUITS_SRC = $(shell find -name "*.cir")
 CIRCUITS_PY  = $(CIRCUITS_SRC:.cir=.py)
 
 all : $(CIRCUITS_PY)
 
 %.py: %.cir	
-	-if [[ "$^" == *"ac/"* ]] \
+	-if [[ "$^" == *"ac/"* ]]; \
 	then \
 		ANALYSIS_MODE="ac"; \
 	else \
