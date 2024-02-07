@@ -1,8 +1,8 @@
 # import math
 import numpy as np
 
-res = 1 / 2
-MAX_ITER = 100
+res = 1 / 10
+MAX_ITER = 10
 
 class element:
     
@@ -67,7 +67,6 @@ class circuit_base:
             error = abs( (element_arg.value_y - element_arg.value_y_prev) / element_arg.value_y_prev )            
             if error > res:
                 self.conv = False
-                print(error)
         return element_arg.value_y_prev
             
     def _der0(self, element_arg):

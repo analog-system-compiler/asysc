@@ -2,7 +2,6 @@
 #!/usr/bin/python3
 
 import math
-import numpy as np
 import matplotlib.pyplot as plt
 import simple_rectifier
 import circuit_base
