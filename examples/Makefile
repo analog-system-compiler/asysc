@@ -16,7 +16,7 @@ all : $(CIRCUITS_PY)
 	echo "Generating $@"; \
 	../lightcas/asysc -i ../examples/$^ -o ../examples/$@ -t $$ANALYSIS_MODE
 ifeq ($(GPROF),1)
-	gprof ../lightcas/asysc.exe > gmon.txt
+	gprof ../lightcas/asysc > gmon.txt
 endif	
 	#cp -f circuit_base.py $(@D)
 	-[ -f debug.log ] && mv debug.log $(@D)
