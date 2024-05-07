@@ -1,16 +1,13 @@
 # import math
 import numpy as np
 
-res = 1 / 2
-MAX_ITER = 100
-
 class element:
     
     element_list = []
 
     def __init__(self, name):
-        self.name = name
         element.element_list.append(self)
+        self.name = name        
         self.history_x = []
         self.history_y = []
         self.dydx = 2.0 / 1e-9
@@ -20,27 +17,6 @@ class element:
         self.value_y_prev = 0.0
         self.value_y = 0.0
 
-    def set_t(self, val):
-        self.value_y = val
-
-    def set_f(self, val, f):
-        self.history_x.append(f)
-        self.history_y.append(val)
-
-    def _step_t(t):
-        for e in element.element_list:
-            if e.history_x:
-                delta_t = t - e.history_x[-1]
-                e.dydx = 2.0 / delta_t
-                e.dy = -(e.dydx * e.value_y + e.dydx_prev * e.value_y + e.dy_prev)
-            e.dydx_prev = e.dydx
-            e.dy_prev = e.dy
-            e.history_x.append(t)
-            e.history_y.append(e.value_y)
-
-    def _step_c():
-        for e in element.element_list:
-            e.value_y_prev = e.value_y * res + e.value_y_prev * (1 - res)
 
 class circuit_base:
 
@@ -49,13 +25,18 @@ class circuit_base:
         self.delta_timeval = 0.0
         self.conv = False
 
-    def time(self):
+    def _clear(self):
+        for e in element.element_list:
+            e.history_x = []
+            e.history_y = []
+
+    def _time(self):
         return self.timeval
 
     def _delay(self, element_arg, delay_arg):
-        return np.interp(
-            self.timeval - delay_arg, element_arg.history_x, element_arg.history_y
-        )
+        if element_arg.history_x:
+            return np.interp( self.timeval - delay_arg, element_arg.history_x, element_arg.history_y )
+        return 0.0
 
     def _getv(self, element_arg):
         return element_arg.value_y
@@ -65,8 +46,9 @@ class circuit_base:
             self.conv = False
         else:
             error = abs( (element_arg.value_y - element_arg.value_y_prev) / element_arg.value_y_prev )            
-            if error > res:
+            if error > self.res:
                 self.conv = False
+                #print(error)
         return element_arg.value_y_prev
             
     def _der0(self, element_arg):
@@ -78,22 +60,45 @@ class circuit_base:
     def _setc(self, element_arg, val):
         element_arg.value_y = val
 
-    def simulate_t(self, duration, nb):
+    def _setf(self, element_arg, val, f):
+        element_arg.history_x.append(f)
+        element_arg.history_y.append(val)
+
+    def _step_t(self):
+        t=self.timeval
+        for e in element.element_list:
+            if e.history_x:
+                delta_t = t - e.history_x[-1]
+                e.dydx = 2.0 / delta_t
+                e.dy = -(e.dydx * e.value_y + e.dydx_prev * e.value_y + e.dy_prev)
+            e.dydx_prev = e.dydx
+            e.dy_prev = e.dy
+            e.history_x.append(t)
+            e.history_y.append(e.value_y)
+
+    def _step_c(self):
+        for e in element.element_list:
+            e.value_y_prev = e.value_y * self.res + e.value_y_prev * (1 - self.res)
+
+    def simulate_t(self, duration, nb, res, max_iter):
         self.delta_timeval = duration / nb
+        self.res = res
+        self.max_iter = max_iter
         for i in range(0, nb):
             self.conv = False
             iter_nb = 0
-            while not self.conv and iter_nb < MAX_ITER:
+            while not self.conv and iter_nb < self.max_iter:
                 self.conv = True
                 self.step()
                 if not self.conv:
-                    element._step_c()
+                    self._step_c()
                 iter_nb += 1
-            element._step_t(self.timeval)
+            self._step_t()
             self.timeval += self.delta_timeval
             print("Iteration nb {}/{}   ".format(i, iter_nb), end="\r")
 
     def simulate_f(self, start, end, nb):
+        self._clear()
         log_end = np.log10(2 * np.pi * end)
         for i in range(0, nb):
             self.freq = start * 10 ** ((i * log_end) / nb)

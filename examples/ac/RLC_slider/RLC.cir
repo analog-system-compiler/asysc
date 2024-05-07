@@ -1,11 +1,11 @@
 
 `include <components.txt>
 
-RLC( R, L, C ) := {
+RLC( PR, PL, PC ) := {
   V.CV(@1, @2, 10); 
-  R1.CR(@2, @3, R ); 
-  L1.CL(@3, @4, L ); 
-  C1.CC(@4, @1, C ) 
+  R1.CR(@2, @3, PR ); 
+  L1.CL(@3, @4, PL ); 
+  C1.CC(@4, @1, PC ) 
 };
 
 CIRCUIT := SOLVE_AC( RLC( _getv( R ), _getv( L ), _getv( C )  ) )
