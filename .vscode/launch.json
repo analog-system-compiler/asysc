@@ -5,29 +5,30 @@
             "name": "ASysC DEBUG",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/lightcas/asysc.exe",
+            "program": "${workspaceFolder}/lightcas/asysc",
             "args": [
                 "-i",
                 //"../examples/ac/sallen_key/sallen_key.cir",
                 //"../examples/ac/RLC/RLC.cir",
-                "../examples/ac/RLC_slider/RLC.cir",
+                //"../examples/ac/RLC_slider/RLC.cir",
                 //"../examples/transient/NE555/NE555.cir",
-                //"../examples/transient/Graetz_bridge/graetz_bridge.cir",
+                "../examples/transient/Graetz_bridge/graetz_bridge.cir",
                 "-o",
                 //"../examples/ac/sallen_key/sallen_key.py",
                 //"../examples/ac/RLC/RLC.py",
-                "../examples/ac/RLC_slider/RLC.py",
+                //"../examples/ac/RLC_slider/RLC.py",
                 //"../examples/transient/NE555/NE555.py"
-                //"../examples/transient/Graetz_bridge/graetz_bridge.py",
+                "../examples/transient/Graetz_bridge/graetz_bridge.py",
                 "-t",
-                "ac"
+                //"ac"
+                "transient"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/lightcas",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
+            //"miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
@@ -60,7 +61,7 @@
         },
         {
             "name": "Python: File",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "justMyCode": true
