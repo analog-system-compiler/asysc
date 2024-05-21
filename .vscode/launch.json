@@ -10,17 +10,18 @@
                 "-i",
                 //"../examples/ac/sallen_key/sallen_key.cir",
                 //"../examples/ac/RLC/RLC.cir",
-                "../examples/ac/RLC_slider/RLC.cir",
-                //"../examples/transient/NE555/NE555.cir",
+                //"../examples/ac/RLC_slider/RLC.cir",
+                "../examples/transient/NE555/NE555.cir",
                 //"../examples/transient/Graetz_bridge/graetz_bridge.cir",
                 "-o",
                 //"../examples/ac/sallen_key/sallen_key.py",
                 //"../examples/ac/RLC/RLC.py",
-                "../examples/ac/RLC_slider/RLC.py",
-                //"../examples/transient/NE555/NE555.py"
+                //"../examples/ac/RLC_slider/RLC.py",
+                "../examples/transient/NE555/NE555.py",
                 //"../examples/transient/Graetz_bridge/graetz_bridge.py",
                 "-t",
-                "ac"
+                //"ac"
+                "trans"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/lightcas",
@@ -60,7 +61,7 @@
         },
         {
             "name": "Python: File",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "justMyCode": true
