@@ -2,14 +2,26 @@
 ## Introduction ##
 
 **asysc** is an analog system compiler based on the lightweight Computer Algebra System **lightcas**.
-Using a Computer Algebra System (CAS), you can write your own components by using algebraic descriptions. 
-For examples, see the `lightcas/rules/components.txt` and `examples` directories.
-Once the libraries and netlists are compiled, the Python code is generated for simulation.
-To execute a particular test, go into its directory and type:
 
+Using a Computer Algebra System (CAS), you can write your own components by using algebraic descriptions.
+
+Description example for a resistor:
+
+    NAME.CR(@1,@2,R) := { 
+        NAME.U=ACROSS(@1,@2); 
+        NAME.I=THROUGH(@1,@2); 
+        NAME.U=R*NAME.I 
+    };
+
+For more examples, see the [component.txt](lightcas/rules/components.txt) and [examples](examples) directories.
+
+The analog system compiler is invoked with the following command (Example with the RLC):
 ```bash
-python3 simulation.py
+cd examples/ac/RLC
+asysc -i RLC.cir -o RLC.py -t AC
 ```
+
+Once the libraries and netlists are compiled, the Python code is generated for simulation.
 
 ## Requirements
 
@@ -21,15 +33,37 @@ python3 simulation.py
     - numpy
     - matplotlib
   
-## Compilation
+## Getting source code
+```bash
+git clone https://github.com/analog-system-compiler/asysc.git
+cd asysc
+git submodule update --init
+```
+
+## Code compilation
 
 ```bash
 make clean
 make
 ```
 
-## Run
+## Run all tests
 
 ```bash
 make run
 ```
+
+## Run particular test
+
+To execute a particular test, type:
+
+```bash
+cd examples
+make
+cd examples/<the_test_directory>
+python3 simulation.py
+```
+
+## License
+
+This project is licensed under the GNU General Public License - see the [LICENSE](LICENSE) file for details.
