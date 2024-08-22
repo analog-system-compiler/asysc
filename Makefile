@@ -11,4 +11,7 @@ clean:
 run:
 	$(MAKE) -C examples --no-print-directory run
 
+header:	
+	insert-license --license-filepath=LICENSE --use-current-year --comment-style "#" $$(find . -name "*.py")
+
 .SILENT:

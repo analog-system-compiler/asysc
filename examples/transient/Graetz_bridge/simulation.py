@@ -1,6 +1,21 @@
 
 #!/usr/bin/python3
 
+# Copyright (C) 2006-2024 The ASysC project                        
+#                                                                    
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or   
+# any later version.                                                  
+#                                                                    
+# This program is distributed in the hope that it will be useful,     
+# but WITHOUT ANY WARRANTY; without even the implied warranty of      
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the       
+# GNU General Public License for more details.                        
+#                                                                    
+# You should have received a copy of the GNU General Public License   
+# along with this program; If not, see <https://www.gnu.org/licenses/>
+
 import math
 import numpy as np
 import matplotlib.pyplot as plt
@@ -15,7 +30,7 @@ def add_plot( element ):
     ylabel.append(element.name)
 
 my_circuit = circuit()
-my_circuit.simulate_t(1e-3,1000,1/500,500)
+my_circuit.simulate_t(1e-3,500,1/100,200)
 
 plt.subplot(2, 1, 1)
 ylabel = []
