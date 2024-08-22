@@ -13,9 +13,9 @@ Description example for a resistor:
         NAME.U=R*NAME.I 
     };
 
-For more examples, see the [component.txt](lightcas/rules/components.txt) and [examples](examples) directories.
+For more examples, see the [component.txt](https://github.com/analog-system-compiler/lightcas/blob/3b8b692d76aa31503276b9a10259393b8f68dcf0/rules/components.txt) and [examples](examples) directories.
 
-The analog system compiler is invoked with the following command (Example with the RLC):
+The analog system compiler is invoked with the following command (Example with the RLC circuit):
 ```bash
 cd examples/ac/RLC
 asysc -i RLC.cir -o RLC.py -t AC
@@ -60,7 +60,7 @@ To execute a particular test, type:
 ```bash
 cd examples
 make
-cd examples/<the_test_directory>
+cd examples/<directory>
 python3 simulation.py
 ```
 
