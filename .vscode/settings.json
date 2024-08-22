@@ -71,6 +71,7 @@
     "streambuf": "cpp",
     "cinttypes": "cpp",
     "typeinfo": "cpp",
-    "*.txt": "c"
+    "*.txt": "c",
+    "format": "c"
   }
 }

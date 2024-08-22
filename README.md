@@ -2,10 +2,10 @@
 ## Introduction ##
 
 **asysc** is an analog system compiler based on the lightweight Computer Algebra System **lightcas**.
-By using a Computer Algebra System (CAS), one can write its own components by using algebraic definitions. 
-For examples, refer to directories `lightcas/rules/components.txt` and `examples`.
-Once the libraries and netlists are compiled, Python code is generated for simulation.
-To execute a particular test, go into examples/ and type:
+Using a Computer Algebra System (CAS), you can write your own components by using algebraic descriptions. 
+For examples, see the `lightcas/rules/components.txt` and `examples` directories.
+Once the libraries and netlists are compiled, the Python code is generated for simulation.
+To execute a particular test, go into its directory and type:
 
 ```bash
 python3 simulation.py
@@ -21,11 +21,6 @@ python3 simulation.py
     - numpy
     - matplotlib
   
-```bash
-pip install numpy
-pip install matplotlib
-```
-
 ## Compilation
 
 ```bash
