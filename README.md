@@ -18,7 +18,7 @@ For more examples, see the [component.txt](https://github.com/analog-system-comp
 The analog system compiler is invoked with the following command (Example with the RLC circuit):
 ```bash
 cd examples/ac/RLC
-asysc -i RLC.cir -o RLC.py -t AC
+../../../lightcas/asysc -i RLC.cir -o RLC.py -t AC
 ```
 
 Once the libraries and netlists are compiled, the Python code is generated for simulation.
