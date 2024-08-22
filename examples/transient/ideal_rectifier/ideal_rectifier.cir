@@ -1,0 +1,11 @@
+
+`include <components.txt>
+
+ideal_rectifier(RS) :=
+{
+	D1.ID( @1, @2 );
+	R2.CR( @5, @2, 1 );
+	V.VSIN( @5, @1, 5, 2*PI*600 )
+};
+
+CIRCUIT := SOLVE_TRANS( ideal_rectifier( 200 ) )

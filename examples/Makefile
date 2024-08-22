@@ -1,12 +1,13 @@
 
 
 SHELL = /bin/bash
-CIRCUITS_SRC = $(shell find -name "*.cir")
-CIRCUITS_PY  = $(CIRCUITS_SRC:.cir=.py)
+CIRCUITS_SRC  = $(shell find -name "*.cir")
+CIRCUITS_PY   = $(CIRCUITS_SRC:.cir=.py)
+SIMULATION_PY = $(shell find -name simulation.py)
 
 all : $(CIRCUITS_PY)
 
-%.py: %.cir	
+%.py: %.cir	circuit_base.py
 	-if [[ "$^" == *"ac/"* ]]; \
 	then \
 		ANALYSIS_MODE="ac"; \
@@ -14,7 +15,7 @@ all : $(CIRCUITS_PY)
 		ANALYSIS_MODE="trans"; \
 	fi; \
 	echo "Generating $@"; \
-	../lightcas/asysc -i ../examples/$^ -o ../examples/$@ -t $$ANALYSIS_MODE
+	../lightcas/asysc -i ../examples/$< -o ../examples/$@ -t $$ANALYSIS_MODE
 ifeq ($(GPROF),1)
 	gprof ../lightcas/asysc > gmon.txt
 endif	
@@ -23,5 +24,13 @@ endif
 	
 clean:
 	-rm -f $(CIRCUITS_PY)
+
+run: all
+	for SIM_FILE in $(SIMULATION_PY); do \
+		pushd $$(dirname $$SIM_FILE) > /dev/null; \
+		echo Executing $$(dirname $$SIM_FILE)/simulation.py; \
+		python3 simulation.py; \
+		popd > /dev/null; \
+	done
 
 .SILENT:

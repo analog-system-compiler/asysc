@@ -95,7 +95,7 @@ class circuit_base:
                 iter_nb += 1
             self._step_t()
             self.timeval += self.delta_timeval
-            print("Iteration nb {}/{}   ".format(i, iter_nb), end="\r")
+            print("Iteration: {}/{}, steps: {}   ".format(i+1, nb, iter_nb), end="\r")
 
     def simulate_f(self, start, end, nb):
         self._clear()
@@ -104,4 +104,4 @@ class circuit_base:
             self.freq = start * 10 ** ((i * log_end) / nb)
             self.s = 2j * np.pi * self.freq
             self.step()
-            print("Iteration nb {}".format(i), end="\r")
+            print("Iteration: {}/{}".format(i+1, nb), end="\r")

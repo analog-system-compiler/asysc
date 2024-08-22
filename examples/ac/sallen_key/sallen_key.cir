@@ -8,7 +8,7 @@ sallen_key() :=
 	R2.CR( @2, @3,  100 );
 	C1.CC( @2, @4, 820p );
 	C2.CC( @3, @0, 390p );
-	A.IAOP( @3, @4, @4, @0 )
+	A.IOPAMP( @3, @4, @4, @0 )
 };
 
 CIRCUIT := SOLVE_AC( sallen_key )

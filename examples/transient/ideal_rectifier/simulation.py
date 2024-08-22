@@ -5,7 +5,7 @@ import math
 import matplotlib.pyplot as plt
 import simple_rectifier
 import circuit_base
-from simple_rectifier import circuit
+from ideal_rectifier import circuit
 from circuit_base import circuit_base, element
 
 ylabel = []
@@ -14,7 +14,7 @@ def add_plot( element ):
     ylabel.append(element.name)
 
 my_circuit = circuit()
-my_circuit.simulate_t(0.001,1000,1/50,100)
+my_circuit.simulate_t(0.001,1000,1/2,100)
 
 plt.subplot(2, 1 , 1)
 add_plot( my_circuit.R2_U )
