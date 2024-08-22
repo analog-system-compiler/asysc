@@ -53,7 +53,7 @@ make
 make run
 ```
 
-## Run particular test
+## Run a specific test
 
 To execute a particular test, type:
 
