@@ -18,7 +18,7 @@
 
 import math
 import matplotlib.pyplot as plt
-import simple_rectifier
+import ideal_rectifier
 import circuit_base
 from ideal_rectifier import circuit
 from circuit_base import circuit_base, element
