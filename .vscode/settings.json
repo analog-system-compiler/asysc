@@ -72,6 +72,22 @@
     "cinttypes": "cpp",
     "typeinfo": "cpp",
     "*.txt": "c",
-    "format": "c"
+    "format": "c",
+    "charconv": "cpp",
+    "chrono": "cpp",
+    "condition_variable": "cpp",
+    "ctime": "cpp",
+    "map": "cpp",
+    "set": "cpp",
+    "ratio": "cpp",
+    "iomanip": "cpp",
+    "mutex": "cpp",
+    "semaphore": "cpp",
+    "shared_mutex": "cpp",
+    "span": "cpp",
+    "sstream": "cpp",
+    "stop_token": "cpp",
+    "thread": "cpp",
+    "variant": "cpp"
   }
 }
