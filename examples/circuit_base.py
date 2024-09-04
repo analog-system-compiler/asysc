@@ -96,6 +96,7 @@ class circuit_base:
             e.value_y_prev = e.value_y * self.res + e.value_y_prev * (1 - self.res)
 
     def simulate_t(self, duration, nb, res, max_iter):
+        self._clear()
         self.delta_timeval = duration / nb
         self.res = res
         self.max_iter = max_iter

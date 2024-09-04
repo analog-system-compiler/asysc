@@ -1,0 +1,16 @@
+
+`include <components.txt>
+`include <ic.txt>
+
+test_NE555( R ) :=
+{
+  V1.CV( @3, @0, 7.5 );
+  C1.CC( @1, @0, 1u );
+  RB.CR( @2, @1, R);
+  RA.CR( @3, @2, 2.7K );
+  IC.NE555( @1, @1, @2, @4, @3, @0  ); //@trigger,  @threshold,  @discharge, @output,  @vcc, @gnd
+  P1.PROBE( @4, @0 );
+  P2.PROBE( @2, @0 )
+};
+
+CIRCUIT := SOLVE_TRANS( test_NE555( _getv( _RV ) ) )
