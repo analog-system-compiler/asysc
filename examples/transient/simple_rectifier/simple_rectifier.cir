@@ -1,5 +1,5 @@
 
-`include <components.txt>
+`include <rules/components.txt>
 
 simple_rectifier(RS) :=
 {

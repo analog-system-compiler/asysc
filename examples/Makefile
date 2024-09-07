@@ -4,10 +4,12 @@ SHELL = /bin/bash
 CIRCUITS_SRC  = $(shell find -name "*.cir")
 CIRCUITS_PY   = $(CIRCUITS_SRC:.cir=.py)
 SIMULATION_PY = $(shell find -name simulation.py)
+BIN_DIR       = ../lightcas/bin
 
 all : $(CIRCUITS_PY)
 
 %.py: %.cir	circuit_base.py
+	cp -f circuit_base.py $(@D)
 	-if [[ "$^" == *"ac/"* ]]; \
 	then \
 		ANALYSIS_MODE="ac"; \
@@ -15,11 +17,10 @@ all : $(CIRCUITS_PY)
 		ANALYSIS_MODE="trans"; \
 	fi; \
 	echo "Generating $@"; \
-	../lightcas/asysc -i ../examples/$< -o ../examples/$@ -t $$ANALYSIS_MODE
+	$(BIN_DIR)/asysc -i $< -o $@ -t $$ANALYSIS_MODE
 ifeq ($(GPROF),1)
-	gprof ../lightcas/asysc > gmon.txt
+	gprof $(BIN_DIR)/asysc > gmon.txt
 endif	
-	cp -f circuit_base.py $(@D)
 	-[ -f debug.log ] && mv debug.log $(@D)
 	
 clean:

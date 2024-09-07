@@ -1,4 +1,4 @@
-`include <components.txt>
+`include <rules/components.txt>
 
 delay_line_test( RS ) :=
 {

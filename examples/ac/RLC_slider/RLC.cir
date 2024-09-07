@@ -1,5 +1,5 @@
 
-`include <components.txt>
+`include <rules/components.txt>
 
 RLC( PR, PL, PC ) := {
   V.CV(@1, @2, 10); 
