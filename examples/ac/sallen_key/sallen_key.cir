@@ -1,5 +1,5 @@
 
-`include <rules/components.txt>
+`include <rules/components.rul>
 
 sallen_key() :=
 {
