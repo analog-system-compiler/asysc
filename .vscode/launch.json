@@ -5,7 +5,7 @@
             "name": "ASysC DEBUG",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/lightcas/asysc",
+            "program": "${workspaceFolder}/lightcas/bin/asysc",
             "args": [
                 "-i",
                 //"../examples/ac/sallen_key/sallen_key.cir",

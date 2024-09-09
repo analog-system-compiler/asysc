@@ -1,6 +1,6 @@
 
-`include <rules/components.rul>
-`include <rules/ic.rul>
+`include <components.rul>
+`include <ic.rul>
 
 test_NE555( R ) :=
 {
