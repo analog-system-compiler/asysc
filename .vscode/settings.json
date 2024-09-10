@@ -89,6 +89,8 @@
     "stop_token": "cpp",
     "thread": "cpp",
     "variant": "cpp",
-    "*.inc": "cpp"
+    "*.inc": "cpp",
+    "*.txt": "c",
+    "*.rul": "c"
   }
 }

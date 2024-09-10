@@ -2,14 +2,12 @@
 
 delay_line_test( RS ) :=
 {
-	VP.VPULSE ( @4, @GND, 1, 10n, 80n, 0, 1n, 1n );
-	R2.CR     ( @4, @3, 50 );
-	L1.CL     ( @3, @1,   1e-9 );
-	C1.CC     ( @1, @GND, 1e-12 );
-	DL1.DL    ( @1, @2, @GND, 50, 1e-8, 0, 0 );
-	R1.CR     ( @2, @GND, RS  );
-	DL2.DL    ( @2, @5, @GND, 50, 1e-8, 0, 0 );
-	R3.CR     ( @5, @GND, RS  )
+	VP.VPULSE ( @4, @GND, 1, 10n, 40n, 0, 1n, 1n );
+	R2.CR     ( @4, @3, 5 );
+	L1.CL     ( @3, @1,   5e-8 );
+	C1.CC     ( @1, @GND, 5e-11 );
+	DL1.DL    ( @1, @2, @GND, 50, 20n, 0, 0 );
+	R1.CR     ( @2, @GND, RS  )
 };
 
 CIRCUIT := SOLVE_TRANS( delay_line_test( 100 ) )
