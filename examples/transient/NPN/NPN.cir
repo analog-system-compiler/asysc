@@ -1,5 +1,5 @@
 
-`include <components.rul>
+`include <components.rule>
 
  NPN_TEST() := {
 

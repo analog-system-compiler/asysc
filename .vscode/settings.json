@@ -71,7 +71,7 @@
     "streambuf": "cpp",
     "cinttypes": "cpp",
     "typeinfo": "cpp",
-    "*.rul": "c",
+    "*.rule": "c",
     "format": "c",
     "charconv": "cpp",
     "chrono": "cpp",
