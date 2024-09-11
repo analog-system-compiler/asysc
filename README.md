@@ -15,10 +15,10 @@ Description example for a resistor:
 
 For more examples, see the [component.rule](https://github.com/analog-system-compiler/lightcas/blob/3b8b692d76aa31503276b9a10259393b8f68dcf0/rules/components.rule) and [examples](examples) directories.
 
-The analog system compiler is invoked with the following command (Example with the RLC circuit):
+The analog system compiler is invoked with the following command (Example with the RLC circuit in AC mode analysis):
 ```bash
 cd examples/ac/RLC
-../../../lightcas/asysc -i RLC.cir -o RLC.py -t AC
+../../../lightcas/bin/asysc -i RLC.cir -o RLC.py -t ac
 ```
 
 Once the libraries and netlists are compiled, the Python code is generated for simulation.
@@ -67,3 +67,14 @@ python3 simulation.py
 ## License
 
 This project is licensed under the GNU General Public License - see the [LICENSE](LICENSE) file for details.
+
+## Examples
+
+### Some transient analysis examples
+
+![Transient examples](doc/trans.png)
+
+### Some AC analysis examples
+
+![AC examples](doc/ac.png)
+
