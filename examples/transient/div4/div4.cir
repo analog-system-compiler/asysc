@@ -1,0 +1,13 @@
+`include <components.rule>
+`include <logic.rule>
+
+div4 :=
+{
+	V.VSQR      ( @clk,  @GND, 5/2, 10000 );
+	FF0.FFC   	( @in0,  @clk, @out0, @GND, 5 );
+	FF1.FFC   	( @in1,  @out0,@out1, @GND, 5);
+	NOT0.NOTC	( @out0, @in0, @GND, 5 );
+	NOT1.NOTC	( @out1, @in1, @GND, 5 )
+};
+
+CIRCUIT := SOLVE_TRANS( div4 )

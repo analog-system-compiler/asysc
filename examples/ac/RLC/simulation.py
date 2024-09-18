@@ -32,7 +32,7 @@ def add_gain_plot(axs, element):
     ylabel.append(element.name)
 
 my_circuit = circuit()
-my_circuit.simulate_f(1, 1e6, 1000)
+my_circuit.simulate_f(10, 1e6, 1000)
 
 fig, axs = plt.subplots(1, 1, layout="constrained")
 #plt.subplots_adjust(bottom=0.35)

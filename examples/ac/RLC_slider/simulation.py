@@ -48,7 +48,7 @@ def update_C(val):
 def update_all():    
     global first_time, axs, fig
     global lineR, lineC, lineL
-    my_circuit.simulate_f(1, 1e6, 100)    
+    my_circuit.simulate_f(10, 1e6, 100)    
     if first_time:
         lineR, =add_gain_plot(axs, my_circuit.R1_U)
         lineC, =add_gain_plot(axs, my_circuit.C1_U)

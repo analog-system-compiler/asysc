@@ -1,6 +1,4 @@
 
-#!/usr/bin/python3
-
 # Copyright (C) 2006-2024 The ASysC project                        
 #                                                                    
 # This program is free software; you can redistribute it and/or modify
@@ -19,35 +17,24 @@
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-import sallen_key
-
-from sallen_key import circuit
+import div4
+import circuit_base
+from div4 import circuit
 from circuit_base import circuit_base, element
 
-ylabel1 = []
-ylabel2 = []
-
-def add_gain_plot(element):
-    axs[0].plot(element.history_x, 20 * np.log10(np.absolute(element.history_y)))
-    ylabel1.append('gain('+element.name+')')
-
-def add_phase_plot(element):
-    axs[1].plot(element.history_x, np.angle(element.history_y))
-    ylabel2.append('phase('+element.name+')')
+ylabel = []
+def add_plot( axs, element ):
+    axs.plot( element.history_x, element.history_y )
+    axs.legend(element.name)
 
 my_circuit = circuit()
-my_circuit.simulate_f(1e5, 1e8, 500)
+my_circuit.simulate_t(0.001,512)
 
-fig1, axs = plt.subplots(2, 1, layout="constrained")
-add_gain_plot(my_circuit.A_Uout)
-add_phase_plot(my_circuit.A_Uout)
-axs[1].set_xlabel("Freq (Hz)")
-axs[0].set_ylabel("Gain")
-axs[0].set_xscale('log')
-axs[1].set_ylabel("Phase")
-axs[1].set_xscale('log')
-axs[0].legend(ylabel1)
-axs[1].legend(ylabel2)
+fig, axs = plt.subplots(3, 1, layout='constrained')
+add_plot( axs[0], my_circuit.V_U )
+add_plot( axs[1], my_circuit.FF0_Uout )
+add_plot( axs[2], my_circuit.FF1_Uout )
+axs[1].set_xlabel('Time (s)')
 axs[0].grid(True)
 axs[1].grid(True)
 

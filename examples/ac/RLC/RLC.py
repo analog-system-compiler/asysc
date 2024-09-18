@@ -22,12 +22,12 @@ class circuit( circuit_base ):
 		self.C_I = element('C_I')
 
 	def step(self):
-		self._setf(self.C_U,-(1/(100*(1e-05*self.s)+((0.001*self.s)*(1e-05*self.s)+1))), self.freq)
-		self._setf(self.V_I,-((1e-05*self.s)/(100*(1e-05*self.s)+((0.001*self.s)*(1e-05*self.s)+1))), self.freq)
-		self._setf(self.V_U,(((0.001*self.s)*(1e-05*self.s)+1)+100*(1e-05*self.s))/(((0.001*self.s)*(1e-05*self.s)+1)+100*(1e-05*self.s)), self.freq)
-		self._setf(self.R_U,-((100*(1e-05*self.s))/(100*(1e-05*self.s)+((0.001*self.s)*(1e-05*self.s)+1))), self.freq)
-		self._setf(self.R_I,-((1e-05*self.s)/(((1e-05*self.s)*100+1)+(0.001*self.s)*(1e-05*self.s))), self.freq)
-		self._setf(self.L_U,-(((0.001*self.s)*(1e-05*self.s))/((0.001*self.s)*(1e-05*self.s)+((1e-05*self.s)*100+1))), self.freq)
-		self._setf(self.L_I,-((1e-05*self.s)/(1+(1e-05*self.s)*(100+0.001*self.s))), self.freq)
-		self._setf(self.C_I,-((1e-05*self.s)/((1e-05*self.s)*(100+0.001*self.s)+1)), self.freq)
+		self._setf(self.C_U, -(1/(100*(1e-05*self.s)+((0.001*self.s)*(1e-05*self.s)+1))), self.freq)
+		self._setf(self.V_I, -((1e-05*self.s)/(100*(1e-05*self.s)+((0.001*self.s)*(1e-05*self.s)+1))), self.freq)
+		self._setf(self.V_U, (((0.001*self.s)*(1e-05*self.s)+1)+100*(1e-05*self.s))/(((0.001*self.s)*(1e-05*self.s)+1)+100*(1e-05*self.s)), self.freq)
+		self._setf(self.R_U, -((100*(1e-05*self.s))/(100*(1e-05*self.s)+((0.001*self.s)*(1e-05*self.s)+1))), self.freq)
+		self._setf(self.R_I, -((1e-05*self.s)/(((1e-05*self.s)*100+1)+(0.001*self.s)*(1e-05*self.s))), self.freq)
+		self._setf(self.L_U, -(((0.001*self.s)*(1e-05*self.s))/((0.001*self.s)*(1e-05*self.s)+((1e-05*self.s)*100+1))), self.freq)
+		self._setf(self.L_I, -((1e-05*self.s)/(1+(1e-05*self.s)*(100+0.001*self.s))), self.freq)
+		self._setf(self.C_I, -((1e-05*self.s)/((1e-05*self.s)*(100+0.001*self.s)+1)), self.freq)
 

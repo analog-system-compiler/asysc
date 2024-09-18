@@ -95,7 +95,7 @@ class circuit_base:
         for e in element.element_list:
             e.value_y_prev = e.value_y * self.res + e.value_y_prev * (1 - self.res)
 
-    def simulate_t(self, duration, nb, res, max_iter):
+    def simulate_t(self, duration, nb, res=1, max_iter=1):
         self._clear()
         self.delta_timeval = duration / nb
         self.res = res
@@ -115,9 +115,10 @@ class circuit_base:
 
     def simulate_f(self, start, end, nb):
         self._clear()
-        log_end = np.log10(2 * np.pi * end)
+        log_end = np.log10(end)
+        log_start = np.log10(start)
         for i in range(0, nb):
-            self.freq = start * 10 ** ((i * log_end) / nb)
+            self.freq = 10 ** (log_start + ((i * (log_end-log_start)) / nb))
             self.s = 2j * np.pi * self.freq
             self.step()
             print("Iteration: {}/{}".format(i+1, nb), end="\r")
