@@ -17,9 +17,9 @@
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-import RLC
+import oscillator
 import circuit_base
-from RLC import circuit
+from oscillator import circuit
 from circuit_base import circuit_base, element
 
 ylabel = []
@@ -28,14 +28,15 @@ def add_plot( axs, element ):
     ylabel.append(element.name)
 
 my_circuit = circuit()
-my_circuit.simulate_t(1e-6, 500)
+my_circuit.NOT1_Uin.value_y_prev = 5
+my_circuit.simulate_t(0.01,512)
 
 fig, axs = plt.subplots(1, 1, layout='constrained')
-add_plot( axs, my_circuit.R1_U )
-add_plot( axs, my_circuit.R2_U )
-#add_plot( axs, my_circuit.R3_U )
-add_plot( axs, my_circuit.C1_U )
-add_plot( axs, my_circuit.VP_U )
+# add_plot( axs, my_circuit.R1_U )
+add_plot( axs, my_circuit.NOT1_Uin )
+add_plot( axs, my_circuit.NOT1_Uout )
+# add_plot( axs, my_circuit.NOT2_Uin )
+# add_plot( axs, my_circuit.NOT2_Uout )
 axs.set_xlabel('Time (s)')
 axs.set_ylabel('V')
 axs.legend(ylabel)

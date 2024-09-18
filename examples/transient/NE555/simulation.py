@@ -30,7 +30,7 @@ def add_plot( element ):
     ylabel.append(element.name)
 
 my_circuit = circuit()
-my_circuit.simulate_t(0.1,1000,1/10,10)
+my_circuit.simulate_t(0.1,500)
 
 plt.subplot(1, 1 , 1)
 add_plot( my_circuit.IC_UTRESH  )

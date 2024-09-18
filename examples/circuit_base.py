@@ -57,13 +57,6 @@ class circuit_base:
         return element_arg.value_y
 
     def _last(self, element_arg):
-        if element_arg.value_y_prev == 0:
-            self.conv = False
-        else:
-            error = abs( (element_arg.value_y - element_arg.value_y_prev) / element_arg.value_y_prev )            
-            if error > self.res:
-                self.conv = False
-                #print(error)
         return element_arg.value_y_prev
             
     def _der0(self, element_arg):
@@ -94,6 +87,13 @@ class circuit_base:
     def _step_c(self):
         for e in element.element_list:
             e.value_y_prev = e.value_y * self.res + e.value_y_prev * (1 - self.res)
+            if e.value_y_prev == 0:
+                self.conv = False
+            else:
+                error = abs( (e.value_y - e.value_y_prev) / e.value_y_prev )            
+                if error > self.res:
+                    self.conv = False
+                    #print(error)
 
     def simulate_t(self, duration, nb=500, res=1, max_iter=1):
         self._clear()

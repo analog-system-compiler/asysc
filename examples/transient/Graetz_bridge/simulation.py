@@ -30,7 +30,7 @@ def add_plot( element ):
     ylabel.append(element.name)
 
 my_circuit = circuit()
-my_circuit.simulate_t(1e-3,500,1/100,200)
+my_circuit.simulate_t(1e-3,500,1/10,100)
 
 plt.subplot(2, 1, 1)
 ylabel = []

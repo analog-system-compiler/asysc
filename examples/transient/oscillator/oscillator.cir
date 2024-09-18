@@ -1,0 +1,13 @@
+`include <components.rule>
+`include <logic.rule>
+
+oscillator :=
+{
+	V1.CV     ( @vcc,  @gnd, 5 ); 
+	C1.CC     ( @3, @4, 1u);
+	R1.CR     ( @2, @3, 1K );
+	NOT1.NOTC ( @3, @2, @vcc,  @gnd );
+	NOT2.NOTC ( @2, @4, @vcc,  @gnd )
+};
+
+CIRCUIT := SOLVE_TRANS( oscillator )
