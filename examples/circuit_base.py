@@ -95,7 +95,7 @@ class circuit_base:
         for e in element.element_list:
             e.value_y_prev = e.value_y * self.res + e.value_y_prev * (1 - self.res)
 
-    def simulate_t(self, duration, nb, res=1, max_iter=1):
+    def simulate_t(self, duration, nb=500, res=1, max_iter=1):
         self._clear()
         self.delta_timeval = duration / nb
         self.res = res
@@ -106,8 +106,7 @@ class circuit_base:
             while not self.conv and iter_nb < self.max_iter:
                 self.conv = True
                 self.step()
-                if not self.conv:
-                    self._step_c()
+                self._step_c()
                 iter_nb += 1
             self._step_t()
             self.timeval += self.delta_timeval

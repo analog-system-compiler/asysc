@@ -31,7 +31,7 @@ my_circuit = circuit()
 my_circuit.simulate_t(0.001,512)
 
 fig, axs = plt.subplots(3, 1, layout='constrained')
-add_plot( axs[0], my_circuit.V_U )
+add_plot( axs[0], my_circuit.V2_U )
 add_plot( axs[1], my_circuit.FF0_Uout )
 add_plot( axs[2], my_circuit.FF1_Uout )
 axs[1].set_xlabel('Time (s)')

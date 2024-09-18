@@ -34,7 +34,7 @@ my_circuit.simulate_t(0.1,1000,1/10,10)
 
 plt.subplot(1, 1 , 1)
 add_plot( my_circuit.IC_UTRESH  )
-add_plot( my_circuit.IC_UOUT  )
+add_plot( my_circuit.P1_U  )
 ax = plt.gca()
 ax.set_ylabel('Voltage [V]')
 plt.legend(ylabel)
