@@ -27,8 +27,6 @@ class element:
         self.history_y = []
         self.dydx = 2.0 / 1e-9
         self.dy = 0
-        self.dydx_prev = 0
-        self.dy_prev = 0
         self.value_y_prev = 0.0
         self.value_y = 0.0
 
@@ -36,11 +34,12 @@ class element:
 class circuit_base:
 
     def __init__(self):
+        self._clear()
+
+    def _clear(self):
         self.timeval = 0.0
         self.delta_timeval = 0.0
         self.conv = False
-
-    def _clear(self):
         for e in element.element_list:
             e.history_x = []
             e.history_y = []
@@ -77,10 +76,9 @@ class circuit_base:
         for e in element.element_list:
             if e.history_x:
                 delta_t = t - e.history_x[-1]
+                dydx_prev = e.dydx
                 e.dydx = 2.0 / delta_t
-                e.dy = -(e.dydx * e.value_y + e.dydx_prev * e.value_y + e.dy_prev)
-            e.dydx_prev = e.dydx
-            e.dy_prev = e.dy
+                e.dy = -(e.dydx * e.value_y + dydx_prev * e.value_y + e.dy)
             e.history_x.append(t)
             e.history_y.append(e.value_y)
 
