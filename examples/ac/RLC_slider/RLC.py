@@ -25,12 +25,12 @@ class circuit( circuit_base ):
 		self.C1_I = element('C1_I')
 
 	def step(self):
-		self._setf(self.C1_U, -(1/(self._getv(self.R)*(self._getv(self.C)*self.s)+((self._getv(self.L)*self.s)*(self._getv(self.C)*self.s)+1))), self.freq)
-		self._setf(self.V_I, -((self._getv(self.C)*self.s)/(self._getv(self.R)*(self._getv(self.C)*self.s)+((self._getv(self.L)*self.s)*(self._getv(self.C)*self.s)+1))), self.freq)
-		self._setf(self.V_U, (((self._getv(self.L)*self.s)*(self._getv(self.C)*self.s)+1)+self._getv(self.R)*(self._getv(self.C)*self.s))/(((self._getv(self.L)*self.s)*(self._getv(self.C)*self.s)+1)+self._getv(self.R)*(self._getv(self.C)*self.s)), self.freq)
-		self._setf(self.R1_U, -((self._getv(self.R)*(self._getv(self.C)*self.s))/(self._getv(self.R)*(self._getv(self.C)*self.s)+((self._getv(self.L)*self.s)*(self._getv(self.C)*self.s)+1))), self.freq)
-		self._setf(self.R1_I, -((self._getv(self.C)*self.s)/(((self._getv(self.C)*self.s)*self._getv(self.R)+1)+(self._getv(self.L)*self.s)*(self._getv(self.C)*self.s))), self.freq)
-		self._setf(self.L1_U, -(((self._getv(self.L)*self.s)*(self._getv(self.C)*self.s))/((self._getv(self.L)*self.s)*(self._getv(self.C)*self.s)+((self._getv(self.C)*self.s)*self._getv(self.R)+1))), self.freq)
-		self._setf(self.L1_I, -((self._getv(self.C)*self.s)/(1+(self._getv(self.C)*self.s)*(self._getv(self.R)+self._getv(self.L)*self.s))), self.freq)
-		self._setf(self.C1_I, -((self._getv(self.C)*self.s)/((self._getv(self.C)*self.s)*(self._getv(self.R)+self._getv(self.L)*self.s)+1)), self.freq)
+		self._setf(self.C1_U, -(1/(((self._getv(self.R)*self._getv(self.C))*self.s+1)+(self._getv(self.L)*self._getv(self.C))*self.s**2)), self.freq)
+		self._setf(self.V_I, -((self._getv(self.C)*self.s)/(((self._getv(self.R)*self._getv(self.C))*self.s+1)+(self._getv(self.L)*self._getv(self.C))*self.s**2)), self.freq)
+		self._setf(self.V_U, (((self._getv(self.L)*self._getv(self.C))*self.s**2+(self._getv(self.R)*self._getv(self.C))*self.s)+1)/(((self._getv(self.L)*self._getv(self.C))*self.s**2+(self._getv(self.R)*self._getv(self.C))*self.s)+1), self.freq)
+		self._setf(self.R1_U, -(((self._getv(self.R)*self._getv(self.C))*self.s)/(((self._getv(self.R)*self._getv(self.C))*self.s+1)+(self._getv(self.L)*self._getv(self.C))*self.s**2)), self.freq)
+		self._setf(self.R1_I, -((self._getv(self.C)*self.s)/(((self._getv(self.C)*self._getv(self.R))*self.s+(self._getv(self.L)*self._getv(self.C))*self.s**2)+1)), self.freq)
+		self._setf(self.L1_U, -(((self._getv(self.L)*self._getv(self.C))*self.s**2)/(((self._getv(self.L)*self._getv(self.C))*self.s**2+1)+(self._getv(self.C)*self._getv(self.R))*self.s)), self.freq)
+		self._setf(self.L1_I, -((self._getv(self.C)*self.s)/((1+(self._getv(self.C)*self._getv(self.L))*self.s**2)+(self._getv(self.C)*self._getv(self.R))*self.s)), self.freq)
+		self._setf(self.C1_I, -((self._getv(self.C)*self.s)/(((self._getv(self.C)*self._getv(self.R))*self.s+1)+(self._getv(self.C)*self._getv(self.L))*self.s**2)), self.freq)
 
