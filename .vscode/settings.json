@@ -91,6 +91,7 @@
     "variant": "cpp",
     "*.inc": "cpp",
     "*.txt": "c",
-    "*.rul": "c"
+    "cerrno": "cpp",
+    "*.def": "cpp"
   }
 }
