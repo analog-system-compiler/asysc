@@ -1,6 +1,8 @@
 
 `include <components.rule>
 
+/* Rectifier with real diode */
+
 simple_rectifier(RS) :=
 {
 	D1.DD( @1, @2 );

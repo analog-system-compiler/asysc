@@ -1,6 +1,9 @@
 `include <components.rule>
 `include <logic.rule>
 
+/* Simulation sample using digital components */
+/* Clock divider-by-four using flip-flops */
+
 div4 :=
 {
 	V1.CV       ( @vcc,  @gnd, 5 ); 

@@ -1,6 +1,8 @@
 
 `include <components.rule>
 
+/* Rectifier with ideal diode */
+
 ideal_rectifier(RS) :=
 {
 	D1.ID( @1, @2 );

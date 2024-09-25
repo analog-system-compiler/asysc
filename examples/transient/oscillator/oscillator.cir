@@ -1,6 +1,8 @@
 `include <components.rule>
 `include <logic.rule>
 
+/* Oscillator based on two NAND gates */
+
 oscillator :=
 {
 	V1.CV     ( @vcc,  @gnd, 5 ); 

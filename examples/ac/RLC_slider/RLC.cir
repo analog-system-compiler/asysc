@@ -1,6 +1,8 @@
 
 `include <components.rule>
 
+/* RLC circuit with sliders to change R, L and C values */
+
 RLC( PR, PL, PC ) := {
   V.CV(@1, @2, 10); 
   R1.CR(@2, @3, PR ); 
