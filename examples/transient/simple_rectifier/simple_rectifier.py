@@ -12,18 +12,18 @@ class circuit( circuit_base ):
 
 	def __init__(self):
 		super().__init__()
-		self.R2_U = element('R2_U')
-		self.D1_U = element('D1_U')
-		self.D1_I = element('D1_I')
-		self.V_I = element('V_I')
-		self.R2_I = element('R2_I')
+		self.D_U = element('D_U')
 		self.V_U = element('V_U')
+		self.V_I = element('V_I')
+		self.R_I = element('R_I')
+		self.D_I = element('D_I')
+		self.R_U = element('R_U')
 
 	def step(self):
-		self._setc(self.R2_U, (((1e-15*math.exp(self._last(self.D1_U)/0.026))*(5*math.sin(23687.0505626*self._time())))/0.026-1e-15*((1-self._last(self.D1_U)/0.026)*math.exp(self._last(self.D1_U)/0.026)-1))/((1e-15*math.exp(self._last(self.D1_U)/0.026))/0.026+1))
-		self._setc(self.D1_U, -((1e-15*((1-self._last(self.D1_U)/0.026)*math.exp(self._last(self.D1_U)/0.026)-1)+5*math.sin(23687.0505626*self._time()))/(1+(1e-15*math.exp(self._last(self.D1_U)/0.026))/0.026)))
-		self._setc(self.D1_I, (1e-15*((1-self._last(self.D1_U)/0.026)*math.exp(self._last(self.D1_U)/0.026)-1)-((1e-15*math.exp(self._last(self.D1_U)/0.026))*(5*math.sin(23687.0505626*self._time())))/0.026)/((1e-15*math.exp(self._last(self.D1_U)/0.026))/0.026+1))
-		self._setc(self.V_I, (1e-15*((1-self._last(self.D1_U)/0.026)*math.exp(self._last(self.D1_U)/0.026)-1)-((1e-15*math.exp(self._last(self.D1_U)/0.026))*(5*math.sin(23687.0505626*self._time())))/0.026)/(1+(1e-15*math.exp(self._last(self.D1_U)/0.026))/0.026))
-		self._setc(self.R2_I, (((1e-15*math.exp(self._last(self.D1_U)/0.026))*(5*math.sin(23687.0505626*self._time())))/0.026-1e-15*((1-self._last(self.D1_U)/0.026)*math.exp(self._last(self.D1_U)/0.026)-1))/(1+(1e-15*math.exp(self._last(self.D1_U)/0.026))/0.026))
-		self._setc(self.V_U, (((1e-15*math.exp(self._last(self.D1_U)/0.026))/0.026+1)*(5*math.sin(23687.0505626*self._time())))/((1e-15*math.exp(self._last(self.D1_U)/0.026))/0.026+1))
+		self._setc(self.D_U, (5*math.sin(23687.0505626*self._time())-200*(1e-15*((1-self._last(self.D_U)/0.026)*math.exp(self._last(self.D_U)/0.026)-1)))/(1+(200*(1e-15*math.exp(self._last(self.D_U)/0.026)))/0.026))
+		self._setc(self.V_U, ((1+(200*(1e-15*math.exp(self._last(self.D_U)/0.026)))/0.026)*(5*math.sin(23687.0505626*self._time())))/(1+(200*(1e-15*math.exp(self._last(self.D_U)/0.026)))/0.026))
+		self._setc(self.V_I, -((1e-15*((1-self._last(self.D_U)/0.026)*math.exp(self._last(self.D_U)/0.026)-1)+((1e-15*math.exp(self._last(self.D_U)/0.026))*(5*math.sin(23687.0505626*self._time())))/0.026)/((200*(1e-15*math.exp(self._last(self.D_U)/0.026)))/0.026+1)))
+		self._setc(self.R_I, (1e-15*((1-self._last(self.D_U)/0.026)*math.exp(self._last(self.D_U)/0.026)-1)+((1e-15*math.exp(self._last(self.D_U)/0.026))*(5*math.sin(23687.0505626*self._time())))/0.026)/(1+((1e-15*math.exp(self._last(self.D_U)/0.026))*200)/0.026))
+		self._setc(self.D_I, (1e-15*((1-self._last(self.D_U)/0.026)*math.exp(self._last(self.D_U)/0.026)-1)+((1e-15*math.exp(self._last(self.D_U)/0.026))*(5*math.sin(23687.0505626*self._time())))/0.026)/((200*(1e-15*math.exp(self._last(self.D_U)/0.026)))/0.026+1))
+		self._setc(self.R_U, (200*(1e-15*((1-self._last(self.D_U)/0.026)*math.exp(self._last(self.D_U)/0.026)-1))+((200*(1e-15*math.exp(self._last(self.D_U)/0.026)))*(5*math.sin(23687.0505626*self._time())))/0.026)/((200*(1e-15*math.exp(self._last(self.D_U)/0.026)))/0.026+1))
 

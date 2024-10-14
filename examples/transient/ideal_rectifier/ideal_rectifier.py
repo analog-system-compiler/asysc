@@ -12,18 +12,18 @@ class circuit( circuit_base ):
 
 	def __init__(self):
 		super().__init__()
-		self.R2_U = element('R2_U')
-		self.D1_U = element('D1_U')
-		self.D1_I = element('D1_I')
-		self.V_I = element('V_I')
-		self.R2_I = element('R2_I')
+		self.D_U = element('D_U')
 		self.V_U = element('V_U')
+		self.V_I = element('V_I')
+		self.R_I = element('R_I')
+		self.D_I = element('D_I')
+		self.R_U = element('R_U')
 
 	def step(self):
-		self._setc(self.R2_U, -(((self._last(self.D1_U)+self._last(self.D1_I)>0)*(5*math.sin(23687.0505626*self._time())))/((self._last(self.D1_U)+self._last(self.D1_I)<=0)-(self._last(self.D1_U)+self._last(self.D1_I)>0))))
-		self._setc(self.D1_U, ((self._last(self.D1_U)+self._last(self.D1_I)<=0)*(5*math.sin(23687.0505626*self._time())))/((self._last(self.D1_U)+self._last(self.D1_I)>0)-(self._last(self.D1_U)+self._last(self.D1_I)<=0)))
-		self._setc(self.D1_I, ((self._last(self.D1_U)+self._last(self.D1_I)>0)*(5*math.sin(23687.0505626*self._time())))/((self._last(self.D1_U)+self._last(self.D1_I)<=0)-(self._last(self.D1_U)+self._last(self.D1_I)>0)))
-		self._setc(self.V_I, -(((self._last(self.D1_U)+self._last(self.D1_I)>0)*(5*math.sin(23687.0505626*self._time())))/((self._last(self.D1_U)+self._last(self.D1_I)>0)-(self._last(self.D1_U)+self._last(self.D1_I)<=0))))
-		self._setc(self.R2_I, -(((self._last(self.D1_U)+self._last(self.D1_I)>0)*(5*math.sin(23687.0505626*self._time())))/((self._last(self.D1_U)+self._last(self.D1_I)<=0)-(self._last(self.D1_U)+self._last(self.D1_I)>0))))
-		self._setc(self.V_U, (((self._last(self.D1_U)+self._last(self.D1_I)>0)-(self._last(self.D1_U)+self._last(self.D1_I)<=0))*(5*math.sin(23687.0505626*self._time())))/((self._last(self.D1_U)+self._last(self.D1_I)>0)-(self._last(self.D1_U)+self._last(self.D1_I)<=0)))
+		self._setc(self.D_U, -(((self._last(self.D_U)+self._last(self.D_I)<=0)*(5*math.sin(23687.0505626*self._time())))/(200*(self._last(self.D_U)+self._last(self.D_I)>0)-(self._last(self.D_U)+self._last(self.D_I)<=0))))
+		self._setc(self.V_U, (((self._last(self.D_U)+self._last(self.D_I)<=0)-200*(self._last(self.D_U)+self._last(self.D_I)>0))*(5*math.sin(23687.0505626*self._time())))/((self._last(self.D_U)+self._last(self.D_I)<=0)-200*(self._last(self.D_U)+self._last(self.D_I)>0)))
+		self._setc(self.V_I, -(((self._last(self.D_U)+self._last(self.D_I)>0)*(5*math.sin(23687.0505626*self._time())))/(200*(self._last(self.D_U)+self._last(self.D_I)>0)-(self._last(self.D_U)+self._last(self.D_I)<=0))))
+		self._setc(self.R_I, -(((self._last(self.D_U)+self._last(self.D_I)>0)*(5*math.sin(23687.0505626*self._time())))/((self._last(self.D_U)+self._last(self.D_I)<=0)-(self._last(self.D_U)+self._last(self.D_I)>0)*200)))
+		self._setc(self.D_I, ((self._last(self.D_U)+self._last(self.D_I)>0)*(5*math.sin(23687.0505626*self._time())))/(200*(self._last(self.D_U)+self._last(self.D_I)>0)-(self._last(self.D_U)+self._last(self.D_I)<=0)))
+		self._setc(self.R_U, -(((200*(self._last(self.D_U)+self._last(self.D_I)>0))*(5*math.sin(23687.0505626*self._time())))/((self._last(self.D_U)+self._last(self.D_I)<=0)-200*(self._last(self.D_U)+self._last(self.D_I)>0))))
 
