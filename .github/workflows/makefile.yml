@@ -17,7 +17,7 @@ jobs:
         submodules: recursive
 
     - name: build
-      run: ls && make
+      run: make
 
     # - name: Run check
     #   run: make check
