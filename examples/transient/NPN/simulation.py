@@ -43,7 +43,7 @@ plt.grid(True)
 plt.subplot(2, 1, 2)
 ylabel = []
 add_plot( my_circuit.Q1_IBE )
-add_plot( my_circuit.Q1_IBC )
+# add_plot( my_circuit.Q1_IBC )
 ax = plt.gca()
 ax.set_xlabel('Time [s]')
 ax.set_ylabel('Intensity [A]')
