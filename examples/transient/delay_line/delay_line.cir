@@ -2,7 +2,7 @@
 
 delay_line_test( RS ) :=
 {
-	VP.VPULSE ( @4, @GND, 1, 10n, 40n, 0, 1n, 1n );
+	VP.VPULSE ( @4, @GND, 1, 10n, 80n, 0, 1n, 1n );
 	R2.CR     ( @4, @3, 5 );
 	L1.CL     ( @3, @1,   5e-8 );
 	C1.CC     ( @1, @GND, 5e-11 );
