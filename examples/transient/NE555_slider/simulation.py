@@ -32,7 +32,7 @@ def update_R(val):
     global fig, axs
     global UTRESH, UOUT
     fig.canvas.draw_idle()
-    my_circuit._setc(my_circuit._RV, val)
+    my_circuit._RV.init(val)
     my_circuit.simulate_t(0.1, 200)
     if first_time:
         ylabel.append(my_circuit.IC_UTRESH.name)

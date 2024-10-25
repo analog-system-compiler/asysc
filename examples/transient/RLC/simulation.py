@@ -31,7 +31,7 @@ def add_plot( axs, element ):
     ylabel.append(element.name)
 
 def update_R(val):
-    my_circuit._setc(my_circuit._RV, val )
+    my_circuit._RV.init( val )
     update_all()
 
 def update_all():    

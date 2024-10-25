@@ -23,7 +23,6 @@ import RLC
 
 from matplotlib.widgets import Slider
 from RLC import circuit
-#from circuit_base import circuit_base, element
 
 ylabel = []
 first_time = True
@@ -34,15 +33,15 @@ def add_gain_plot(axs, element):
     return axs.plot(element.history_x, 20 * np.log10(np.absolute(element.history_y)))    
 
 def update_R(val):
-    my_circuit._setc(my_circuit.R, val )
+    my_circuit.R.init( val )
     update_all()
 
 def update_L(val):
-    my_circuit._setc(my_circuit.L, val )
+    my_circuit.L.init( val )
     update_all()
 
 def update_C(val):
-    my_circuit._setc(my_circuit.C, val )
+    my_circuit.C.init( val )
     update_all()    
 
 def update_all():    
@@ -70,9 +69,9 @@ c_axe= plt.axes([0.1, 0.08, 0.65, 0.03])
 r_slider = Slider(ax=r_axe, label='R', valmin=1,    valmax=10,   valinit=5)
 c_slider = Slider(ax=l_axe, label='C', valmin=1e-6, valmax=1e-4, valinit=1e-5)
 l_slider = Slider(ax=c_axe, label='L', valmin=1e-6, valmax=1e-4, valinit=1e-5)
-my_circuit._setc(my_circuit.R, 5 )
-my_circuit._setc(my_circuit.C,1e-5)
-my_circuit._setc(my_circuit.L,1e-5)
+my_circuit.R.init( 5 )
+my_circuit.C.init( 1e-5)
+my_circuit.L.init( 1e-5)
 axs.set_xlabel("Freq (Hz)")
 axs.set_ylabel("Gain")
 axs.legend(ylabel)
