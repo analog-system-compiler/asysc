@@ -9,4 +9,4 @@ delay_line_test( RS ) :=
 	R1.CR ( @2, @GND, RS  )
 };
 
-CIRCUIT := SOLVE_TRANS( delay_line_test( 1 ) )
+CIRCUIT := SOLVE_TRANS( delay_line_test( _getv( _RV ) ) )

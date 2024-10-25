@@ -29,12 +29,12 @@ def add_plot( element ):
     ylabel.append(element.name)
 
 my_circuit = circuit()
-my_circuit.simulate_t(2,500,1/20,50)
+my_circuit.simulate_t(1,200,1/20,50)
 
 plt.subplot(2, 1, 1)
 ylabel = []
-add_plot( my_circuit.P1_U )
-add_plot( my_circuit.P2_U )
+add_plot( my_circuit.BASE_U )
+add_plot( my_circuit.COLLECTOR_U )
 ax = plt.gca()
 ax.set_ylabel('Voltage [V]')
 plt.legend(ylabel)

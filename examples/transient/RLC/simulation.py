@@ -19,26 +19,39 @@ import numpy as np
 import matplotlib.pyplot as plt
 import RLC
 import circuit_base
+
+from matplotlib.widgets import Slider
 from RLC import circuit
 from circuit_base import circuit_base, element
 
 ylabel = []
+
 def add_plot( axs, element ):
     axs.plot( element.history_x, element.history_y )
     ylabel.append(element.name)
 
-my_circuit = circuit()
-my_circuit.simulate_t(1e-6, 500)
+def update_R(val):
+    my_circuit._setc(my_circuit._RV, val )
+    update_all()
 
-fig, axs = plt.subplots(1, 1, layout='constrained')
-add_plot( axs, my_circuit.R1_U )
-add_plot( axs, my_circuit.R2_U )
-#add_plot( axs, my_circuit.R3_U )
-add_plot( axs, my_circuit.C1_U )
-add_plot( axs, my_circuit.VP_U )
-axs.set_xlabel('Time (s)')
-axs.set_ylabel('V')
-axs.legend(ylabel)
-axs.grid(True)
+def update_all():    
+    my_circuit.simulate_t(1e-6, 500)
+    axs.cla()  
+    add_plot( axs, my_circuit.R1_U )
+    add_plot( axs, my_circuit.C1_U )
+    add_plot( axs, my_circuit.VP_U )
+    axs.set_xlabel('Time (s)')
+    axs.set_ylabel('Voltage (V)')
+    axs.legend(ylabel)
+    axs.grid(True)
+
+my_circuit = circuit()
+
+fig, axs = plt.subplots()
+fig.subplots_adjust(bottom=0.20)
+r_axe = plt.axes([0.1, 0.06, 0.80, 0.03])
+r_slider = Slider(ax=r_axe, label='R', valmin=0, valmax=10, valinit=5)
+r_slider.on_changed(update_R)
+update_all()
 
 plt.show()

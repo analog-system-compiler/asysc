@@ -36,8 +36,6 @@ plt.subplot(2, 1, 1)
 ylabel = []
 add_plot( my_circuit.V_U )
 add_plot( my_circuit.R1_U )
-add_plot( my_circuit.D3_U )
-add_plot( my_circuit.D4_U )
 ax = plt.gca()
 ax.set_ylabel('Voltage [V]')
 plt.legend(ylabel)

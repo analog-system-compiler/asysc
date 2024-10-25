@@ -23,13 +23,15 @@ class element:
     def __init__(self, name):
         element.element_list.append(self)
         self.name = name        
-        self.history_x = []
-        self.history_y = []
-        self.dydx = 2.0 / 1e-9
-        self.dy = 0
-        self.value_y_prev = 0.0
+        self.clear()
+        self.dydx = 0
         self.value_y = 0.0
 
+    def clear(self):
+        self.dy = 0
+        self.value_y_prev = 0.0
+        self.history_x = []
+        self.history_y = []
 
 class circuit_base:
 
@@ -41,8 +43,7 @@ class circuit_base:
         self.delta_timeval = 0.0
         self.conv = False
         for e in element.element_list:
-            e.history_x = []
-            e.history_y = []
+           e.clear()
 
     def _time(self):
         return self.timeval
