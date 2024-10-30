@@ -16,8 +16,9 @@ all : $(CIRCUITS_PY)
 	else \
 		ANALYSIS_MODE="trans"; \
 	fi; \
-	echo "Generating $@"; \
-	$(BIN_DIR)/asysc -i $< -o $@ -t $$ANALYSIS_MODE
+	CMD="$(BIN_DIR)/asysc -i $< -o $@ -t $$ANALYSIS_MODE"; \
+	printf "Generating %-50s [%s]\n" "$@" "$$CMD"; \
+	$$CMD
 ifeq ($(GPROF),1)
 	gprof $(BIN_DIR)/asysc > gmon.txt
 endif	
@@ -35,3 +36,4 @@ run: all
 	done
 
 .SILENT:
+.PHONY: all clean run

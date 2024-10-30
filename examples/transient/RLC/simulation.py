@@ -52,6 +52,7 @@ fig.subplots_adjust(bottom=0.20)
 r_axe = plt.axes([0.1, 0.06, 0.80, 0.03])
 r_slider = Slider(ax=r_axe, label='R', valmin=0, valmax=10, valinit=5)
 r_slider.on_changed(update_R)
+my_circuit._RV.init( 5 )
 update_all()
 
 plt.show()
