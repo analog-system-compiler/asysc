@@ -1,7 +1,7 @@
 
 `include <components.rule>
 
-graetz_bridge(RS) :=
+graetz_bridge( RS ) :=
 {
 	V.VSIN( @5, @3, 10, 2*PI*600 );
 	R2.CR( @5, @2, 1 );

@@ -35,17 +35,17 @@ def update_R(val):
     my_circuit._RV.init(val)
     my_circuit.simulate_t(0.1, 200)
     if first_time:
-        ylabel.append(my_circuit.IC_UTRESH.name)
-        ylabel.append(my_circuit.IC_UOUT.name)        
+        ylabel.append(my_circuit.U_UTRESH.name)
+        ylabel.append(my_circuit.U_UOUT.name)        
         (UTRESH,) = axs.plot(
-            my_circuit.IC_UTRESH.history_x, my_circuit.IC_UTRESH.history_y
+            my_circuit.U_UTRESH.history_x, my_circuit.U_UTRESH.history_y
         )
-        (UOUT,) = axs.plot(my_circuit.IC_UOUT.history_x, my_circuit.IC_UOUT.history_y)
+        (UOUT,) = axs.plot(my_circuit.U_UOUT.history_x, my_circuit.U_UOUT.history_y)
         axs.legend(ylabel)
         first_time = False
     else:
-        UTRESH.set_ydata(my_circuit.IC_UTRESH.history_y)
-        UOUT.set_ydata(my_circuit.IC_UOUT.history_y)
+        UTRESH.set_ydata(my_circuit.U_UTRESH.history_y)
+        UOUT.set_ydata(my_circuit.U_UOUT.history_y)
         fig.canvas.draw_idle()
 
 my_circuit = circuit()
