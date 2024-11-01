@@ -1,7 +1,7 @@
 
 
 all: build
-	echo "\nFor a quick tour, type \"make run\""
+	echo -e "\nFor a quick tour, type \"make run\""
 
 build:
 	$(MAKE) -C lightcas --no-print-directory
