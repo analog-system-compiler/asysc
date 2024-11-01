@@ -5,7 +5,7 @@
 
 simple_rectifier( RS ) :=
 {
-	D.DD( @3, @2 );
+	D.DIODE( @3, @2 );
 	R.CR( @2, @1, RS );
 	V.VSIN( @3, @1, 5, 2*PI*600 )
 };

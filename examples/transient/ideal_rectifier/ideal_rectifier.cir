@@ -5,7 +5,7 @@
 
 ideal_rectifier( RS ) :=
 {
-	D.ID( @3, @2 );
+	D.IDIODE( @3, @2 );
 	R.CR( @2, @1, RS );
 	V.VSIN( @3, @1, 5, 2*PI*600 )
 };
