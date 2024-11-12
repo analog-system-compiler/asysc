@@ -3,13 +3,12 @@
 SHELL = /bin/bash
 CIRCUITS_SRC  = $(shell find -name "*.cir")
 CIRCUITS_PY   = $(CIRCUITS_SRC:.cir=.py)
-SIMULATION_PY = $(shell find -name simulation.py)
+EXAMPLE_DIRS  = $(dir $(CIRCUITS_SRC))
 BIN_DIR       = ../lightcas/bin
 
 all : $(CIRCUITS_PY)
 
-%.py: %.cir	circuit_base.py
-	cp -f circuit_base.py $(@D)
+%.py: %.cir	circuit_base.py	
 	-if [[ "$^" == *"ac/"* ]]; \
 	then \
 		ANALYSIS_MODE="ac"; \
@@ -25,12 +24,13 @@ endif
 	-[ -f debug.log ] && mv debug.log $(@D)
 	
 clean:
-	-rm -f $(CIRCUITS_PY)
+	-rm -f $(CIRCUITS_PY) $(addsuffix "circuit_base.py", $(EXAMPLE_DIRS))
 
 run: all
-	for SIM_FILE in $(SIMULATION_PY); do \
-		pushd $$(dirname $$SIM_FILE) > /dev/null; \
-		echo Executing $$(dirname $$SIM_FILE)/simulation.py; \
+	for EXAMPLE_DIR in $(EXAMPLE_DIRS); do \
+		cp -fu circuit_base.py $$EXAMPLE_DIR; \
+		pushd $$EXAMPLE_DIR > /dev/null; \
+		echo Executing $$EXAMPLE_DIR/simulation.py; \
 		python3 simulation.py; \
 		popd > /dev/null; \
 	done

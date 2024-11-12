@@ -29,6 +29,7 @@ def add_plot( axs, element ):
 
 my_circuit = circuit()
 my_circuit.NOT1_Uin.init( 5 )
+
 my_circuit.simulate_t(0.01, 512)
 
 fig, axs = plt.subplots(1, 1, layout='constrained')
