@@ -30,7 +30,7 @@ run: all
 	for EXAMPLE_DIR in $(EXAMPLE_DIRS); do \
 		cp -fu circuit_base.py $$EXAMPLE_DIR; \
 		pushd $$EXAMPLE_DIR > /dev/null; \
-		echo Executing $$EXAMPLE_DIR/simulation.py; \
+		echo Executing $${EXAMPLE_DIR}simulation.py; \
 		python3 simulation.py; \
 		popd > /dev/null; \
 	done
