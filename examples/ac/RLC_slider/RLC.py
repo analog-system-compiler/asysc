@@ -24,7 +24,7 @@ class circuit( circuit_base ):
 		self.L1_I = element('L1_I')
 		self.C1_I = element('C1_I')
 
-	def step(self):
+	def compute_f(self):
 		self._setf(self.C1_U, -(1/(((self._getv(self.R)*self._getv(self.C))*self.s+1)+(self._getv(self.L)*self._getv(self.C))*self.s**2)), self.freq)
 		self._setf(self.V_I, -((self._getv(self.C)*self.s)/(((self._getv(self.R)*self._getv(self.C))*self.s+1)+(self._getv(self.L)*self._getv(self.C))*self.s**2)), self.freq)
 		self._setf(self.V_U, (((self._getv(self.L)*self._getv(self.C))*self.s**2+(self._getv(self.R)*self._getv(self.C))*self.s)+1)/(((self._getv(self.L)*self._getv(self.C))*self.s**2+(self._getv(self.R)*self._getv(self.C))*self.s)+1), self.freq)

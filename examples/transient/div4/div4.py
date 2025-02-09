@@ -39,7 +39,7 @@ class circuit( circuit_base ):
 		self.NOT0_VCC = element('NOT0_VCC')
 		self.V1_U = element('V1_U')
 
-	def step(self):
+	def compute_t(self):
 		self._setc(self.NOT1_VCC, 5)
 		self._setc(self.NOT1_Iout, 0)
 		self._setc(self.NOT0_Iout, 0)

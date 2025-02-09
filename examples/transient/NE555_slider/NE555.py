@@ -37,7 +37,7 @@ class circuit( circuit_base ):
 		self.U_UTRESH = element('U_UTRESH')
 		self.U_VCC = element('U_VCC')
 
-	def step(self):
+	def compute_t(self):
 		self._setc(self.V1_U, ((((self._last(self.U_UOUT)<self._last(self.U_VCC)/2)<0.5)+(((self._last(self.U_UOUT)<self._last(self.U_VCC)/2)<0.5)*(2700*(1e-06*self._der1(self.C1_U)))-((self._last(self.U_UOUT)<self._last(self.U_VCC)/2)>=0.5)*2700+((self._last(self.U_UOUT)<self._last(self.U_VCC)/2)<0.5)*(self._getv(self._RV)*(1e-06*self._der1(self.C1_U))))-((self._last(self.U_UOUT)<self._last(self.U_VCC)/2)>=0.5)*(2700*(self._getv(self._RV)*(1e-06*self._der1(self.C1_U)))))*7.5)/(((self._last(self.U_UOUT)<self._last(self.U_VCC)/2)<0.5)+(((self._last(self.U_UOUT)<self._last(self.U_VCC)/2)<0.5)*(2700*(1e-06*self._der1(self.C1_U)))-((self._last(self.U_UOUT)<self._last(self.U_VCC)/2)>=0.5)*2700+((self._last(self.U_UOUT)<self._last(self.U_VCC)/2)<0.5)*(self._getv(self._RV)*(1e-06*self._der1(self.C1_U))))-((self._last(self.U_UOUT)<self._last(self.U_VCC)/2)>=0.5)*(2700*(self._getv(self._RV)*(1e-06*self._der1(self.C1_U))))))
 		self._setc(self.U_SR_Iout, 0)
 		self._setc(self.U_SW_I, ((((self._last(self.U_UOUT)<self._last(self.U_VCC)/2)>=0.5)+((self._last(self.U_UOUT)<self._last(self.U_VCC)/2)>=0.5)*(self._getv(self._RV)*(1e-06*self._der1(self.C1_U))))*7.5-(((self._last(self.U_UOUT)<self._last(self.U_VCC)/2)>=0.5)*2700)*(1e-06*self._der0(self.C1_U)))/((((self._last(self.U_UOUT)<self._last(self.U_VCC)/2)>=0.5)*2700+((self._last(self.U_UOUT)<self._last(self.U_VCC)/2)>=0.5)*(2700*(self._getv(self._RV)*(1e-06*self._der1(self.C1_U)))))-(2700*(1e-06*self._der1(self.C1_U))+(self._getv(self._RV)*(1e-06*self._der1(self.C1_U))+1))*((self._last(self.U_UOUT)<self._last(self.U_VCC)/2)<0.5)))

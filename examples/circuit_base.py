@@ -107,7 +107,7 @@ class circuit_base:
             iter_nb = 0
             while not self.conv and iter_nb < self.max_iter:
                 self.conv = True
-                self.step()
+                self.compute_t()
                 self._step_c()
                 iter_nb += 1
             self._step_t()
@@ -121,5 +121,5 @@ class circuit_base:
         for i in range(0, nb):
             self.freq = 10 ** (log_start + ((i * (log_end-log_start)) / nb))
             self.s = 2j * np.pi * self.freq
-            self.step()
+            self.compute_f()
             print("Iteration: {}/{}".format(i+1, nb), end="\r")

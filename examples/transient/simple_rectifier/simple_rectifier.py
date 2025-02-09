@@ -19,7 +19,7 @@ class circuit( circuit_base ):
 		self.D_I = element('D_I')
 		self.R_U = element('R_U')
 
-	def step(self):
+	def compute_t(self):
 		self._setc(self.D_U, (5*math.sin(23687.0505626*self._time())-200*(1e-15*((1-self._last(self.D_U)/0.026)*math.exp(self._last(self.D_U)/0.026)-1)))/(1+(200*(1e-15*math.exp(self._last(self.D_U)/0.026)))/0.026))
 		self._setc(self.V_U, ((1+(200*(1e-15*math.exp(self._last(self.D_U)/0.026)))/0.026)*(5*math.sin(23687.0505626*self._time())))/(1+(200*(1e-15*math.exp(self._last(self.D_U)/0.026)))/0.026))
 		self._setc(self.V_I, -((1e-15*((1-self._last(self.D_U)/0.026)*math.exp(self._last(self.D_U)/0.026)-1)+((1e-15*math.exp(self._last(self.D_U)/0.026))*(5*math.sin(23687.0505626*self._time())))/0.026)/((200*(1e-15*math.exp(self._last(self.D_U)/0.026)))/0.026+1)))

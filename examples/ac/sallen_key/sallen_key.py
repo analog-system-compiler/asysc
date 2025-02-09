@@ -27,7 +27,7 @@ class circuit( circuit_base ):
 		self.C2_U = element('C2_U')
 		self.A_Iin = element('A_Iin')
 
-	def step(self):
+	def compute_f(self):
 		self._setf(self.A_Uin, 0, self.freq)
 		self._setf(self.V_I, -((3.9e-10*self.s+3.198e-17*self.s**2)/((7.8e-08*self.s+1)+3.198e-15*self.s**2)), self.freq)
 		self._setf(self.A_Iout, (3.198e-17*self.s**2)/((7.8e-08*self.s+1)+3.198e-15*self.s**2), self.freq)
