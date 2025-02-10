@@ -39,5 +39,6 @@ ax.set_ylabel('Voltage [V]')
 ax.set_xlabel('Time [s]')
 plt.legend(ylabel)
 plt.grid(True)
+plt.title('Simple rectifier simulation example')
 
 plt.show()

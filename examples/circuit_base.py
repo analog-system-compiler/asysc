@@ -95,7 +95,6 @@ class circuit_base:
                 error = abs( (e.value_y - e.value_y_prev) / e.value_y_prev )            
                 if error > self.res:
                     self.conv = False
-                    #print(error)
 
     def simulate_t(self, duration, nb=500, res=1, max_iter=1):
         self._clear()

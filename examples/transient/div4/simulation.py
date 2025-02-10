@@ -31,6 +31,7 @@ my_circuit = circuit()
 my_circuit.simulate_t(0.001,512)
 
 fig, axs = plt.subplots(3, 1, layout='constrained')
+axs[0].set_title('Divider-by-4 digital simulation example')
 add_plot( axs[0], my_circuit.V2_U )
 add_plot( axs[1], my_circuit.FF0_Uout )
 add_plot( axs[2], my_circuit.FF1_Uout )

@@ -32,9 +32,6 @@ def add_plot( axs, element ):
 
 def update_R(val):
     my_circuit._RV.init( val )
-    update_all()
-
-def update_all():    
     my_circuit.simulate_t(1e-6, 500)
     axs.cla()  
     add_plot( axs, my_circuit.R1_U )
@@ -42,6 +39,7 @@ def update_all():
     add_plot( axs, my_circuit.VP_U )
     axs.set_xlabel('Time (s)')
     axs.set_ylabel('Voltage (V)')
+    axs.set_title('RLC step response simulation example')
     axs.legend(ylabel)
     axs.grid(True)
 
@@ -52,7 +50,6 @@ fig.subplots_adjust(bottom=0.20)
 r_axe = plt.axes([0.1, 0.06, 0.80, 0.03])
 r_slider = Slider(ax=r_axe, label='R', valmin=0, valmax=10, valinit=5)
 r_slider.on_changed(update_R)
-my_circuit._RV.init( 5 )
-update_all()
+update_R( 5 )
 
 plt.show()

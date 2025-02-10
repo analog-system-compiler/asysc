@@ -36,17 +36,16 @@ plt.subplot(2, 1, 1)
 ylabel = []
 add_plot( my_circuit.V_U )
 add_plot( my_circuit.R1_U )
-ax = plt.gca()
-ax.set_ylabel('Voltage [V]')
+plt.ylabel('Voltage [V]')
+plt.title('Graetz bridge simulation example')
 plt.legend(ylabel)
 plt.grid(True)
 
 plt.subplot(2, 1, 2)
 ylabel = []
 add_plot( my_circuit.R2_I )
-ax = plt.gca()
-ax.set_xlabel('Time [s]')
-ax.set_ylabel('Intensity [A]')
+plt.xlabel('Time [s]')
+plt.ylabel('Intensity [A]')
 plt.legend(ylabel)
 plt.grid(True)
 

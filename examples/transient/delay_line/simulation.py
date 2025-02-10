@@ -23,22 +23,20 @@ from delay_line import circuit
 from circuit_base import circuit_base, element
 
 ylabel = []
-def add_plot( axs, element ):
-    axs.plot( element.history_x, element.history_y )
+def add_plot( element ):
+    plt.plot( element.history_x, element.history_y )
     ylabel.append(element.name)
 
 my_circuit = circuit()
 my_circuit.simulate_t(2e-7,300)
 
-fig, axs = plt.subplots(1, 1, layout='constrained')
-add_plot( axs, my_circuit.R1_U )
-#add_plot( axs, my_circuit.R2_U )
-#add_plot( axs, my_circuit.R3_U )
-#add_plot( axs, my_circuit.C1_U )
-add_plot( axs, my_circuit.VP_U )
-axs.set_xlabel('Time (s)')
-axs.set_ylabel('V')
-axs.legend(ylabel)
-axs.grid(True)
+plt.subplot()
+plt.title('Delay line and impedance mismatch simulation example')
 
+add_plot( my_circuit.R1_U )
+add_plot( my_circuit.VP_U )
+plt.xlabel('Time (s)')
+plt.ylabel('V')
+plt.legend(ylabel)
+plt.grid(True)
 plt.show()
