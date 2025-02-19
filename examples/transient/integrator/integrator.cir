@@ -1,6 +1,6 @@
 `include <components.rule>
 
-universal_integrator :=
+aop_integrator :=
 {
     V.VSQR ( @vin, @gnd, 1, 200, 1m , 0 , 1n, 1n ); 
     R1.CR ( @vin, @ao_minus, 10k );
@@ -11,4 +11,4 @@ universal_integrator :=
     VN.CV( @vccn, @gnd, -7 )
 };
 
-CIRCUIT := SOLVE_TRANS( universal_integrator )
+CIRCUIT := SOLVE_TRANS( aop_integrator )

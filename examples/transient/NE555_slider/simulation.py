@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Copyright (C) 2006-2024 The ASysC project
+# Copyright (C) 2006-2025 The ASysC project
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
