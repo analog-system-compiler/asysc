@@ -93,5 +93,6 @@
     "*.txt": "c",
     "cerrno": "cpp",
     "*.def": "cpp"
-  }
+  },
+  "asciidoc.extensions.enableKroki": true
 }
