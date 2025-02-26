@@ -23,8 +23,8 @@ In the rest of this article, we'll look at how to generate Python code from a ci
 
 But before we get to the heart of the matter, let's start with a few basics. Let's take the following classic R,L,C electronic circuit as an example:
 
-
-############
+[.text-center]
+image::circuit_RLC2.png[]
 
 When formulating the equations of an electronic system, there are two sets of equations: the physical relations that describe the behavior of each component, and the interconnection relations that provide information on how the components are connected to each other. These are known as Kirchhoff's laws: the law of nodes and the law of meshes.
 The physical relationships linking current and voltage for every component except the generator are:

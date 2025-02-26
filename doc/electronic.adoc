@@ -1,0 +1,57 @@
+
+=== Quantities
+
+ASysC also manages the sizes for better readability. The quantities supported are:
+
+[cols="1,15"]
+|===
+|Quantity | Description
+
+|p     | pico
+|n     | nano
+|u     | micro
+|m     | milli
+|k or K| kilo
+|M     | mega
+|G     | giga
+|===
+
+So if you write *1G* for example, it will correspond to the value *1000000000*.
+
+== Instantiation of a component
+
+A component instantiation is written in the following form:
+
+    <Instance name>. <Component name>( <node list>, <parameter list>)
+
+For example, for a resistance of type *CR* of name *R1*, value *1K* the instantiation will be written as follows:
+    
+    R1.CR( @3, @4, 1K)
+
+== Frequency and time analysis
+
+If you are looking forward to see what ASysC is capable of and want to pause before continuing the article, you can run all the examples with the following command typed in the root directory:
+
+    make run
+
+This command will start the simulation of all the examples contained in the project and display the results.
+Now that you have been able to appreciate the performance of ASysC let’s go into detail about the different analyses supported.
+
+=== Frequency analysis
+
+Let’s start with the simulation of our first circuit and begin in a first step by a frequency analysis of the circuit (so-called «AC» analysis). The transformation of the system of equations to perform a frequency analysis is done by calling the *SOLVE_AC()* function:
+
+    CIRCUIT:= SOLVE_AC( RLC )
+
+This function will start the system resolution by preapplying the Laplace transform. The converted circuit is then used for frequency analysis. It is called «CIRCUIT» because it is the default variable used by ASysC to recognize the circuit that will be converted into a Python model.
+
+NOTE: the bias point calculation is not yet implemented in the current version of ASysC.
+
+==== Example with a conventional circuit R, L, C
+
+[.text-center]
+image::process.png[]
+image::ac_slider.png[]
+image::ne555.png[]
+image::sallen_key_circuit.png[]
+image::RLC_ac.png[]
