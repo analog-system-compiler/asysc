@@ -1,0 +1,21 @@
+== Conclusion
+
+From a simple C++ executable of around 100 kilobytes and a few lines of Python, we have an analog simulator capable of performing both time and frequency simulations. This solution also offers the possibility of creating components from mathematical formulations, which can then be hierarchically arranged to form complex structures and grouped together in libraries. The results obtained after simulation can be customized with the Matplotlib library and displayed in a single graph or in separate graphs with distinct scales. ASysC offers an interesting alternative to the more cumbersome commercial simulators, while allowing great freedom of creation and experimentation. It is portable and runs on both Linux and Windows.
+Of course, it lacks the performance of simulators like Spice and others. Indeed, equations can quickly become complex and time-consuming to calculate. Nevertheless, it can be a useful tool, as the simulation is carried out in Python, making it easy to work on the results obtained and to chain together processing operations, such as performing Fourier transforms (FFT) or measurements at certain points to find an optimum. The user can also run several simulations with different sets of random parameters and check the results obtained, in the manner of a Monte-Carlo approach. It is also possible, directly in Python, to modify variables and then observe how the system reacts.
+What's more, since ASysC uses Python for simulation, it can be used in conjunction with CocoTB <<11>>, an environment also written in Python to facilitate the testing of modules written in VHDL and Verilog. This makes it possible to simulate analog processes in parallel with digital ones. This combination opens up a whole new field of possibilities, enabling the development of advanced test benches for developers of mixed analog/digital systems. This will probably be the subject of another article in Hackable.
+Of course, ASysC is still an experimental tool, lacking a whole host of features before it can be turned into a professional tool. Don't go simulating your circuit with it if it's going to be embedded in a satellite!
+
+[bibliography]
+== References
+
+* [[[1]]] VHDL-AMS: https://fr.wikipedia.org/wiki/VHDL-AMS
+* [[[2]]] Verilog-AMS: https://fr.wikipedia.org/wiki/Verilog-AMS
+* [[[3]]] ADMS: https://en.wikipedia.org/wiki/ADMS
+* [[[4]]] Compact Modeling: https://www.amcad-engineering.com/transistor-model-extraction
+* [[[5]]] Formal computation: https://fr.wikipedia.org/wiki/Syst%C3%A8me_de_calcul_formel
+* [[[6]]] Laplace transforms: https://fr.wikipedia.org/wiki/Transformation_de_Laplace
+* [[[7]]] Hollow matrices: https://fr.wikipedia.org/wiki/Matrice_creuse#:~:text=Dans%20la%20discipline%20de%20l,un%20probl%C3%A8me%20d'%C3%A9l%C3%A9ments%20finished.
+* [[[8]]] LU decomposition: https://qucs.sourceforge.net/docs/technical/technical.pdf §15.2.4
+* [[[9]]] Sallen-Key filters: https://www.f-legrand.fr/scidoc/docmml/sciphys/electro/sallenkey/sallenkey.html
+* [[[10]]] Newton-Raphson: https://help.altair.com/flux/Flux/Help/francais/UserGuide/Francais/topics/ResolutionDunSystemeNonLineaireMethodeDeNewtonRaphson.htm#:~:text=La%2520r%25C3%25A9solution%2520d%E2%80%99a%2520syst%25C3%25A8me,convergence%2520is%2520never%2520guaranteed
+* [[[11]]] CocoTB: https://www.cocotb.org/

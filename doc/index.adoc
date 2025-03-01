@@ -1,12 +1,14 @@
 
 = Analog System Compiler
 Cyril Collineau
-
 :description: 
 :sectanchors: 
+:toc:
 :stem:
+:doctype: book
 :imagesdir: images
 
 include::intro.adoc[]
 include::asysc.adoc[]
 include::electronic.adoc[]
+include::conclusion.adoc[]

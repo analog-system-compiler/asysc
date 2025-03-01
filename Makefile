@@ -17,5 +17,11 @@ run: build
 header:	
 	insert-license --license-filepath=LICENSE --use-current-year --comment-style "#" $$(find . -name "*.py")
 
-.PHONY: all build clean run header
+pdf:
+	asciidoctor-pdf -r asciidoctor-diagram doc/index.adoc
+
+html:
+	asciidoctor -r asciidoctor-diagram doc/index.adoc
+
+.PHONY: all build clean run header pdf html
 .SILENT:
