@@ -294,17 +294,16 @@ Hereafter, we'll use the term “rule” rather than “function”, which is a 
 Thus, a component will be defined as a rule comprising a list of equations, as follows:
 
 ----
-    my_component( node1, node2, ..., noden, parameter1, parameter2, ..., parameteren ):= {
-        
-        equation1;
-        equation2;
-        ...
-    }
+my_component( node1, node2, ..., noden, parameter1, parameter2, ..., parameteren ):= {
+    
+    equation1;
+    equation2;
+    ...
+}
 ----
 
 Here's a concrete example for a resistor R1 connected to nodes node_p and node_n :
 
-[.text-center]
 image::across_through.png[scaledwidth=50%]
 
 The “resistor” component declaration contains three equations:
@@ -315,38 +314,38 @@ The “resistor” component declaration contains three equations:
 This gives the following declaration for the resistor:
 
 ----
-    NAME.CR(node_p, node_n, R) := {
+NAME.CR(node_p, node_n, R) := {
 
-        NAME.U = ACROSS(node_p, node_n);
-        NAME.I = THROUGH(node_p,node_n);
-        NAME.U = R*NAME.I
+    NAME.U = ACROSS(node_p, node_n);
+    NAME.I = THROUGH(node_p,node_n);
+    NAME.U = R*NAME.I
 
-    };
+};
 ----
 
 This representation is quite similar to the VHDL-AMS language, in which the keywords accross and through are used.
 In the same way as for resistors, the declaration of an inductance uses the DER() function to declare a derivative:
 
 ----
-    NAME.CL(node_p, node_n, L) := {
+NAME.CL(node_p, node_n, L) := {
 
-        NAME.U = ACROSS(node_p, node_n);
-        NAME.I = THROUGH(node_p, node_n);
-        NAME.U = L * DER(NAME.I, t)
+    NAME.U = ACROSS(node_p, node_n);
+    NAME.I = THROUGH(node_p, node_n);
+    NAME.U = L * DER(NAME.I, t)
 
-    };
+};
 ----
 
 And for the declaration of a capacitor :
 
 ----
-    NAME.CC(node_p, node_n, C) := {
+NAME.CC(node_p, node_n, C) := {
 
-        NAME.U = ACROSS(node_p, node_n);
-        NAME.I = THROUGH(node_p, node_n);
-        NAME.I = C * DER(NAME.U, t)
+    NAME.U = ACROSS(node_p, node_n);
+    NAME.I = THROUGH(node_p, node_n);
+    NAME.I = C * DER(NAME.U, t)
 
-    };
+};
 ----
 
 Note that “.” is a hierarchical operator that will propagate the instance name throughout the component's internal equations, to avoid ending up with variables with identical names when all equations are extracted for system resolution. 
