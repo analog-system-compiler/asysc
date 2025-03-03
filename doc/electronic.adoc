@@ -3,7 +3,7 @@
 
 ASysC also manages the sizes for better readability. The quantities supported are:
 
-[cols="1,14"]
+[cols="1,12"]
 |===
 |Quantity | Description
 
@@ -47,7 +47,7 @@ This function will start the system resolution by preapplying the Laplace transf
 
 NOTE: the bias point calculation is not yet implemented in the current version of ASysC.
 
-==== Example with a conventional circuit R, L, C
+==== Example with a conventional circuit **R, L, C**
 
 Let's return to our initial example. Our circuit comprises four components: a voltage source CV, a resistor CR, an inductor CL, a capacitor CC, whose names are V, R, L and C respectively. Some component names are preceded by the letter 'C' to avoid conflicts with instance names. Nodes are identified as @1, @2, @3 and @4.
 
@@ -81,16 +81,17 @@ Having seen how to declare a circuit and instantiate components, let's move on t
 
 This command generates the circuit model in Python, as shown below:
 
+[python,%autofit]
 ----
-def compute_t(self):
-        self._setf(self.C_U, -(1/((0.001*self.s+1)+1e-08*self.s**2)), self.freq)
-        self._setf(self.V_I, -((1e-05*self.s)/((0.001*self.s+1)+1e-08*self.s**2)), self.freq)
-        self._setf(self.V_U, ((1e-08*self.s**2+0.001*self.s)+1)/((1e-08*self.s**2+0.001*self.s)+1), self.freq)
-        self._setf(self.R_U, -((0.001*self.s)/((0.001*self.s+1)+1e-08*self.s**2)), self.freq)
-        self._setf(self.R_I, -((1e-05*self.s)/((0.001*self.s+1e-08*self.s**2)+1)), self.freq)
-        self._setf(self.L_U, -((1e-08*self.s**2)/((1e-08*self.s**2+1)+0.001*self.s)), self.freq)
-        self._setf(self.L_I, -((1e-05*self.s)/((1+1e-08*self.s**2)+0.001*self.s)), self.freq)
-        self._setf(self.C_I, -((1e-05*self.s)/((0.001*self.s+1)+1e-08*self.s**2)), self.freq)
+def compute_f(self):
+    self._setf(self.C_U, -(1/((0.001*self.s+1)+1e-08*self.s**2)), self.freq)
+    self._setf(self.V_I, -((1e-05*self.s)/((0.001*self.s+1)+1e-08*self.s**2)), self.freq)
+    self._setf(self.V_U, ((1e-08*self.s**2+0.001*self.s)+1)/((1e-08*self.s**2+0.001*self.s)+1), self.freq)
+    self._setf(self.R_U, -((0.001*self.s)/((0.001*self.s+1)+1e-08*self.s**2)), self.freq)
+    self._setf(self.R_I, -((1e-05*self.s)/((0.001*self.s+1e-08*self.s**2)+1)), self.freq)
+    self._setf(self.L_U, -((1e-08*self.s**2)/((1e-08*self.s**2+1)+0.001*self.s)), self.freq)
+    self._setf(self.L_I, -((1e-05*self.s)/((1+1e-08*self.s**2)+0.001*self.s)), self.freq)
+    self._setf(self.C_I, -((1e-05*self.s)/((0.001*self.s+1)+1e-08*self.s**2)), self.freq)
 ----
 
 This extract shows the classic transfer functions of an RLC circuit.
@@ -107,7 +108,7 @@ For our example, the simulation is launched with the command :
 
 And if all goes well, you'll see the result displayed graphically.
 
-image::RLC_ac.png[align="center"]
+image::RLC_ac.png[align="center", scaledwidth=50]
 
 === Frequency analysis with dynamic change of parameter values
 
@@ -135,17 +136,17 @@ RLC circuit, frequency analysis and dynamic setting of component values using Ma
 image::ac_slider.png[align="center"]
 
 === Another circuit example in frequency analysis: simulation of a Sallen-Key filter. 
-In the example below, we simulate a second-order Sallen-Key filter [9] consisting of two RC cells and an operational amplifier. The simulation displays gain and phase diagrams as a function of frequency.
+In the example below, we simulate a second-order Sallen-Key filter <<R9>> consisting of two RC cells and an operational amplifier. The simulation displays gain and phase diagrams as a function of frequency.
 
 image::sallen_key_circuit.png[align="center"]
 
 == Time analysis (Transient)
 Transforming the system of equations to perform a transient analysis is done in the same way as above, but with a call to function SOLVE_TRANS():
 
-    CIRCUIT := SOLVE_TRANS( RLC ) )
+    CIRCUIT := SOLVE_TRANS( RLC )
 
 This directive solves the system by first performing all the necessary transformations on the non-linear and reactive elements. As previously stated, the transformed circuit must always bear the name “CIRCUIT”. This is the variable used by ASysC to convert the circuit into a Python model.
-There are several methods for solving a non-linear system. The simplest is the Newton-Raphson method [10], also known as the “tangent” method. It involves replacing the system's non-linear functions with their tangents, calculated at the iteration point. Once the tangents have been calculated, the system solved and the unknowns determined, the tangents are recalculated at the new iteration point and the process repeated. The problem thus comes down to solving a sequence of linear systems whose solutions converge on the real solution.  
+There are several methods for solving a non-linear system. The simplest is the Newton-Raphson method <<R10>>, also known as the “tangent” method. It involves replacing the system's non-linear functions with their tangents, calculated at the iteration point. Once the tangents have been calculated, the system solved and the unknowns determined, the tangents are recalculated at the new iteration point and the process repeated. The problem thus comes down to solving a sequence of linear systems whose solutions converge on the real solution.  
 For the simulation of reactive elements, the trapezoidal integration algorithm is used. This gives good results without being too complex to implement.
 
 === Example of a Graetz bridge simulation in transient analysis
@@ -177,8 +178,8 @@ image::graetz_bridge.png[align="center"]
 
 In the same way as for the frequency simulation, the time simulation is launched in the Python code by creating the circuit object in the simulation.py file and calling the simulate_t() function.  This function receives as parameters the simulation time, the number of samples, the desired resolution and the maximum number of iterations for the nonlinear convergence algorithm.
 
-my_circuit = circuit()
-my_circuit.simulate_t(1e-6, 500, 0.1, 50)
+    my_circuit = circuit()
+    my_circuit.simulate_t(1e-6, 500, 0.1, 50)
 
 In some cases, it may be necessary to initialize certain variables before simulation. In this case, use the init() function applied to the element object containing the variable, as in the transient/oscillator example:
 

@@ -3,8 +3,9 @@
 The complexity and cost of building electronic systems make it essential to adopt rigorous methodologies. Simulation is a key step in the design process, enabling virtual modeling and analysis of circuit behavior. It offers the opportunity to optimize performance, detect errors and validate the design before moving on to the production phase. 
 There are many free electronic simulators available, the best-known of which are the Spice clones (pspce, ngspice, hspice, etc.) and their many frontends (PySpice, etc.), Qucs (Quite Universal Circuit Simulator) and Xyce/Spectre.
 Originally, these simulators integrated component models whose descriptions in their source code could not be modified. It was therefore impossible to add new components other than by combining existing models (for example, via Spice's *.SUBCKT* directive, which allows a sub-circuit to be included in the main circuit). 
-Over time, as needs have evolved, new functionalities have been added to enable the integration of components whose behavior is defined by the users themselves. These components are described by symbolic equations using classical mathematical functions through language extensions such as VHDL-AMS[1] or, as in the example below, Verilog-AMS[2]:
+Over time, as needs have evolved, new functionalities have been added to enable the integration of components whose behavior is defined by the users themselves. These components are described by symbolic equations using classical mathematical functions through language extensions such as VHDL-AMS<<R1>> or, as in the example below, Verilog-AMS<<R2>>:
 
+[.small]
 ----
 module resistor (t1, t2);
 	electrical t1, t2;
@@ -14,16 +15,16 @@ module resistor (t1, t2);
 endmodule
 ----
 
-For example, the Xyce and Qucs simulators both incorporate ADMS (Automatic Device Model Synthesizer) [3]. This software brick translates a Verilog-A description into another programming language, typically C++, which is added to the simulator's source code.
-The integration of symbolic computing capabilities into simulation tools opens up new perspectives in terms of flexibility and modeling power. Among other things, it enables what is known as “compact modeling” [4].
+For example, the Xyce and Qucs simulators both incorporate ADMS (Automatic Device Model Synthesizer) <<R3>>. This software brick translates a Verilog-A description into another programming language, typically C++, which is added to the simulator's source code.
+The integration of symbolic computing capabilities into simulation tools opens up new perspectives in terms of flexibility and modeling power. Among other things, it enables what is known as “compact modeling” <<R4>>.
 All these simulators use resolution mechanisms that consist in translating the system of equations into matrix form in order to find its solution. This is a complex approach, since it involves evaluating some of the equations, placing the coefficients of the unknowns in a matrix and then solving the matrix. And all this for each calculation step, as the value of the coefficients can change between two steps.
 This article takes a radically different approach to simulating electronic circuits using open-source tools. To be able to define components ourselves, we'll be using a tool that works natively with symbolic equations and has the ability to combine these components to form analog circuits. This same tool will also be used to solve the systems of equations representing these circuits. 
-The tool in question is called a “CAS”, for “Computer Algebra System” [5].  This type of tool is mainly used by mathematicians and researchers. The best-known are Maxima, Axiom, Maple and Mathematica. With CAS, for example, you can find out how the result of an equation changes by assigning numerical values to symbolic variables.
+The tool in question is called a “CAS”, for “Computer Algebra System” <<R5>>.  This type of tool is mainly used by mathematicians and researchers. The best-known are Maxima, Axiom, Maple and Mathematica. With CAS, for example, you can find out how the result of an equation changes by assigning numerical values to symbolic variables.
 In the rest of this article, we'll look at how to generate Python code from a circuit description written in a symbolic language, and how this generated code will simulate the circuit and display the results.
 
 But before we get to the heart of the matter, let's start with a few basics. Let's take the following classic R,L,C electronic circuit as an example:
 
-image::circuit_RLC2.png[scaledwidth=50%,align="center"]]
+image::circuit_RLC2.png[scaledwidth=50,align="center"]
 
 When formulating the equations of an electronic system, there are two sets of equations: the physical relations that describe the behavior of each component, and the interconnection relations that provide information on how the components are connected to each other. These are known as Kirchhoff's laws: the law of nodes and the law of meshes.
 The physical relationships linking current and voltage for every component except the generator are:
@@ -44,7 +45,7 @@ The law of nodes gives:
 [.text-center]
 stem:[ { (I_r = I_l) , (I_l = I_c) ,  (I_c = I_ e)  :} ]
 
-For frequency analysis, it's convenient to apply the Laplace transformation [6], using the complex variable stem:[p = jω]. In the following, we'll assume that stem:[E(t)] is equal to the Dirac function stem:[delta(t)], which is constant and equal to 1 in the frequency domain. The previous equations can then be expressed as :
+For frequency analysis, it's convenient to apply the Laplace transformation <<R6>>, using the complex variable stem:[p = j * omega]. In the following, we'll assume that stem:[E(t)] is equal to the Dirac function stem:[delta(t)], which is constant and equal to 1 in the frequency domain. The previous equations can then be expressed as :
 
 [.text-center]
 stem:[ { (U_r = R * I_r ) , ( U_l = p * L * I_l ) , ( I_c = p * C * U_c ) , ( U_e = 1 ), ( U _ r + U _ l  + U _ c  = U _ e ) ,  ( I _ r = I _ l ) , ( I _ l = I _ c ) , ( I _ c = I _ e ) :}  ]
@@ -54,6 +55,6 @@ The matrix representation of this system gives:
 [.text-center]
 stem:[ ((1,,,,-R,,,),(,1,,,,-p*L,,),(,,1,,,,-1/(pC),),(,,,1,,,,),(,,,,1,-1,,),(,,,,,1,-1,),(,,,,,,1,-1),(1,1,1,-1,,,,)) times ((U_r),(U_l),(U_c),(U_e),(I_r),(I_l),(I_c),(I_v)) = ((0),(0),(0),(1),(0),(0),(0),(0)) ]
 
-In an electronic circuit, nodes are rarely connected to a large number of branches. As a result, in most cases, we obtain matrices composed mainly of zeros, known as “sparse matrices” [7]. Our example is a good illustration of this, since the matrix formed is hollow.
-Although the matrix representation is widely used, it presents two problems. Firstly, the matrix consumes a lot of memory, since it is mainly made up of zeros. Secondly, a calculation over a given frequency interval requires the matrix to be reconstructed with all coefficients and then solved for each simulation step, i.e. for each iteration of the value of ω. If, for example, we want to display 200 points, corresponding to as many simulation steps, we need to reconstruct and solve the above matrix 200 times. There are of course optimizations to speed up the resolution of these matrices, such as LU decomposition [8].  
+In an electronic circuit, nodes are rarely connected to a large number of branches. As a result, in most cases, we obtain matrices composed mainly of zeros, known as “sparse matrices” <<R7>>. Our example is a good illustration of this, since the matrix formed is hollow.
+Although the matrix representation is widely used, it presents two problems. Firstly, the matrix consumes a lot of memory, since it is mainly made up of zeros. Secondly, a calculation over a given frequency interval requires the matrix to be reconstructed with all coefficients and then solved for each simulation step, i.e. for each iteration of the value of ω. If, for example, we want to display 200 points, corresponding to as many simulation steps, we need to reconstruct and solve the above matrix 200 times. There are of course optimizations to speed up the resolution of these matrices, such as LU decomposition <<R7>>.  
 The idea presented in this article is to explore another approach where the resolution of this matrix would be performed directly in a symbolic form in order to easily re-evaluate the expressions obtained as a function of ω for each simulation step.

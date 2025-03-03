@@ -10,11 +10,12 @@ Strictly speaking, ASysC does not simulate the electronic system, but it is capa
 In a CAS, mathematical expressions are stored in tree form. For example, the expression stem:[-(a-b)] will be stored internally as follows:
 
 [.text-center] 
-[mermaid,format=png]
+[mermaid]
 ....
 ---
 config:
   theme: neutral
+  look: neo
 ---
 flowchart TB
     subgraph a [ ]
@@ -30,7 +31,7 @@ stem:[-(a-b):= (b-a)]
 It transforms the input tree into a simplified output tree:
 
 [.text-center] 
-[mermaid,format=png]
+[mermaid]
 ....
 ---
 config:
@@ -57,7 +58,7 @@ Parameters **a** and **b** can be either numbers, variables or expressions thems
 For example, the expression stem:[-((3+x)-(z+5))] is recognized as being of the form stem:[-(a-b)], and is therefore transformed by the rule in question into stem:[(z+5)-(3+x)], which visually translates into the following transformation:
 
 [.text-center] 
-[mermaid,format=png]
+[mermaid]
 ....
 ---
 config:
@@ -259,13 +260,13 @@ As mentioned previously, ASysC is not a simulator, but a tool for manipulating a
 
 To summarize, the steps are as follows:
 
-    1. the circuit is described in text format (**\*.cir** or **\*.rule**),
+    1. the circuit is described in text format (**+*.cir+** or **+*.rule+**),
     2. this description is given to the ASysC compiler, which analyzes the circuit, solves the equation system and creates a behavioral model in Python,
     3. this Python model is then executed for simulation,
     4. once the simulation is complete, Python displays the results graphically.
 
 [.text-center]
-[mermaid,format=png]
+[mermaid]
 ----
 ---
 config:
@@ -304,7 +305,7 @@ my_component( node1, node2, ..., noden, parameter1, parameter2, ..., parameteren
 
 Here's a concrete example for a resistor R1 connected to nodes node_p and node_n :
 
-image::across_through.png[scaledwidth=50%]
+image::across_through.png[scaledwidth=50%,align="center"]
 
 The “resistor” component declaration contains three equations:
 
