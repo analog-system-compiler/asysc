@@ -26,7 +26,7 @@ But before we get to the heart of the matter, let's start with a few basics. Let
 
 image::circuit_RLC2.png[scaledwidth=50,align="center"]
 
-When formulating the equations of an electronic system, there are two sets of equations: the physical relations that describe the behavior of each component, and the interconnection relations that provide information on how the components are connected to each other. These are known as Kirchhoff's laws: the law of nodes and the law of meshes.
+When formulating the equations of an electronic system, there are two sets of equations: the physical relations that describe the behavior of each component, and the interconnection relations that provide information on how the components are connected to each other. These are known as Kirchhoff's laws: the Kirchhoff's junction rule and the Kirchhoff's loop rule.
 The physical relationships linking current and voltage for every component except the generator are:
 
 [.text-center]
@@ -35,12 +35,12 @@ stem:[ {(U_r = R * I_r ), (U_l = L * ( dI_l ) / ( dt ) ), (I_c = C * ( dU_c ) / 
 
 The physical relationships between current and voltage for each component except the generator are as follows:
 
-The law of meshes in our circuit gives:
+The Kirchhoff's loop rule in our circuit gives:
 
 [.text-center] 
 stem:[ U_r + U_l  + U_c  = U_e ]
 
-The law of nodes gives:
+The Kirchhoff's junction rule gives:
 
 [.text-center]
 stem:[ { (I_r = I_l) , (I_l = I_c) ,  (I_c = I_ e)  :} ]

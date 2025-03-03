@@ -18,10 +18,10 @@ header:
 	insert-license --license-filepath=LICENSE --use-current-year --comment-style "#" $$(find . -name "*.py")
 
 pdf:
-	asciidoctor-pdf -r asciidoctor-kroki -r asciidoctor-mathematical -a allow-uri-read doc/index.adoc
+	asciidoctor-pdf -D docbuild -r asciidoctor-kroki -r asciidoctor-mathematical -a allow-uri-read doc/index.adoc
 
 html:
-	asciidoctor -r asciidoctor-kroki -a allow-uri-read doc/index.adoc
+	asciidoctor -D docbuild -r asciidoctor-kroki -a allow-uri-read doc/index.adoc
 
 .PHONY: all build clean run header pdf html
 .SILENT:

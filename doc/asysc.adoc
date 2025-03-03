@@ -116,17 +116,18 @@ Although both methods are implemented, it is the latter that will be preferred f
 ==== Rule definition files
 A large number of rules are available, some generic, others specialized for electronic circuits. These rules are contained in a set of files in text format (*.rule)
 
-    - *units.rule*: rules on units,
-    - *components.rule*: definition of analog components,
-    - *ic.rule*: mixed components, such as the NE555.
-    - *electricity.rule*: transformations for frequency and time analysis, as well as Kirchhoff's laws,
-    - *includes.rule*: input files for rule definitions,
-    - *logic.rule*: some logic components: AND, OR, XOR gates and D and SR flip-flops,
-    - *matrix_vector.rule*: rules for operations on vectors and matrices,
-    - *main.rule*: basic algebraic rules,
-    - *symbols.rule*: definition of operator symbols,
-    - *derivatives.rule*: derivative transformations,
-    - *tests.rule*: non-regression tests
+[horizontal]
+units.rule:: rules on units,
+components.rule:: definition of analog components,
+ic.rule:: mixed components, such as the NE555.
+electricity.rule:: transformations for frequency and time analysis, as well as Kirchhoff's laws,
+includes.rule:: input files for rule definitions,
+logic.rule:: some logic components: AND, OR, XOR gates and D and SR flip-flops,
+matrix_vector.rule:: rules for operations on vectors and matrices,
+main.rule:: basic algebraic rules,
+symbols.rule:: definition of operator symbols,
+derivatives.rule:: derivative transformations,
+tests.rule:: non-regression tests
 
 ==== Structure of a rule
 
@@ -233,17 +234,11 @@ Before going any further, check that the *NumPy* and *Matplotlib* libraries are 
 
 The asysc command accepts the following options:
     
-[cols="1,15"]
-|===
-|Option | description
-
-|-i | input file (*,cir)
-|-o | output file (*.py). If omitted, output will be in a file with the same name as the input file but with the .py extension.
-
-|-t | type of analysis: “ac” or “trans”.
-|-c | name of the circuit to be analyzed. By default, “CIRCUIT”.
-
-|===
+[horizontal,labelwidth=4]    
+-i:: input file (*,cir)
+-o:: output file (*.py). If omitted, output will be in a file with the same name as the input file but with the .py extension.
+-t:: type of analysis: “ac” or “trans”.
+-c:: name of the circuit to be analyzed. By default, “CIRCUIT”.
 
 Example :
 
@@ -309,8 +304,8 @@ image::across_through.png[scaledwidth=50%,align="center"]
 
 The “resistor” component declaration contains three equations:
 
-    - an equation for defining the potential at nodes node_p and node_n using the *ACROSS()* function. This function will be used to determine the voltage in the circuit by applying the law of meshes.
-    - an equation to define the current between nodes node_p and node_n. With the *THROUGH()* function. This function will be used to determine the current in the circuit by applying the law of nodes.
+    - an equation for defining the potential at nodes node_p and node_n using the *ACROSS()* function. This function will be used to determine the voltage in the circuit by applying the Kirchhoff's loop rule.
+    - an equation to define the current between nodes node_p and node_n. With the *THROUGH()* function. This function will be used to determine the current in the circuit by applying the Kirchhoff's junction rule.
     - an equation describing the physical relationship between current and voltage. In the case of a resistor, we have : stem:[U=R*I].
 This gives the following declaration for the resistor:
 

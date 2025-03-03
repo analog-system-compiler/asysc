@@ -8,6 +8,7 @@ Cyril Collineau
 :doctype: book
 :imagesdir: images
 :source-highlighter: rouge
+:cachedir: docbuild
 
 include::intro.adoc[]
 include::asysc.adoc[]

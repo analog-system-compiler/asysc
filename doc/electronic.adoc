@@ -3,18 +3,14 @@
 
 ASysC also manages the sizes for better readability. The quantities supported are:
 
-[cols="1,12"]
-|===
-|Quantity | Description
-
-|p     | pico
-|n     | nano
-|u     | micro
-|m     | milli
-|k or K| kilo
-|M     | mega
-|G     | giga
-|===
+[horizontal]
+p     ::  pico
+n     ::  nano
+u     ::  micro
+m     ::  milli
+k or K::  kilo
+M     ::  mega
+G     ::  giga
 
 So if you write *1G* for example, it will correspond to the value *1000000000*.
 
@@ -47,7 +43,7 @@ This function will start the system resolution by preapplying the Laplace transf
 
 NOTE: the bias point calculation is not yet implemented in the current version of ASysC.
 
-==== Example with a conventional circuit **R, L, C**
+==== Example with a conventional circuit *R, L, C*
 
 Let's return to our initial example. Our circuit comprises four components: a voltage source CV, a resistor CR, an inductor CL, a capacitor CC, whose names are V, R, L and C respectively. Some component names are preceded by the letter 'C' to avoid conflicts with instance names. Nodes are identified as @1, @2, @3 and @4.
 
@@ -79,7 +75,7 @@ Having seen how to declare a circuit and instantiate components, let's move on t
     cd examples/
     ../lightcas/bin/asysc -i ac/RLC/RLC.cir -o ac/RLC/RLC.py -t ac
 
-This command generates the circuit model in Python, as shown below:
+This command generates the circuit model in Python, as shown in the piece of code below:
 
 [python,%autofit]
 ----
@@ -112,7 +108,7 @@ image::RLC_ac.png[align="center", scaledwidth=50]
 
 === Frequency analysis with dynamic change of parameter values
 
-In some cases, it may be useful to be able to dynamically change the value of certain parameters during the various simulation runs, in order to avoid recompiling the circuit in the event of a component value change. To do this, we use the _getv() function which, during simulation, calls the Python function of the same name, capable of fetching the current value of the variable given as a parameter. The modified circuit looks like this:
+In some cases, it may be useful to be able to dynamically change the value of certain parameters during the various simulation runs, in order to avoid recompiling the circuit in the event of a component value change. To do this, we use the *_getv()* function which, during simulation, calls the Python function of the same name, capable of fetching the current value of the variable given as a parameter. The modified circuit looks like this:
 
 ----
 `include <components.rule>
@@ -127,16 +123,33 @@ RLC( PR, PL, PC ) := {
 CIRCUIT := SOLVE_AC( RLC( _getv( R ), _getv( L ), _getv( C ) ) )
 ----
 
-The RLC() circuit now admits three parameters PR, PL and PC, whose values will take the values of the Python variables self.R, self.L and self.C through the _getv() function during simulation.
+The *RLC()* circuit now admits three parameters *PR*, *PL* and *PC*, whose values will take the values of the Python variables *self.R*, *self.L* and *self.C* through the *_getv()* function during simulation.
 
-The user can then dynamically change the values of the R, L and C components using the “slider” functionality available in the MathplotLib library. For more information, please refer to the “RLC_slider” Python example code.
+The user can then dynamically change the values of the *R*, *L* and *C* components using the slider functionality available in the MathplotLib library. For more information, please refer to the *RLC_slider* Python example code.
 
 RLC circuit, frequency analysis and dynamic setting of component values using MathPlotlib sliders.
 
 image::ac_slider.png[align="center"]
 
 === Another circuit example in frequency analysis: simulation of a Sallen-Key filter. 
-In the example below, we simulate a second-order Sallen-Key filter <<R9>> consisting of two RC cells and an operational amplifier. The simulation displays gain and phase diagrams as a function of frequency.
+In the example below, we simulate a second-order Sallen-Key filter <<R9>> consisting of two RC-cells and an operational amplifier. The simulation displays gain and phase diagrams as a function of frequency.
+
+----
+`include <components.rule>
+
+sallen_key() :=
+{
+	V.VSIN  ( @1, @0,  1 );		
+	R1.CR   ( @1, @2,  100 );
+	R2.CR   ( @2, @3,  100 );
+	C1.CC   ( @2, @4, 820p );
+	C2.CC   ( @3, @0, 390p );
+	A.IOPAMP( @3, @4, @4, @0 )
+
+};
+
+CIRCUIT := SOLVE_AC( sallen_key )
+----
 
 image::sallen_key_circuit.png[align="center"]
 
@@ -151,7 +164,7 @@ For the simulation of reactive elements, the trapezoidal integration algorithm i
 
 === Example of a Graetz bridge simulation in transient analysis
 
-In this example, the circuit consists of a sinusoidal source V, a source resistor R2, four diodes (D1, D2, D3 and D4) and a load represented by a resistor R1 and a capacitor C.
+In this example, the circuit consists of a sinusoidal source *V*, a source resistor *R2*, four diodes (*D1*, *D2*, *D3* and *D4*) and a load represented by a resistor *R1* and a capacitor *C*.
 The circuit description is as follows:
 
 ----
@@ -186,7 +199,7 @@ In some cases, it may be necessary to initialize certain variables before simula
     my_circuit.NOT1_Uin.init( 5 )
 
 == Compact modeling
-Let's take as an example the NE555, a relatively complex component. Rather than modeling its behavior with all its transistors, which would entail an extremely long simulation, we prefer to use a more compact behavioral description consisting of just a few equations. This is known as “compact modeling”. The NE555's compact behavioral description contains just two subcomponents: a SWITCH switch and an SRFFC set-reset flip-flop, plus a few logic equations. It all fits into just a few lines, as illustrated below:
+Let's take as an example the *NE555*, a relatively complex component. Rather than modeling its behavior with all its transistors, which would entail an extremely long simulation, we prefer to use a more compact behavioral description consisting of just a few equations. This is known as “compact modeling”. The *NE555*'s compact behavioral description contains just two subcomponents: a *SWITCH* component and an *SRFFC* set-reset flip-flop, plus a few logic equations. It all fits into just a few lines, as illustrated below:
 
 ----
 NAME.NE555( @trigger, @threshold, @discharge, @output, @vcc, @gnd ) :=
@@ -206,11 +219,11 @@ NAME.NE555( @trigger, @threshold, @discharge, @output, @vcc, @gnd ) :=
 };
 ----
 
-Note that the compact model contains “sub-nodes”: NAME.@in1 and NAME.@in2. As our NE555 instance is called U, once instantiated, these two nodes will be called U.@in1 and U.@in2 respectively, and will not conflict with nodes external to the component.
+Note that the compact model contains sub-nodes: `NAME.@in1` and `NAME.@in2`. As our *NE555* instance is called *U*, once instantiated, these two nodes will be called U.@in1` and `U.@in2` respectively, and will not conflict with nodes external to the component.
 Below is a simulation of the NE555 in an oscillator configuration:
 
 image::ne555.png[align="center"]
 
 This example shows that a compact behavioral description of a component allows you to obtain a simulation result close to a real description, while reducing computation time.
-Note that the circuit shown in the example above contains so-called “probes”. These are used to visualize the voltages between two given nodes. The first is called P1 and is connected to the NE555's OUT output and ground. The second is called P2 and is connected to the NE555's DISH input and ground. The use of these “probes” is extremely practical, as they allow access to all the voltages in the circuit.
+Note that the circuit shown in the example above contains so-called “probes”. These are used to visualize the voltages between two given nodes. The first is called *P1* and is connected to the *NE555*'s OUT output and ground. The second is called *P2* and is connected to the *NE555*'s *DISH* input and ground. The use of these probes is extremely practical, as they allow access to all the voltages in the circuit.
 
