@@ -7,7 +7,7 @@ Cyril Collineau
 :stem:
 :doctype: book
 :imagesdir: images
-:source-highlighter: rouge
+:source-highlighter: pygments
 :cachedir: docbuild
 
 include::intro.adoc[]

@@ -1,7 +1,7 @@
 
 === Quantities
 
-ASysC also manages the sizes for better readability. The quantities supported are:
+_ASysC_ also manages the sizes for better readability. The quantities supported are:
 
 [horizontal]
 p     ::  pico
@@ -26,12 +26,12 @@ For example, for a resistance of type *CR* of name *R1*, value *1K* the instanti
 
 == Frequency and time analysis
 
-If you are looking forward to see what ASysC is capable of and want to pause before continuing the article, you can run all the examples with the following command typed in the root directory:
+If you are looking forward to see what _ASysC_ is capable of and want to pause before continuing the article, you can run all the examples with the following command typed in the root directory:
 
     make run
 
 This command will start the simulation of all the examples contained in the project and display the results.
-Now that you have been able to appreciate the performance of ASysC let’s go into detail about the different analyses supported.
+Now that you have been able to appreciate the performance of _ASysC_ let’s go into detail about the different analyses supported.
 
 === Frequency analysis
 
@@ -39,13 +39,13 @@ Let’s start with the simulation of our first circuit and begin in a first step
 
     CIRCUIT:= SOLVE_AC( RLC )
 
-This function will start the system resolution by preapplying the Laplace transform. The converted circuit is then used for frequency analysis. It is called «CIRCUIT» because it is the default variable used by ASysC to recognize the circuit that will be converted into a Python model.
+This function will start the system resolution by preapplying the Laplace transform. The converted circuit is then used for frequency analysis. It is called «CIRCUIT» because it is the default variable used by _ASysC_ to recognize the circuit that will be converted into a Python model.
 
-NOTE: the bias point calculation is not yet implemented in the current version of ASysC.
+NOTE: the bias point calculation is not yet implemented in the current version of _ASysC_.
 
 ==== Example with a conventional circuit *R, L, C*
 
-Let's return to our initial example. Our circuit comprises four components: a voltage source CV, a resistor CR, an inductor CL, a capacitor CC, whose names are V, R, L and C respectively. Some component names are preceded by the letter 'C' to avoid conflicts with instance names. Nodes are identified as @1, @2, @3 and @4.
+Let's return to our initial example. Our circuit comprises four components: a voltage source *CV*, a resistor *CR*, an inductor *CL*, a capacitor *CC*, whose names are *V*, *R*, *L* and *C* respectively. Some component names are preceded by the letter 'C' to avoid conflicts with instance names. Nodes are identified as *@1*, *@2*, *@3* and *@4*.
 
 image::RLC_ac.png[align="center"]
 
@@ -64,7 +64,7 @@ RLC() := {
 CIRCUIT := SOLVE_AC( RLC )
 ----
 
-Components are declared in a list assigned to the RLC() rule, which is then given as a parameter to function SOLVE_AC().
+Components are declared in a list assigned to the *RLC()* rule, which is then given as a parameter to function *SOLVE_AC()*.
 
 The `include directive is used to include the definitions of components that are not included by default, unlike the basic rules. It is entirely possible to write your own component library and include it in your project.
 
@@ -154,11 +154,11 @@ CIRCUIT := SOLVE_AC( sallen_key )
 image::sallen_key_circuit.png[align="center"]
 
 == Time analysis (Transient)
-Transforming the system of equations to perform a transient analysis is done in the same way as above, but with a call to function SOLVE_TRANS():
+Transforming the system of equations to perform a transient analysis is done in the same way as above, but with a call to function *SOLVE_TRANS()*:
 
     CIRCUIT := SOLVE_TRANS( RLC )
 
-This directive solves the system by first performing all the necessary transformations on the non-linear and reactive elements. As previously stated, the transformed circuit must always bear the name “CIRCUIT”. This is the variable used by ASysC to convert the circuit into a Python model.
+This directive solves the system by first performing all the necessary transformations on the non-linear and reactive elements. As previously stated, the transformed circuit must always bear the name “CIRCUIT”. This is the variable used by _ASysC_ to convert the circuit into a Python model.
 There are several methods for solving a non-linear system. The simplest is the Newton-Raphson method <<R10>>, also known as the “tangent” method. It involves replacing the system's non-linear functions with their tangents, calculated at the iteration point. Once the tangents have been calculated, the system solved and the unknowns determined, the tangents are recalculated at the new iteration point and the process repeated. The problem thus comes down to solving a sequence of linear systems whose solutions converge on the real solution.  
 For the simulation of reactive elements, the trapezoidal integration algorithm is used. This gives good results without being too complex to implement.
 
@@ -189,7 +189,7 @@ This corresponds to the following diagram and simulation result:
 
 image::graetz_bridge.png[align="center"]
 
-In the same way as for the frequency simulation, the time simulation is launched in the Python code by creating the circuit object in the simulation.py file and calling the simulate_t() function.  This function receives as parameters the simulation time, the number of samples, the desired resolution and the maximum number of iterations for the nonlinear convergence algorithm.
+In the same way as for the frequency simulation, the time simulation is launched in the Python code by creating the circuit object in the simulation.py file and calling the *simulate_t()* function.  This function receives as parameters the simulation time, the number of samples, the desired resolution and the maximum number of iterations for the nonlinear convergence algorithm.
 
     my_circuit = circuit()
     my_circuit.simulate_t(1e-6, 500, 0.1, 50)

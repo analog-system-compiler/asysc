@@ -2,11 +2,11 @@
 
 == AsysC (Analog System Compiler)
 
-ASysC is a tool that has slowly evolved over the years to the point where it can be used to simulate electronic systems. Now that it has reached maturity, I thought it appropriate to present it to you today.
-Strictly speaking, ASysC does not simulate the electronic system, but it is capable of assembling the equations of components declared in a “netlist” into a global system of equations, which it then solves symbolically. Once this stage has been completed, it will generate Python code, which will then be used to simulate the circuit itself. Unlike other simulators mentioned in the introduction, ASysC does not solve systems in matrix form, thus avoiding excessive memory usage.
-
+_ASysC_ is a tool that has slowly evolved over the years to the point where it can be used to simulate electronic systems. 
+Strictly speaking, _ASysC_ does not simulate the electronic system, but it is capable of assembling the equations of components declared in a netlist into a global system of equations, which it then solves symbolically. Once this stage has been completed, it will generate Python code, which will then be used to simulate the circuit itself. Unlike other simulators mentioned in the introduction, _ASysC_ does not solve systems in matrix form, thus avoiding excessive memory usage.
 
 === How does a CAS work?
+
 In a CAS, mathematical expressions are stored in tree form. For example, the expression stem:[-(a-b)] will be stored internally as follows:
 
 [.text-center] 
@@ -26,8 +26,10 @@ flowchart TB
     end
 ....
 
-A CAS contains a set of rules that allow you to perform transformations on the trees. For example, there is a simplification rule that transforms the expression stem:[-(a-b)] into b-a. This rule is simply written
-stem:[-(a-b):= (b-a)]
+A CAS contains a set of rules that allow you to perform transformations on the trees. 
+
+For example, there is a simplification rule that transforms the expression stem:[-(a-b)] into b-a. This rule is simply written stem:[-(a-b):= (b-a)].
+
 It transforms the input tree into a simplified output tree:
 
 [.text-center] 
@@ -55,6 +57,7 @@ flowchart LR
 ....
 
 Parameters **a** and **b** can be either numbers, variables or expressions themselves formed by sub-trees.
+
 For example, the expression stem:[-((3+x)-(z+5))] is recognized as being of the form stem:[-(a-b)], and is therefore transformed by the rule in question into stem:[(z+5)-(3+x)], which visually translates into the following transformation:
 
 [.text-center] 
@@ -92,11 +95,11 @@ flowchart LR
 This example illustrates a simple rule, but sophisticated transformations are possible with more complex rules that interact with each other recursively. This set of rules can be used to solve equations, linear systems, Taylor series calculations and more.
 
 
-=== The CAS rules
+=== CAS rules overview
 
 ==== Introduction
 
-ASysC is built on a very simple system of rules, which can be used to perform a whole range of mathematical operations, such as :
+_ASysC_ is built on a very simple system of rules, which can be used to perform a whole range of mathematical operations, such as :
 
 - simplification of expressions,
 - solving one- or two-degree equations,
@@ -105,8 +108,9 @@ ASysC is built on a very simple system of rules, which can be used to perform a 
 - determinant calculations,
 - Taylor series decompositions.
 
-To go even further and enable it to solve electronic circuits, ASysC also integrates the rules needed to apply Kirchhoff's laws, as well as fundamental transformations in electronics, such as derivatives and integrals for frequency and transient analysis, and linearization of non-linear functions. 
-For system solving, ASysC contains rules that support several system solving algorithms:
+To go even further and enable it to solve electronic circuits, _ASysC_ also integrates the rules needed to apply Kirchhoff's laws, as well as fundamental transformations in electronics, such as derivatives and integrals transformations for frequency and transient analysis, and linearization of non-linear functions. 
+
+For system solving, _ASysC_ contains rules that support several system solving algorithms:
 
 - Gauss-Jordan elimination method,
 - Resolution by Cramer's method, also known as the determinant method.
@@ -114,7 +118,8 @@ For system solving, ASysC contains rules that support several system solving alg
 Although both methods are implemented, it is the latter that will be preferred for solving systems of equations, as the results produced are compatible with the equations governing switch models (either voltage is zero, or current is zero, which presents a physical singularity). If we use the Gauss Pivot method, the structure of the equations obtained is different, and we may end up with divisions by zero when evaluating these equations. This is the case, for example, with a circuit containing an ideal diode (either zero voltage or zero current). On the other hand, solving a system with Cramer's method has the disadvantage of being much slower than with the Gauss-Jordan method.
 
 ==== Rule definition files
-A large number of rules are available, some generic, others specialized for electronic circuits. These rules are contained in a set of files in text format (*.rule)
+
+A large number of rules are available, some generic, others specialized for electronic circuits. These rules are contained in a set of files in text format (*+*.rule+*)
 
 [horizontal]
 units.rule:: rules on units,
@@ -131,20 +136,20 @@ tests.rule:: non-regression tests
 
 ==== Structure of a rule
 
-Let's take a look at some concrete examples of how a CAS works.
+Let's take a look at some concrete examples of how a *CAS* works.
 As a first example, let's use it as a simple calculator:
 
     cd lightcas/bin
     ./asysc
     *************************************
-    *** ASysC Console ***
+    *** ASysC Console                 ***
     *** (C) Cyril Collineau 2006-2025 ***
     *************************************
     Type “help” for help.
     > 2*2
     4
 
-Second example, variable assignment:
+Second example more complex, variable assignment:
 
     > b:=a+a
     2*a
@@ -153,33 +158,62 @@ Second example, variable assignment:
     > b
     4
 
-We can see here that b initially accepts the value 2*a without knowing the value of a. This is the fundamental difference between a CAS and a calculator. It's when we specify that a has the value 2, that b displays the value 4. In ASysC, a rule is always defined with the assignment operator “:=”. 
+We can see here that stem:[b] initially accepts the value stem:[2 times a] without knowing the value of stem:[a]. This is the fundamental difference between a *CAS* and a calculator. It's when we specify that stem:[a] is equal to stem:[2], that stem:[b] displays the value stem:[4]. 
+
+In _ASysC_, a rule is always defined with the assignment operator *:=*. 
+
 Third example, the declaration of a simple function with two parameters, an addition:
 
-    > my_addition( a, b) := a + b
-    > my_add(2, 3)
+    > my_sum( a, b) := a + b
+    > my_sum(2, 3)
     5
 
-Let's go a step further and declare a symbolic transformation, like the slightly absurd example below, which associates multiplication with addition via the 'f' transformation. Here, the parameter is no longer a variable but a tree made up of the + operator and two parameters a and b :
+Let's go a step further and declare a symbolic transformation, like the slightly absurd example below, which associates multiplication with addition via the 'f' transformation. Here, the parameter is no longer a variable but a tree made up of the *+* operator and two parameters *a* and *b* :
 
     > f(a+b):=a*b
     a*b
     > f(2+4)     
     8
 
-What's the point of this kind of functionality, you may ask? In fact, it's enormous, because it's this feature in particular that enables ASysC to perform all kinds of transformations on trees, by performing pattern recognition followed by substitution.
-For common calculations, pre-configured rules are available:
-Example of derivative calculation with the DER() function:
+This feature as absurd as it may seem enables _ASysC_ to perform all kinds of transformations on trees, by performing tree pattern recognition followed by tree substitution.
+
+[.text-center] 
+[mermaid]
+....
+---
+config:
+  theme: neutral
+  look: neo
+---
+flowchart LR
+    subgraph a [ ]
+        direction TB
+        B((\+))
+        B --> C((a))
+        B --> D((b))
+    end
+    subgraph b [ ]
+        direction TB
+        E((\*)) 
+        E --> F((a))
+        E --> G((b))
+    end
+    a --"f"--> b
+....
+
+For common calculations, pre-configured rules are available.
+
+Example of derivative calculation with the *DER()* function:
 
     > DER(COS(3*x),x)
     -(3*SIN(3*x))
 
-Example of writing a function as a Taylor sequence with the TAYLOR() function:
+Example of writing a function as a Taylor sequence with the *TAYLOR()* function:
 
     > TAYLOR(COS(x),x,0,10)
     1-2.7557319224e-07*x^10+2.48015873016e-05*x^8-0.00138888888889*x^6+0.0416666666667*x^4-0.5*x^2
 
-Example of solving equations with function SOLVE() :
+Example of solving equations with function *SOLVE()* :
 
     > SOLVE(x-2,x)
     2
@@ -191,74 +225,84 @@ Example of solving systems of equations :
     > SOLVE({x-y+1,x+y-5},{x,y})
     {2,3}
 
-Another feature of ASysC is its support for lists. This last form of expression is used to define components and circuits, as we'll see in the following chapters:
+Another interesting capability of _ASysC_ is its support for lists. This expression is used to define components and circuits, as we'll see in the following chapters:
 
     > my_list := {a;b;c}
 
-===== Recursions with rules
+==== Recursions with rules
 
 Rules can be called recursively as follows:
 
     > my_factorial( x ) := x * my_factorial( x - 1 )
     my_factorial(x-1)*x
 
-This capability makes it possible to perform complex transformations. But it's clear that using this rule alone will result in infinite recursion. To avoid this, we need to add a specific rule for the stop condition:
+This capability makes it possible to perform complex transformations. But using this rule alone will result in infinite recursion. To avoid this, we need to add a specific rule for the stop condition:
 
     > my_factorial( 1 ) := 1 
     1
 
-If you look at the rules described in the files (*.rule) located in the lightcas/rules directory, you'll see that the vast majority of rules are recursive.
-Now try my_factorial(6) for example:
+If you look at the rules described in the files (*+*.rule+*) located in the lightcas/rules directory, you'll see that the vast majority of rules are recursive.
+
+Now try `my_factorial(6)` for example:
 
     > my_factorial( 6 )
     720
 
-You get 720, which is the result of 6!
+You get stem:[720], which is the correct result of stem:[6!]
 
 == Compilation, installation and use
 
 === Compilation and installation
 
-Compiling ASysC is normally straightforward. It requires no external dependencies other than g++ and make. A simple invocation of the make command in the root directory suffices:
+Compiling _ASysC_ is normally straightforward. It requires no external dependencies other than *g++* and *make* executables. A simple invocation of the make command in the root directory suffices:
 
+[source,bash]
+----
     git clone https://github.com/analog-system-compiler/asysc.git
     cd asysc
     git submodule update --init
     make
+----
 
-ASysC has been compiled and tested under both Linux and MSYS2 environments. Once compiled under Linux, its size does not exceed 100Kb. This is not the tool you'll hesitate to remove from your hard disk because it takes up too much space!
+_ASysC_ has been compiled and tested under both *Linux* and *MSYS2* environments. Once compiled under Linux, its size does not exceed 100Kb. This is not the tool you'll hesitate to remove from your hard disk because it takes up too much space!
+
 Once the code has been compiled, the Makefile will automatically generate the Python files needed to simulate the circuits. This operation can sometimes take several seconds.
+
 Before going any further, check that the *NumPy* and *Matplotlib* libraries are installed in your Python environment.
 
-=== ASysC command-line options
+=== _ASysC_ command-line options
 
-The asysc command accepts the following options:
+The `asysc` command accepts the following options:
     
-[horizontal,labelwidth=4]    
--i:: input file (*,cir)
--o:: output file (*.py). If omitted, output will be in a file with the same name as the input file but with the .py extension.
--t:: type of analysis: “ac” or “trans”.
--c:: name of the circuit to be analyzed. By default, “CIRCUIT”.
+[horizontal, labelwidth=4]    
+-i:: input file (*+*,cir+*)
+-o:: output file (*+*.py+*). If omitted, output will be in a file with the same name as the input file but with the *.py* file extension.
+-t:: type of analysis: *ac* or *trans*.
+-c:: name of the circuit to be analyzed. By default: "CIRCUIT".
 
 Example :
-
+[source,bash]
+----
     ../lightcas/bin/asysc -i ac/RLC/RLC.cir -o ac/RLC/RLC.py -t ac
+----
 
-This example will create a Python model for frequency analysis from the input file RLC.cir. 
-We'll look at this in more detail in the following paragraphs.
+This example will create a Python model for frequency analysis from the input file *RLC.cir*. 
+The process is described in more detail in the following paragraphs.
 
-=== Applying ASysC to electronics
+=== Applying _ASysC_ to electronics
 
 ==== From equations to simulation
 
-As mentioned previously, ASysC is not a simulator, but a tool for manipulating algebraic expressions. Used on its own, it is unable to perform a simulation. To perform this step, we'll be using the Python language and the popular *NumPy* and *Matplotlib* libraries. NumPy will be used for complex mathematical calculations, while *Matplotlib* will be used to display the results graphically. Any other graphics library can be used, of course.
+As mentioned previously, _ASysC_ is not a simulator, but a tool for manipulating algebraic expressions. Used on its own, it is unable to perform a simulation. To perform this step, we'll be using the Python language and the popular *NumPy* and *Matplotlib* libraries. *NumPy* will be used for complex mathematical calculations, while *Matplotlib* will be used to display the results graphically. Any other graphics library can be used if desired.
 
-To summarize, the steps are as follows:
+To summarize, the process steps are as follows:
 
-    1. the circuit is described in text format (**+*.cir+** or **+*.rule+**),
-    2. this description is given to the ASysC compiler, which analyzes the circuit, solves the equation system and creates a behavioral model in Python,
-    3. this Python model is then executed for simulation,
-    4. once the simulation is complete, Python displays the results graphically.
+    . the circuit is described in text format (**+*.cir+** or **+*.rule+**),
+    . this description is given to the _ASysC_ compiler, which analyzes the circuit, solves the equation system and creates a behavioral model in Python,
+    . this Python model is then executed for simulation,
+    . once the simulation is complete, Python displays the results graphically.
+
+This is illustrated below:
 
 [.text-center]
 [mermaid]
@@ -270,27 +314,33 @@ config:
 ---
 flowchart TD
 A("Circuit description \(\*.cir/\*.rule\)")
-B("circuit behavior model in Python language")
-C("Displaying results with MatPlotLib")
-A -- Compilation with ASysC -->B --Model execution--> C
+B("Circuit behavior model in Python language")
+C("Results are displayed with MatPlotLib")
+A -- Compilation with _ASysC_ -->B --Model execution--> C
 ----
 
-The process is described in the diagram below:
-It's best not to modify the Python file generated by ASysC, as it will be overwritten if you modify the circuit again and run another compilation on top of it. For simulation purposes, this file cannot be used on its own; it must be supplemented by two other Python files:
+It's best not to modify the Python file generated by _ASysC_, as it will be overwritten. For simulation purposes, this file cannot be used on its own; it must be supplemented by two other Python files:
 
-- *circuit_base.py*: this file contains the basic classes for circuit simulation. It is common to all simulated circuits.
-- *simulation.py*: this file contains the simulation and display functions for *Matplotlib*. It is specific to the circuit and simulation run. The user modifies it according to the simulation and display customization required.
+[horizontal]
+*circuit_base.py*:: this file contains the basic classes for circuit simulation. It is common to all simulated circuits.
+*simulation.py*:: this file contains the simulation and display functions for *Matplotlib*. It is specific to the circuit and simulation run. The user modifies it according to the simulation and can customize display as desired.
 
-The great advantage of using Python for simulation is that all simulation data is accessible directly in NumPy arrays. It is therefore possible to take advantage of the power of this library to carry out other processes, such as applying a Fourier transform following a transient analysis.
+The great advantage of using Python for simulation is that all simulation data is accessible directly in *NumPy* arrays. It is therefore possible to take advantage of the power of this library to carry out other processes, such as applying a Fourier transform following a transient analysis for instance.
 
 === Declaring a component
 
-The fundamental idea behind ASysC is to consider that a circuit is a function that returns a list of components, and a component is a function that returns a list of equations. In short, it's all about functions! This incredibly simple mechanism offers almost limitless possibilities.
-Hereafter, we'll use the term “rule” rather than “function”, which is a more appropriate term for CAS, even though it's basically the same thing.
+The fundamental idea behind _ASysC_ is to consider that:
+
+- a circuit is a function that returns a list of components, 
+- a component is a function that returns a list of equations. 
+
+In short, all is based on functions! This incredibly simple mechanism offers almost limitless possibilities.
+
+Hereafter, the term *rule* rather than *function* is used, which is a more appropriate term for a *CAS*, even though it's basically the same thing.
 Thus, a component will be defined as a rule comprising a list of equations, as follows:
 
 ----
-my_component( node1, node2, ..., noden, parameter1, parameter2, ..., parameteren ):= {
+my_component( node1, node2, ..., noden, parameter1, parameter2, ..., parameteren ) := {
     
     equation1;
     equation2;
@@ -298,15 +348,16 @@ my_component( node1, node2, ..., noden, parameter1, parameter2, ..., parameteren
 }
 ----
 
-Here's a concrete example for a resistor R1 connected to nodes node_p and node_n :
+Here's a concrete example for a resistor *R1* connected to nodes *node_p* and *node_n* :
 
 image::across_through.png[scaledwidth=50%,align="center"]
 
-The “resistor” component declaration contains three equations:
+The resistor component declaration contains three equations:
 
-    - an equation for defining the potential at nodes node_p and node_n using the *ACROSS()* function. This function will be used to determine the voltage in the circuit by applying the Kirchhoff's loop rule.
-    - an equation to define the current between nodes node_p and node_n. With the *THROUGH()* function. This function will be used to determine the current in the circuit by applying the Kirchhoff's junction rule.
+    - an equation for defining the potential at nodes *node_p* and *node_n* using the *ACROSS()* function. This function will be used to determine the voltage in the circuit by applying the Kirchhoff's loop rule.
+    - an equation to define the current between nodes *node_p* and *node_n*. With the *THROUGH()* function. This function will be used to determine the current in the circuit by applying the Kirchhoff's junction rule.
     - an equation describing the physical relationship between current and voltage. In the case of a resistor, we have : stem:[U=R*I].
+
 This gives the following declaration for the resistor:
 
 ----
@@ -319,8 +370,8 @@ NAME.CR(node_p, node_n, R) := {
 };
 ----
 
-This representation is quite similar to the VHDL-AMS language, in which the keywords accross and through are used.
-In the same way as for resistors, the declaration of an inductance uses the DER() function to declare a derivative:
+This representation is quite similar to the _VHDL-AMS_ language, in which the keywords *accross* and *through* are used.
+In the same way as for resistors, the declaration of an inductance uses the *DER()* function to declare a derivative:
 
 ----
 NAME.CL(node_p, node_n, L) := {
@@ -344,13 +395,13 @@ NAME.CC(node_p, node_n, C) := {
 };
 ----
 
-Note that “.” is a hierarchical operator that will propagate the instance name throughout the component's internal equations, to avoid ending up with variables with identical names when all equations are extracted for system resolution. 
+Note that "*.*"" is a hierarchical operator that will propagate the instance name throughout the component's internal equations, to avoid ending up with variables with identical names when all equations are extracted for system resolution. 
 
 Thus, *NAME* will be replaced by *R1* and the instantiation *R1.CR* will replace the voltage *NAME.U* by *R1.U* and the current *NAME.I* by *R1.I*.
 
 [NOTE]
 ====
-1. Prefixing nodes with the *@* character is not mandatory. I use it to identify the nodes in the parameter list, to provide a little clarity. Nothing prevents you from noting your nodes my_node1, my_node2, etc.
+1. Prefixing nodes with the *@* character is not mandatory. This is used to identify the nodes in the parameter list, to provide a little clarity. Nothing prevents you from noting your nodes "my_node1", "my_node2", etc.
 
-2. The attentive reader will have noticed the absence of a semicolon in the last line. The semicolon is a list separator *{ ; ; }* and therefore MUST not appear at the end of the last line of your circuit declaration.
+2. The attentive reader will have noticed the absence of a semicolon "*;*" in the last line. The semicolon is used as a list separator *{ ; ; }* and therefore MUST not appear at the end of the last line of your circuit declaration.
 ====
