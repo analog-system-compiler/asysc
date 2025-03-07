@@ -3,7 +3,7 @@
 == AsysC (Analog System Compiler)
 
 _ASysC_ is a tool that has slowly evolved over the years to the point where it can be used to simulate electronic systems. 
-Strictly speaking, _ASysC_ does not simulate the electronic system, but it is capable of assembling the equations of components declared in a netlist into a global system of equations, which it then solves symbolically. Once this stage has been completed, it will generate Python code, which will then be used to simulate the circuit itself. Unlike other simulators mentioned in the introduction, _ASysC_ does not solve systems in matrix form, thus avoiding excessive memory usage.
+Strictly speaking, _ASysC_ does not simulate the electronic system, but it is capable of assembling the equations of components declared in a netlist into a global system of equations, which it then solves symbolically. Once this stage has been completed, it will generate _Python_ code, which will then be used to simulate the circuit itself. Unlike other simulators mentioned in the introduction, _ASysC_ does not solve systems in matrix form, thus avoiding excessive memory usage.
 
 === How does a CAS work?
 
@@ -175,7 +175,7 @@ Let's go a step further and declare a symbolic transformation, like the slightly
     > f(2+4)     
     8
 
-This feature as absurd as it may seem enables _ASysC_ to perform all kinds of transformations on trees, by performing tree pattern recognition followed by tree substitution.
+This feature as strange as it may seem enables _ASysC_ to perform all kinds of transformations on trees, by performing tree pattern recognition followed by tree substitution.
 
 [.text-center] 
 [mermaid]
@@ -241,7 +241,7 @@ This capability makes it possible to perform complex transformations. But using 
     > my_factorial( 1 ) := 1 
     1
 
-If you look at the rules described in the files (*+*.rule+*) located in the lightcas/rules directory, you'll see that the vast majority of rules are recursive.
+If you look at the rules described in the files (*+*.rule+*) located in the `lightcas/rules` directory, you'll see that the vast majority of rules are recursive.
 
 Now try `my_factorial(6)` for example:
 
@@ -266,9 +266,9 @@ Compiling _ASysC_ is normally straightforward. It requires no external dependenc
 
 _ASysC_ has been compiled and tested under both *Linux* and *MSYS2* environments. Once compiled under Linux, its size does not exceed 100Kb. This is not the tool you'll hesitate to remove from your hard disk because it takes up too much space!
 
-Once the code has been compiled, the Makefile will automatically generate the Python files needed to simulate the circuits. This operation can sometimes take several seconds.
+Once the code has been compiled, the Makefile will automatically generate the _Python_ files needed to simulate the circuits. This operation can sometimes take several seconds.
 
-Before going any further, check that the *NumPy* and *Matplotlib* libraries are installed in your Python environment.
+Before going any further, check that the *NumPy* and *Matplotlib* libraries are installed in your _Python_ environment.
 
 === _ASysC_ command-line options
 
@@ -286,21 +286,21 @@ Example :
     ../lightcas/bin/asysc -i ac/RLC/RLC.cir -o ac/RLC/RLC.py -t ac
 ----
 
-This example will create a Python model for frequency analysis from the input file *RLC.cir*. 
+This example will create a _Python_ model for frequency analysis from the input file *RLC.cir*. 
 The process is described in more detail in the following paragraphs.
 
 === Applying _ASysC_ to electronics
 
 ==== From equations to simulation
 
-As mentioned previously, _ASysC_ is not a simulator, but a tool for manipulating algebraic expressions. Used on its own, it is unable to perform a simulation. To perform this step, we'll be using the Python language and the popular *NumPy* and *Matplotlib* libraries. *NumPy* will be used for complex mathematical calculations, while *Matplotlib* will be used to display the results graphically. Any other graphics library can be used if desired.
+As mentioned previously, _ASysC_ is not a simulator, but a tool for manipulating algebraic expressions. Used on its own, it is unable to perform a simulation. To perform this step, we'll be using the _Python_ language and the popular *NumPy* and *Matplotlib* libraries. *NumPy* will be used for complex mathematical calculations, while *Matplotlib* will be used to display the results graphically. Any other graphics library can be used if desired.
 
 To summarize, the process steps are as follows:
 
     . the circuit is described in text format (**+*.cir+** or **+*.rule+**),
-    . this description is given to the _ASysC_ compiler, which analyzes the circuit, solves the equation system and creates a behavioral model in Python,
-    . this Python model is then executed for simulation,
-    . once the simulation is complete, Python displays the results graphically.
+    . this description is given to the _ASysC_ compiler, which analyzes the circuit, solves the equation system and creates a behavioral model in _Python_,
+    . this _Python_ model is then executed for simulation,
+    . once the simulation is complete, _Python_ displays the results graphically.
 
 This is illustrated below:
 
@@ -314,18 +314,18 @@ config:
 ---
 flowchart TD
 A("Circuit description \(\*.cir/\*.rule\)")
-B("Circuit behavior model in Python language")
+B("Circuit behavior model in _Python_ language")
 C("Results are displayed with MatPlotLib")
 A -- Compilation with _ASysC_ -->B --Model execution--> C
 ----
 
-It's best not to modify the Python file generated by _ASysC_, as it will be overwritten. For simulation purposes, this file cannot be used on its own; it must be supplemented by two other Python files:
+It's best not to modify the _Python_ file generated by _ASysC_, as it will be overwritten. For simulation purposes, this file cannot be used on its own; it must be supplemented by two other _Python_ files:
 
 [horizontal]
 *circuit_base.py*:: this file contains the basic classes for circuit simulation. It is common to all simulated circuits.
 *simulation.py*:: this file contains the simulation and display functions for *Matplotlib*. It is specific to the circuit and simulation run. The user modifies it according to the simulation and can customize display as desired.
 
-The great advantage of using Python for simulation is that all simulation data is accessible directly in *NumPy* arrays. It is therefore possible to take advantage of the power of this library to carry out other processes, such as applying a Fourier transform following a transient analysis for instance.
+The great advantage of using _Python_ for simulation is that all simulation data is accessible directly in *NumPy* arrays. It is therefore possible to take advantage of the power of this library to carry out other processes, such as applying a Fourier transform following a transient analysis for instance.
 
 === Declaring a component
 
@@ -405,3 +405,29 @@ Thus, *NAME* will be replaced by *R1* and the instantiation *R1.CR* will replace
 
 2. The attentive reader will have noticed the absence of a semicolon "*;*" in the last line. The semicolon is used as a list separator *{ ; ; }* and therefore MUST not appear at the end of the last line of your circuit declaration.
 ====
+
+
+=== Instantiating a component
+
+A component instantiation is written in the following form:
+
+    <Instance name>.<Component name>( <node list>, <parameter list>)
+
+For example, for a resistance of type *CR* of name *R1*, value *1K* the instantiation will be written as follows:
+    
+    R1.CR( @3, @4, 1K)
+
+=== Quantities
+
+_ASysC_ also manages the sizes for better readability. The quantities supported are:
+
+[horizontal]
+p     ::  pico
+n     ::  nano
+u     ::  micro
+m     ::  milli
+k or K::  kilo
+M     ::  mega
+G     ::  giga
+
+So if you write *1G* for example, it will correspond to the value *1000000000*.

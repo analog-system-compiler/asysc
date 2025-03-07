@@ -39,7 +39,7 @@ This same tool will also be used to solve the systems of equations representing 
 The tool in question is called a *CAS*, that stands for *Computer Algebra System* <<R5>>.  This type of tool is commonly used by mathematicians and researchers. The best-known are *Maxima*, *Axiom*, *Maple* and *Mathematica*. 
 
 With a *CAS*, for example, you can find out how the result of an equation changes by assigning numerical values to symbolic variables.
-In the rest of this article, we'll look at how to generate Python code from a circuit description written in a symbolic language, and how this generated code will simulate the circuit and display the results.
+In the rest of this article, we'll look at how to generate _Python_ code from a circuit description written in a symbolic language, and how this generated code will simulate the circuit and display the results.
 
 But before getting to the heart of the matter, let's start with a few basics and take the following classic *R*,*L*,*C* electronic circuit as an example:
 
