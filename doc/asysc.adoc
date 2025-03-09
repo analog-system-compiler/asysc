@@ -10,7 +10,7 @@ Strictly speaking, _ASysC_ does not simulate the electronic system, but it is ca
 In a CAS, mathematical expressions are stored in tree form. For example, the expression stem:[-(a-b)] will be stored internally as follows:
 
 [.text-center] 
-[mermaid]
+[mermaid, format=png, align="center"]
 ....
 ---
 config:
@@ -28,12 +28,12 @@ flowchart TB
 
 A CAS contains a set of rules that allow you to perform transformations on the trees. 
 
-For example, there is a simplification rule that transforms the expression stem:[-(a-b)] into b-a. This rule is simply written stem:[-(a-b):= (b-a)].
+For example, there is a simplification rule that transforms the expression stem:[-(a-b)] into stem:[b-a]. This rule is simply written stem:[-(a-b) := (b-a)].
 
 It transforms the input tree into a simplified output tree:
 
 [.text-center] 
-[mermaid]
+[mermaid, format=png, align="center"]
 ....
 ---
 config:
@@ -61,7 +61,7 @@ Parameters **a** and **b** can be either numbers, variables or expressions thems
 For example, the expression stem:[-((3+x)-(z+5))] is recognized as being of the form stem:[-(a-b)], and is therefore transformed by the rule in question into stem:[(z+5)-(3+x)], which visually translates into the following transformation:
 
 [.text-center] 
-[mermaid]
+[mermaid, format=png, align="center"]
 ....
 ---
 config:
@@ -177,8 +177,7 @@ Let's go a step further and declare a symbolic transformation, like the slightly
 
 This feature as strange as it may seem enables _ASysC_ to perform all kinds of transformations on trees, by performing tree pattern recognition followed by tree substitution.
 
-[.text-center] 
-[mermaid]
+[mermaid, format=png, align="center"]
 ....
 ---
 config:
@@ -198,7 +197,7 @@ flowchart LR
         E --> F((a))
         E --> G((b))
     end
-    a --"f"--> b
+    a --" f() "--> b
 ....
 
 For common calculations, pre-configured rules are available.
@@ -256,12 +255,12 @@ You get stem:[720], which is the correct result of stem:[6!]
 
 Compiling _ASysC_ is normally straightforward. It requires no external dependencies other than *g++* and *make* executables. A simple invocation of the make command in the root directory suffices:
 
-[source,bash]
+[source, console]
 ----
-    git clone https://github.com/analog-system-compiler/asysc.git
-    cd asysc
-    git submodule update --init
-    make
+git clone https://github.com/analog-system-compiler/asysc.git
+cd asysc
+git submodule update --init
+make
 ----
 
 _ASysC_ has been compiled and tested under both *Linux* and *MSYS2* environments. Once compiled under Linux, its size does not exceed 100Kb. This is not the tool you'll hesitate to remove from your hard disk because it takes up too much space!
@@ -281,9 +280,9 @@ The `asysc` command accepts the following options:
 -c:: name of the circuit to be analyzed. By default: "CIRCUIT".
 
 Example :
-[source,bash]
+[source, console]
 ----
-    ../lightcas/bin/asysc -i ac/RLC/RLC.cir -o ac/RLC/RLC.py -t ac
+../lightcas/bin/asysc -i ac/RLC/RLC.cir -o ac/RLC/RLC.py -t ac
 ----
 
 This example will create a _Python_ model for frequency analysis from the input file *RLC.cir*. 
@@ -304,8 +303,7 @@ To summarize, the process steps are as follows:
 
 This is illustrated below:
 
-[.text-center]
-[mermaid]
+[mermaid,format=png, align="center"]
 ----
 ---
 config:
@@ -350,7 +348,7 @@ my_component( node1, node2, ..., noden, parameter1, parameter2, ..., parameteren
 
 Here's a concrete example for a resistor *R1* connected to nodes *node_p* and *node_n* :
 
-image::across_through.png[scaledwidth=50%,align="center"]
+image::across_through.png[scale=50%,align="center"]
 
 The resistor component declaration contains three equations:
 

@@ -8,7 +8,7 @@ Originally, these simulators integrated component models whose descriptions in t
 
 Over time, as needs have evolved, new functionalities have been added to enable the integration of components whose behavior is defined by the users themselves. These components are described by symbolic equations using classical mathematical functions through language extensions such as *Verilog-AMS*<<R1>> or, as in the example below,*VHDL-AMS*<<R2>>:
 
-[source, VHDL, .small]
+[source, VHDL]
 ----
 library IEEE;
 use work.electrical_system.all;
@@ -77,12 +77,16 @@ The matrix representation of this system gives:
 [.text-center]
 stem:[ ((1,,,,-R,,,),(,1,,,,-p*L,,),(,,1,,,,-1/(pC),),(,,,1,,,,),(,,,,1,-1,,),(,,,,,1,-1,),(,,,,,,1,-1),(1,1,1,-1,,,,)) times ((U_r),(U_l),(U_c),(U_e),(I_r),(I_l),(I_c),(I_v)) = ((0),(0),(0),(1),(0),(0),(0),(0)) ]
 
+[.text-center]
+stem:[ ((1,,,,-R,,,),(,1,,,,-p*L,,),(,,1,,,,-1/(pC),),(,,,1,,,,),(,,,,1,-1,,),(,,,,,1,-1,),(,,,,,,1,-1),(1,1,1,-1,,,,)) times ] stem:[((U_r),(U_l),(U_c),(U_e),(I_r),(I_l),(I_c),(I_v)) = ] stem:[((0),(0),(0),(1),(0),(0),(0),(0)) ]
+
 In an electronic circuit, nodes are rarely connected to a large number of branches. As a result, in most cases, we obtain matrices composed mainly of zeros, known as sparse matrices <<R7>>. The example shown above is a good illustration of this.
 
 Although the matrix representation is widely used, it presents two problems:
+
 - Firstly, the matrix consumes a lot of memory, since it is mainly made up of zeros. 
 - Secondly, a calculation over a given frequency interval requires the matrix to be reconstructed with all coefficients and then solved for each simulation step, i.e. for each iteration of the value of stem:[omega]. 
 
-If, for example, we want to display 200 points, corresponding to as many simulation steps, we need to reconstruct and solve the above matrix 200 times. There are of course optimizations to speed up the resolution of these matrices, such as *LU* decomposition <<R7>>.  
+If, for example, we want to display 200 points, corresponding to as many simulation steps, we need to reconstruct and solve the above matrix 200 times. There are of course optimizations to speed up the resolution of these matrices, such as *LU* decomposition <<R8>>.  
 
-> The idea presented in this article is to explore another approach where the resolution of this matrix would be performed directly in a symbolic form in order to easily re-evaluate the expressions obtained as a function of stem:[omega] for each simulation step.
+The idea presented in this article is to explore another approach where the resolution of this matrix would be performed directly in a symbolic form in order to easily re-evaluate the expressions obtained as a function of stem:[omega] for each simulation step.

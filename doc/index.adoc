@@ -1,14 +1,18 @@
 
 = Analog System Compiler
 Cyril Collineau
+:revdate: 06/03/2025
 :description: 
 :sectanchors: 
-:toc:
+:toc: left
+:toclevels: 4
 :stem:
 :doctype: book
 :imagesdir: images
 :source-highlighter: pygments
+:pygments-style: arduino
 :cachedir: docbuild
+:autofit-option:
 
 include::intro.adoc[]
 include::asysc.adoc[]
