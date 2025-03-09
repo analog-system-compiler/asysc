@@ -1,7 +1,7 @@
 
 #!/usr/bin/python3
 
-# Copyright (C) 2006-2024 The ASysC project                        
+# Copyright (C) 2006-2025 The ASysC project                        
 #                                                                    
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,18 +35,16 @@ plt.subplot(2, 1, 1)
 ylabel = []
 add_plot( my_circuit.BASE_U )
 add_plot( my_circuit.COLLECTOR_U )
-ax = plt.gca()
-ax.set_ylabel('Voltage [V]')
+plt.ylabel('Voltage [V]')
 plt.legend(ylabel)
+plt.title('NPN transistor biasing simulation example')
 plt.grid(True)
 
 plt.subplot(2, 1, 2)
 ylabel = []
 add_plot( my_circuit.Q1_IBE )
-# add_plot( my_circuit.Q1_IBC )
-ax = plt.gca()
-ax.set_xlabel('Time [s]')
-ax.set_ylabel('Intensity [A]')
+plt.xlabel('Time [s]')
+plt.ylabel('Intensity [A]')
 plt.legend(ylabel)
 plt.grid(True)
 

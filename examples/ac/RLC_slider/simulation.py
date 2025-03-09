@@ -1,7 +1,7 @@
 
 #!/usr/bin/python3
 
-# Copyright (C) 2006-2024 The ASysC project                        
+# Copyright (C) 2006-2025 The ASysC project                        
 #                                                                    
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -62,6 +62,7 @@ def update_all():
 my_circuit = circuit()
 
 fig, axs = plt.subplots()
+plt.title('RLC filter simulation example')
 fig.subplots_adjust(bottom=0.22)
 r_axe= plt.axes([0.1, 0.0, 0.65, 0.03])
 l_axe= plt.axes([0.1, 0.04, 0.65, 0.03])

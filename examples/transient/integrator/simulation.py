@@ -1,7 +1,7 @@
 
 #!/usr/bin/python3
 
-# Copyright (C) 2006-2024 The ASysC project                        
+# Copyright (C) 2006-2025 The ASysC project                        
 #                                                                    
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,29 +19,24 @@
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-import RLC
-
-from matplotlib.widgets import Slider
-from RLC import circuit
-#from circuit_base import circuit_base, element
+import integrator
+import circuit_base
+from integrator import circuit
+from circuit_base import circuit_base, element
 
 ylabel = []
-
-def add_gain_plot(axs, element):
-    axs.plot(element.history_x, 20 * np.log10(np.absolute(element.history_y)))
+def add_plot( element ):
+    plt.plot( element.history_x, element.history_y )
     ylabel.append(element.name)
 
 my_circuit = circuit()
-my_circuit.simulate_f(10, 1e6, 1000)
+my_circuit.simulate_t(0.02,400,1/50,100)
 
-fig, axs = plt.subplots(1, 1, layout="constrained")
-#plt.subplots_adjust(bottom=0.35)
-add_gain_plot(axs, my_circuit.R_U)
-add_gain_plot(axs, my_circuit.L_U)
-add_gain_plot(axs, my_circuit.C_U)
-axs.set_xlabel("Freq (Hz)")
-axs.set_ylabel("Gain")
-axs.legend(ylabel)
-axs.grid(True, which="both")
-axs.set_xscale('log')
+add_plot( my_circuit.V_U  )
+add_plot( my_circuit.A_Uout  )
+plt.title('Operational Amplifier Integrator simulation example')
+plt.ylabel('Voltage [V]')
+plt.legend(ylabel)
+plt.xlabel('Time [s]')
+plt.grid(True)
 plt.show()

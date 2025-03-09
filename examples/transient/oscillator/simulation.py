@@ -1,5 +1,5 @@
 
-# Copyright (C) 2006-2024 The ASysC project                        
+# Copyright (C) 2006-2025 The ASysC project                        
 #                                                                    
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,14 +33,12 @@ my_circuit.NOT1_Uin.init( 5 )
 my_circuit.simulate_t(0.01, 512)
 
 fig, axs = plt.subplots(1, 1, layout='constrained')
-# add_plot( axs, my_circuit.R1_U )
 add_plot( axs, my_circuit.NOT1_Uin )
 add_plot( axs, my_circuit.NOT1_Uout )
-# add_plot( axs, my_circuit.NOT2_Uin )
-# add_plot( axs, my_circuit.NOT2_Uout )
 axs.set_xlabel('Time (s)')
 axs.set_ylabel('V')
 axs.legend(ylabel)
 axs.grid(True)
+plt.title('Not-gates based oscillator simulation example')
 
 plt.show()

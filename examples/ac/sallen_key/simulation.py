@@ -1,7 +1,7 @@
 
 #!/usr/bin/python3
 
-# Copyright (C) 2006-2024 The ASysC project                        
+# Copyright (C) 2006-2025 The ASysC project                        
 #                                                                    
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,27 +28,31 @@ ylabel1 = []
 ylabel2 = []
 
 def add_gain_plot(element):
-    axs[0].plot(element.history_x, 20 * np.log10(np.absolute(element.history_y)))
+    plt.plot(element.history_x, 20 * np.log10(np.absolute(element.history_y)))
     ylabel1.append('gain('+element.name+')')
 
 def add_phase_plot(element):
-    axs[1].plot(element.history_x, np.angle(element.history_y))
+    plt.plot(element.history_x, np.angle(element.history_y))
     ylabel2.append('phase('+element.name+')')
 
 my_circuit = circuit()
 my_circuit.simulate_f(1e5, 1e8, 500)
 
-fig1, axs = plt.subplots(2, 1, layout="constrained")
+plt.subplot(2, 1, 1)
+plt.title('Sallen-Key filter simulation example')
+
 add_gain_plot(my_circuit.A_Uout)
+plt.ylabel("Gain")
+plt.xscale('log')
+plt.legend(ylabel1)
+plt.grid(True, which="both")
+
+plt.subplot(2, 1, 2)
 add_phase_plot(my_circuit.A_Uout)
-axs[1].set_xlabel("Freq (Hz)")
-axs[0].set_ylabel("Gain")
-axs[0].set_xscale('log')
-axs[1].set_ylabel("Phase")
-axs[1].set_xscale('log')
-axs[0].legend(ylabel1)
-axs[1].legend(ylabel2)
-axs[0].grid(True, which="both")
-axs[1].grid(True, which="both")
+plt.xlabel("Freq (Hz)")
+plt.ylabel("Phase")
+plt.xscale('log')
+plt.legend(ylabel2)
+plt.grid(True, which="both")
 
 plt.show()

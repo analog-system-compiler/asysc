@@ -71,9 +71,9 @@ This project is licensed under the GNU General Public License - see the [LICENSE
 
 ### Some transient analysis examples
 
-![Transient examples](doc/trans.png)
+![Transient examples](doc/trans_analysis.png)
 
 ### Some AC analysis examples
 
-![AC examples](doc/ac.png)
+![AC examples](doc/ac_analysis.png)
 

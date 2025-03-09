@@ -1,4 +1,4 @@
-# Copyright (C) 2006-2024 The ASysC project                        
+# Copyright (C) 2006-2025 The ASysC project                        
 #                                                                    
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -95,7 +95,6 @@ class circuit_base:
                 error = abs( (e.value_y - e.value_y_prev) / e.value_y_prev )            
                 if error > self.res:
                     self.conv = False
-                    #print(error)
 
     def simulate_t(self, duration, nb=500, res=1, max_iter=1):
         self._clear()
@@ -107,7 +106,7 @@ class circuit_base:
             iter_nb = 0
             while not self.conv and iter_nb < self.max_iter:
                 self.conv = True
-                self.step()
+                self.compute_t()
                 self._step_c()
                 iter_nb += 1
             self._step_t()
@@ -121,5 +120,5 @@ class circuit_base:
         for i in range(0, nb):
             self.freq = 10 ** (log_start + ((i * (log_end-log_start)) / nb))
             self.s = 2j * np.pi * self.freq
-            self.step()
+            self.compute_f()
             print("Iteration: {}/{}".format(i+1, nb), end="\r")

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Copyright (C) 2006-2024 The ASysC project
+# Copyright (C) 2006-2025 The ASysC project
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -54,6 +54,7 @@ fig, axs = plt.subplots()
 fig.subplots_adjust(bottom=0.22)
 axs.set_xlabel("Time [s]")
 axs.set_ylabel("Voltage [V]")
+plt.title('NE555 in oscillator mode simulation example')
 plt.grid(True)
 
 r_axe = plt.axes([0.2, 0.1, 0.65, 0.03])
