@@ -1,17 +1,19 @@
 
 == Conclusion
 
-From a simple C++ executable of around hundred kilobytes and a hundred lines of _Python_, it is possible to have an analog simulator capable of performing both time and frequency simulations. This solution also offers the possibility of creating components from algebraic formulations, which can then be hierarchically arranged to form complex structures and grouped together in libraries. 
+With a simple C++ executable of about a hundred kilobytes and a hundred lines of _Python_, it is possible to create an analog simulator capable of performing both time and frequency simulations. This solution also allows for the creation of components from algebraic formulations, which can then be hierarchically organized to form more complex components and grouped into libraries.
 
-The results obtained after simulation can be customized with the *Matplotlib* library and displayed in a single graph or in separate graphs with distinct scales. 
+The results obtained from simulations can be customized using the *Matplotlib* library, allowing them to be displayed either on a single graph or on separate graphs with distinct scales.
 
-_ASysC_ offers an interesting alternative to the more cumbersome commercial simulators, while allowing great freedom of creation and experimentation. It is portable and runs on both Linux and Windows.
+_ASysC_ offers an interesting alternative to more complex commercial simulators, offering significant flexibility for creation and experimentation. It is portable and compatible with both Linux and Windows.
 
-Of course, it lacks the performance of simulators like *Spice* and others. Indeed, equations can quickly become complex and time-consuming to calculate. Nevertheless, it can be a useful tool, as the simulation is carried out in _Python_, making it easy to work on the results obtained and to chain together processing operations, such as performing Fourier transforms (*FFT*) or measurements at certain points to find an optimum. The user can also run several simulations with different sets of random parameters and check the results obtained, in the manner of a Monte-Carlo approach. It is also possible to modify variables directly from _Python_ code and then observe how the system reacts.
+While it may not match the performance of simulators like *Spice* and others, due to the complexity and time required for solving equations, it still provides valuable capabilities.
 
-What's more, since _ASysC_ uses _Python_ for simulation, it can be used in conjunction with CocoTB <<R11>>, an environment also written in _Python_ to facilitate the testing of modules written in _VHDL_ and _Verilog_. This makes it possible to simulate analog processes jointly with digital ones. This combination opens up a whole new field of possibilities, enabling the development of advanced test benches for developers of mixed analog/digital systems.
+Since the simulation is conducted in _Python_, users can easily process the results, perform operations like Fourier transforms (*FFT*), and conduct measurements at specific points to identify optimal conditions. Additionally, users can run multiple simulations with different sets of random parameters, similar to a Monte Carlo approach. It also allows for direct modification of variables through _Python_ code to observe how the system reacts.
 
-_ASysC_ is still an experimental tool, lacking a whole host of features before it can be turned into a professional tool. 
+Additionally, _ASysC_ can be integrated with *CocoTB* <<R11>>, another _Python_-based tool designed to facilitate the testing of modules written in _VHDL_ and _Verilog_. This integration allows for the simultaneous simulation of both analog and digital processes. The combination of these tools opens up exciting new possibilities, enabling the creation of advanced test benches for developers working with mixed analog/digital systems.
+
+_ASysC_ is still an experimental tool and lacks many essential features needed to transform it into a full professional tool.
 
 [bibliography]
 = References
@@ -20,10 +22,10 @@ _ASysC_ is still an experimental tool, lacking a whole host of features before i
 * [[[R2,2]]] VHDL-AMS: https://fr.wikipedia.org/wiki/VHDL-AMS
 * [[[R3,3]]] ADMS: https://en.wikipedia.org/wiki/ADMS
 * [[[R4,4]]] Compact Modeling: https://www.amcad-engineering.com/transistor-model-extraction
-* [[[R5,5]]] Formal computation: https://fr.wikipedia.org/wiki/Syst%C3%A8me_de_calcul_formel
-* [[[R6,6]]] Laplace transforms: https://fr.wikipedia.org/wiki/Transformation_de_Laplace
-* [[[R7,7]]] Sparse matrices: https://fr.wikipedia.org/wiki/Matrice_creuse#:~:text=Dans%20la%20discipline%20de%20l,un%20probl%C3%A8me%20d'%C3%A9l%C3%A9ments%20finished.
+* [[[R5,5]]] Formal computation: https://en.wikipedia.org/wiki/Computer_algebra_system
+* [[[R6,6]]] Laplace transforms: https://en.wikipedia.org/wiki/Laplace_transform
+* [[[R7,7]]] Sparse matrices: https://en.wikipedia.org/wiki/Sparse_matrix
 * [[[R8,8]]] LU decomposition: https://qucs.sourceforge.net/docs/technical/technical.pdf §15.2.4
-* [[[R9,9]]] Sallen-Key filters: https://www.f-legrand.fr/scidoc/docmml/sciphys/electro/sallenkey/sallenkey.html
-* [[[R10,10]]] Newton-Raphson: https://help.altair.com/flux/Flux/Help/francais/UserGuide/Francais/topics/ResolutionDunSystemeNonLineaireMethodeDeNewtonRaphson.htm#:~:text=La%2520r%25C3%25A9solution%2520d%E2%80%99a%2520syst%25C3%25A8me,convergence%2520is%2520never%2520guaranteed
+* [[[R9,9]]] Sallen-Key filters: https://en.wikipedia.org/wiki/Sallen%E2%80%93Key_topology
+* [[[R10,10]]] Newton-Raphson: https://en.wikipedia.org/wiki/Newton%27s_method
 * [[[R11,11]]] CocoTB: https://www.cocotb.org/
