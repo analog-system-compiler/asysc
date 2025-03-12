@@ -1,7 +1,7 @@
 
 = Analog System Compiler
 Cyril Collineau
-:revdate: 06/03/2025
+//:revdate: 06/03/2025
 :description: 
 :sectanchors: 
 :toc: left

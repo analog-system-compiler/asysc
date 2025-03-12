@@ -1,13 +1,13 @@
 
 
-== AsysC (Analog System Compiler)
+== ASysC, the Analog System Compiler
 
 _ASysC_ is a tool that has slowly evolved over the years to the point where it can be used to simulate electronic systems. 
 Strictly speaking, _ASysC_ does not simulate the electronic system, but it is capable of assembling the equations of components declared in a netlist into a global system of equations, which it then solves symbolically. Once this stage has been completed, it will generate _Python_ code, which will then be used to simulate the circuit itself. Unlike other simulators mentioned in the introduction, _ASysC_ does not solve systems in matrix form, thus avoiding excessive memory usage.
 
 === How does a CAS work?
 
-In a CAS, mathematical expressions are stored in tree form. For example, the expression stem:[-(a-b)] will be stored internally as follows:
+In a CAS, mathematical expressions are stored in tree form. For example, the expression stem:[-(a-b)] is stored internally as follows:
 
 [.text-center] 
 [mermaid, format=png, align="center"]
@@ -124,7 +124,7 @@ A large number of rules are available, some generic, others specialized for elec
 [horizontal]
 units.rule:: rules on units,
 components.rule:: definition of analog components,
-ic.rule:: mixed components, such as the NE555.
+ic.rule:: mixed components, such as the *NE555*.
 electricity.rule:: transformations for frequency and time analysis, as well as Kirchhoff's laws,
 includes.rule:: input files for rule definitions,
 logic.rule:: some logic components: AND, OR, XOR gates and D and SR flip-flops,
@@ -164,11 +164,11 @@ In _ASysC_, a rule is always defined with the assignment operator *:=*.
 
 Third example, the declaration of a simple function with two parameters, an addition:
 
-    > my_sum( a, b) := a + b
-    > my_sum(2, 3)
+    > my_sum(a,b) := a + b
+    > my_sum(2,3)
     5
 
-Let's go a step further and declare a symbolic transformation, like the slightly absurd example below, which associates multiplication with addition via the 'f' transformation. Here, the parameter is no longer a variable but a tree made up of the *+* operator and two parameters *a* and *b* :
+Let's go a step further and declare a symbolic transformation, like the slightly absurd example below, which associates multiplication with addition via the '*f*' transformation. Here, the parameter is no longer a variable but a tree made up of the *+* operator and two parameters *a* and *b* :
 
     > f(a+b):=a*b
     a*b
@@ -274,7 +274,7 @@ Before going any further, check that the *NumPy* and *Matplotlib* libraries are 
 The `asysc` command accepts the following options:
     
 [horizontal, labelwidth=4]    
--i:: input file (*+*,cir+*)
+-i:: input file (*+*.cir+*)
 -o:: output file (*+*.py+*). If omitted, output will be in a file with the same name as the input file but with the *.py* file extension.
 -t:: type of analysis: *ac* or *trans*.
 -c:: name of the circuit to be analyzed. By default: "CIRCUIT".
@@ -312,7 +312,7 @@ config:
 ---
 flowchart TD
 A("Circuit description \(\*.cir/\*.rule\)")
-B("Circuit behavior model in _Python_ language")
+B("Circuit behavioral model in _Python_ language")
 C("Results are displayed with MatPlotLib")
 A -- Compilation with _ASysC_ -->B --Model execution--> C
 ----
@@ -334,7 +334,8 @@ The fundamental idea behind _ASysC_ is to consider that:
 
 In short, all is based on functions! This incredibly simple mechanism offers almost limitless possibilities.
 
-Hereafter, the term *rule* rather than *function* is used, which is a more appropriate term for a *CAS*, even though it's basically the same thing.
+Hereafter, the term *rule* rather than *function* is sometimes used, which is a more appropriate term for a *CAS*, even though it's basically the same thing.
+
 Thus, a component will be defined as a rule comprising a list of equations, as follows:
 
 ----
@@ -354,7 +355,7 @@ The resistor component declaration contains three equations:
 
     - an equation for defining the potential at nodes *node_p* and *node_n* using the *ACROSS()* function. This function will be used to determine the voltage in the circuit by applying the Kirchhoff's loop rule.
     - an equation to define the current between nodes *node_p* and *node_n*. With the *THROUGH()* function. This function will be used to determine the current in the circuit by applying the Kirchhoff's junction rule.
-    - an equation describing the physical relationship between current and voltage. In the case of a resistor, we have : stem:[U=R*I].
+    - an equation describing the physical relationship between current and voltage. In the case of a resistor, we have stem:[U=R*I].
 
 This gives the following declaration for the resistor:
 
@@ -393,15 +394,15 @@ NAME.CC(node_p, node_n, C) := {
 };
 ----
 
-Note that "*.*"" is a hierarchical operator that will propagate the instance name throughout the component's internal equations, to avoid ending up with variables with identical names when all equations are extracted for system resolution. 
+Note that "*.*" is a hierarchical operator that will propagate the instance name throughout the component's internal equations, to avoid ending up with variables with identical names when all equations are extracted for system resolution. 
 
 Thus, *NAME* will be replaced by *R1* and the instantiation *R1.CR* will replace the voltage *NAME.U* by *R1.U* and the current *NAME.I* by *R1.I*.
 
 [NOTE]
 ====
-1. Prefixing nodes with the *@* character is not mandatory. This is used to identify the nodes in the parameter list, to provide a little clarity. Nothing prevents you from noting your nodes "my_node1", "my_node2", etc.
+1. Prefixing nodes with the *@* character is not mandatory. This is used to identify the nodes in the parameter list, to provide better readability. Nothing prevents you from noting your nodes "my_node1", "my_node2", etc.
 
-2. The attentive reader will have noticed the absence of a semicolon "*;*" in the last line. The semicolon is used as a list separator *{ ; ; }* and therefore MUST not appear at the end of the last line of your circuit declaration.
+2. The semicolon is used as a list separator *{ ; ; }* and therefore MUST not appear at the end of the last line of your circuit declaration.
 ====
 
 
@@ -411,13 +412,13 @@ A component instantiation is written in the following form:
 
     <Instance name>.<Component name>( <node list>, <parameter list>)
 
-For example, for a resistance of type *CR* of name *R1*, value *1K* the instantiation will be written as follows:
+For example, a resistance of type *CR* named *R1*, connected between nodes *@3* and *@4* with a value of *1K* will be instantiated as follows:
     
     R1.CR( @3, @4, 1K)
 
 === Quantities
 
-_ASysC_ also manages the sizes for better readability. The quantities supported are:
+_ASysC_ also manages quantities for better readability. The quantities supported are:
 
 [horizontal]
 p     ::  pico
