@@ -35,5 +35,8 @@ run: all
 		popd > /dev/null; \
 	done
 
+header:	
+	insert-license --license-filepath=LICENSE --use-current-year --comment-style "#" $$(find . -name "*.py")
+
 .SILENT:
-.PHONY: all clean run
+.PHONY: all clean run header
