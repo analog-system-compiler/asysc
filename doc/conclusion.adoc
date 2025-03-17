@@ -1,19 +1,45 @@
 
 == Conclusion
 
-With a simple C++ executable of about a hundred kilobytes and a hundred lines of _Python_, it is possible to create an analog simulator capable of performing both time and frequency simulations. This solution also allows for the creation of components from algebraic formulations, which can then be hierarchically organized to form more complex components and grouped into libraries.
+Despite its small executable size of roughly 100 kilobytes, _ASysC_, when combined with _Python_ libraries like *Matplotlib* and *NumPy*, can perform both time-domain and frequency-domain simulations of components defined through algebraic expressions. These components can be structured hierarchically to form more complex systems and organized into reusable libraries.
 
-The results obtained from simulations can be customized using the *Matplotlib* library, allowing them to be displayed either on a single graph or on separate graphs with distinct scales.
+Simulation results can be customized with *Matplotlib*, allowing them to be displayed on a single graph or on separate graphs with distinct scales.
 
-_ASysC_ offers an interesting alternative to more complex commercial simulators, offering significant flexibility for creation and experimentation. It is portable and compatible with both Linux and Windows.
+_ASysC_ provides an interesting alternative to more complex commercial simulators, offering significant flexibility for creation and experimentation. It is portable and compatible with both Linux and Windows.
 
-While it may not match the performance of simulators like *Spice* and others, due to the complexity and time required for solving equations, it still provides valuable capabilities.
+While it may not match the performance of simulators like *Spice* and others, it still provides valuable capabilities. Since the simulation runs in _Python_, users can easily process the results, perform operations like Fourier transforms (*FFT*), and conduct measurements at specific points to identify optimal conditions. Additionally, users can run multiple simulations with different sets of random parameters, similar to a Monte Carlo approach. It also allows for direct modification of variables through _Python_ code to observe how the system reacts.
 
-Since the simulation is conducted in _Python_, users can easily process the results, perform operations like Fourier transforms (*FFT*), and conduct measurements at specific points to identify optimal conditions. Additionally, users can run multiple simulations with different sets of random parameters, similar to a Monte Carlo approach. It also allows for direct modification of variables through _Python_ code to observe how the system reacts.
-
-Additionally, _ASysC_ can be integrated with *CocoTB* <<R11>>, another _Python_-based tool designed to facilitate the testing of modules written in _VHDL_ and _Verilog_. This integration allows for the simultaneous simulation of both analog and digital processes. The combination of these tools opens up exciting new possibilities, enabling the creation of advanced test benches for developers working with mixed analog/digital systems.
+Moreover, _ASysC_ can be integrated with *CocoTB* <<R11>>, another _Python_-based tool designed to facilitate the testing of modules written in _VHDL_ and _Verilog_. This integration allows for the simultaneous simulation of both analog and digital processes. The combination of these tools opens up exciting new possibilities, enabling the creation of advanced test benches for developers working with mixed analog/digital systems.
 
 _ASysC_ is still an experimental tool and lacks many essential features needed to transform it into a full professional tool.
+
+// == ghatpgt
+
+// Despite its small executable size of roughly 100 kilobytes, ASysC, when combined with Python libraries like Matplotlib and NumPy, can perform both time-domain and frequency-domain simulations of components defined through algebraic expressions. These components can be structured hierarchically to form more complex systems and organized into reusable libraries.
+
+// Simulation results can be customized using Matplotlib, allowing them to be visualized either within a single graph or across multiple plots with distinct scales.
+
+// ASysC presents a flexible alternative to more complex commercial simulators, making it well-suited for experimentation and system design. It is portable and runs on both Linux and Windows.
+
+// While it may not match the computational performance of simulators like Spice, it still offers valuable capabilities. Since the simulation runs in Python, users can easily process results, apply operations such as Fourier transforms (FFT), and perform targeted measurements to identify optimal conditions. Moreover, it supports running multiple simulations with randomized parameters, akin to a Monte Carlo approach. Users can also modify variables dynamically within the Python code to analyze system responses in real time.
+
+// Furthermore, ASysC can integrate with CocoTB <<R11>>, a Python-based framework for testing modules written in VHDL and Verilog. This integration enables the simultaneous simulation of analog and digital processes, opening up new possibilities for developing sophisticated test benches in mixed-signal environments.
+
+// Currently, ASysC remains an experimental tool and lacks several key features required for professional-grade applications.
+
+// == Le chat
+
+// ASysC is a compact executable, roughly a hundred kilobytes in size, that leverages Python libraries like Matplotlib and NumPy to perform both time and frequency simulations of components defined using algebraic formulations. These components can be organized hierarchically to create more complex structures and grouped into libraries.
+
+// Simulation results can be customized with Matplotlib, allowing them to be displayed on a single graph or on separate graphs with distinct scales.
+
+// ASysC provides a flexible alternative to more complex commercial simulators, offering significant versatility for creation and experimentation. It is portable and compatible with both Linux and Windows.
+
+// While it may not match the performance of simulators like Spice, it still offers valuable capabilities.
+
+// Since simulations are conducted in Python, users can easily process results, perform operations like Fourier transforms (FFT), and conduct measurements at specific points to identify optimal conditions. Additionally, users can run multiple simulations with different sets of random parameters, similar to a Monte Carlo approach. It also allows for direct modification of variables through Python code to observe system reactions.
+
+// Moreover, ASysC can be integrated with CocoTB, a Python-based tool designed to facilitate the testing of modules written in VHDL and Verilog. This integration enables the simultaneous simulation of both analog and digital processes, opening up new possibilities for creating advanced test benches for developers working with mixed analog/digital systems.
 
 [bibliography]
 = References

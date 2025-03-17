@@ -27,14 +27,14 @@ begin
 end architecture one;
 ----
 
-To support these extensions, *Xyce*, *Qucs* and some other simulators incorporate *ADMS* (Automatic Device Model Synthesizer) <<R3>>, which is a tool able to translates a *Verilog-A* circuit description into another programming language, typically C or C++, that conforms to the simulator interface.
+To support these extensions, *Xyce*, *Qucs* and some other simulators incorporate *ADMS* (Automatic Device Model Synthesizer) <<R3>>, which is a tool able to translates a *Verilog-A* circuit description into another programming language, typically _C_ or _C++_, that conforms to the simulator interface.
 
 The integration of symbolic computing capabilities into simulation tools opens up new perspectives in terms of flexibility and modeling power. 
 Among other benefits, it enables what is known as “compact modeling” <<R4>>.
 
 However, most of these simulators employ resolution methods that transform the system of equations into matrix form for solving. This approach is inherently complex, requiring the evaluation of input equations, the organization of unknown variable coefficients into a matrix, and the subsequent solving of this matrix. Moreover, this process must be repeated at each calculation step, as the coefficients may vary throughout the simulation.
 
-This document introduces _ASysC_, an open-source tool capable of directly generating _Python_ code from circuit descriptions written in a symbolic language. Unlike traditional circuit simulation methods that rely on matrix representations for calculations, ASysC follows a distinct approach by maintaining the entire process—from circuit description to final solution—in symbolic form.
+This document introduces _ASysC_, an open-source tool capable of directly generating _Python_ code from circuit descriptions written in a symbolic language. Unlike traditional circuit simulation methods that rely on matrix representations for calculations, _ASysC_ follows a distinct approach by maintaining the entire process—from circuit description to final solution—in symbolic form.
 
 This tool is part of the *CAS* (*Computer Algebra System*) family <<R5>>. Such tools are commonly used by mathematicians and researchers, with the most well-known being *Maxima*, *Axiom*, *Maple* and *Mathematica*. 
 

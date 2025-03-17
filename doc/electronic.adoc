@@ -26,7 +26,7 @@ NOTE: The bias point calculation is not yet implemented in the current version o
 
 Let's return to our initial example. Our circuit comprises four components: a voltage source *CV*, a resistor *CR*, an inductor *CL*, a capacitor *CC*, whose names are *V*, *R*, *L* and *C* respectively. Some component names are preceded by the letter '*C*' to avoid conflicts with instance names. Nodes are identified as *@1*, *@2*, *@3* and *@4*. The circuit is shown below:
 
-image::RLC_ac.png[align="center", scale=50%]
+image::circuit_RLC.png[align="center", scale=50%]
 
 The netlist description of this circuit is:
 

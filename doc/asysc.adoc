@@ -28,7 +28,7 @@ flowchart TB
 
 A CAS contains a set of rules that allow you to perform transformations on the trees. 
 
-For example, there is a simplification rule that transforms the expression stem:[-(a-b)] into stem:[b-a]. This rule is simply written stem:[-(a-b) := (b-a)].
+For example, there is a simplification rule that transforms the expression stem:[-(a-b)] into stem:[b-a]. This rule is simply written stem:[-(a-b)] := stem:[(b-a)].
 
 It transforms the input tree into a simplified output tree:
 
@@ -313,7 +313,7 @@ config:
 flowchart TD
 A("Circuit description \(\*.cir/\*.rule\)")
 B("Circuit behavioral model in _Python_ language")
-C("Results are displayed with MatPlotLib")
+C("Results displayed with MatPlotLib")
 A -- Compilation with _ASysC_ -->B --Model execution--> C
 ----
 
