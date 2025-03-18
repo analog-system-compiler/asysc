@@ -27,12 +27,12 @@ This command generates Python code containing equations for AC simulation.
 ## Requirements
 
 ### C++ requirement
-    - g++ or clang
-    - make
+- g++ or clang
+- make
   
 ### Python requirements
-    - numpy
-    - matplotlib
+  - numpy
+  - matplotlib
   
 ## Getting source code
 ```bash
