@@ -1,3 +1,4 @@
 *.pyc
+*.log
 examples/gmon.out
 examples/gmon.txt
