@@ -1,0 +1,21 @@
+
+= Analog System Compiler
+Cyril Collineau
+v1.0
+//:revdate: 06/03/2025
+:description: 
+:sectanchors: 
+:toc: left
+:toclevels: 4
+:stem:
+:doctype: book
+:imagesdir: images
+:source-highlighter: pygments
+:pygments-style: arduino
+:cachedir: docbuild
+:autofit-option:
+
+include::intro.adoc[]
+include::asysc.adoc[]
+include::electronic.adoc[]
+include::conclusion.adoc[]

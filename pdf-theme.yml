@@ -1,0 +1,7 @@
+extends: default
+base:
+  #font_size: 8
+  #line_height_length: 10
+quote:
+  font_size: $base_font_size
+code_font_family: Courier

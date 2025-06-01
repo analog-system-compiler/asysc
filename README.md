@@ -8,9 +8,9 @@ With ASysC, you can write your own components by using algebraic descriptions.
 For instance, consider the resistor declaration:
 
     NAME.CR(@1,@2,R) := { 
-        NAME.U=ACROSS(@1,@2); 
-        NAME.I=THROUGH(@1,@2); 
-        NAME.U=R*NAME.I 
+        NAME.U = ACROSS( @1, @2 ); 
+        NAME.I = THROUGH( @1, @2 ); 
+        NAME.U = R * NAME.I 
     };
 
 For more examples, see the [component.rule](https://github.com/analog-system-compiler/lightcas/blob/3b8b692d76aa31503276b9a10259393b8f68dcf0/rules/components.rule) and [examples](examples) directories.
@@ -31,8 +31,8 @@ This command generates Python code containing equations for AC simulation.
 - make
   
 ### Python requirements
-  - numpy
-  - matplotlib
+- numpy
+- matplotlib
   
 ## Getting source code
 ```bash
