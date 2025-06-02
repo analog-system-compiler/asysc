@@ -34,15 +34,15 @@ Among other benefits, it enables what is known as “compact modeling” <<R4>>.
 
 However, most of these simulators employ resolution methods that transform the system of equations into matrix form for solving. This approach is inherently complex, requiring the evaluation of input equations, the organization of unknown variable coefficients into a matrix, and the subsequent solving of this matrix. Moreover, this process must be repeated at each calculation step, as the coefficients may vary throughout the simulation.
 
-This document introduces _ASysC_, an open-source tool capable of directly generating _Python_ code from circuit descriptions written in a symbolic language. Unlike traditional circuit simulation methods that rely on matrix representations for calculations, _ASysC_ follows a distinct approach by maintaining the entire process—from circuit description to final solution—in symbolic form.
+This document presents _ASysC_, an open-source tool that generates Python code directly from circuit descriptions written in a symbolic language. Unlike traditional circuit simulation methods that rely on matrix-based computations, ASysC introduces a new paradigm by preserving the entire process—from circuit description to final solution—in symbolic form.
 
-This tool is part of the *CAS* (*Computer Algebra System*) family <<R5>>. Such tools are commonly used by mathematicians and researchers, with the most well-known being *Maxima*, *Axiom*, *Maple* and *Mathematica*. 
+This tool belongs to the *CAS* (*Computer Algebra System*) family <<R5>>. Such tools are commonly used by mathematicians and researchers, with the most well-known being *Maxima*, *Axiom*, *Maple* and *Mathematica*. 
 
 With a *CAS* tool, for example, it is possible to determine how the result of an equation changes by assigning numerical values to symbolic variables.
 
 This type of tool is well-suited for defining user components, as it natively operates with symbolic equations. It can seamlessly integrate these components to construct analog circuits and, furthermore, solve the corresponding systems of equations that describe them.
 
-To understand the simulation process, let's first review some fundamentals and examine a classic *R*,*L*,*C* electronic circuit as a introductory example:
+To understand the simulation process, let's first review some fundamentals and examine a classic *R*,*L*,*C* electronic circuit as an introductory example:
 
 image::circuit_RLC2.png[scale=50, align="center"]
 
