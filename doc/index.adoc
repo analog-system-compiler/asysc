@@ -12,8 +12,9 @@ v1.0
 :imagesdir: images
 :source-highlighter: pygments
 :pygments-style: arduino
-:cachedir: docbuild
+:cachedir: doc/build
 :autofit-option:
+:data-uri:
 
 include::intro.adoc[]
 include::asysc.adoc[]
