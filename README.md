@@ -24,7 +24,7 @@ cd examples/ac/RLC
 
 This command generates Python code containing equations for AC simulation.
 
-Read this article to know more about ASysC : ![article](./doc/build/index.pdf)
+Read this article to know more about ASysC : [discover ASysC](doc/build/index.pdf)
 
 ## Requirements
 
