@@ -13,6 +13,7 @@ v1.0
 :source-highlighter: pygments
 :pygments-style: arduino
 :cachedir: doc/build
+:imagesoutdir: images
 :autofit-option:
 :data-uri:
 

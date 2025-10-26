@@ -73,11 +73,11 @@ stem:[ { (U_r = R * I_r ) , ( U_l = p * L * I_l ) , ( I_c = p * C * U_c ) , ( U_
 
 The matrix representation of this system gives: 
 
-// [.text-center]
-// stem:[ ((1,,,,-R,,,),(,1,,,,-p*L,,),(,,1,,,,-1/(pC),),(,,,1,,,,),(,,,,1,-1,,),(,,,,,1,-1,),(,,,,,,1,-1),(1,1,1,-1,,,,)) times ((U_r),(U_l),(U_c),(U_e),(I_r),(I_l),(I_c),(I_v)) = ((0),(0),(0),(1),(0),(0),(0),(0)) ]
-
 [.text-center]
-stem:[ ((1,,,,-R,,,),(,1,,,,-p*L,,),(,,1,,,,-1/(p*C),),(,,,1,,,,),(,,,,1,-1,,),(,,,,,1,-1,),(,,,,,,1,-1),(1,1,1,-1,,,,)) times ] stem:[((U_r),(U_l),(U_c),(U_e),(I_r),(I_l),(I_c),(I_v)) = ] stem:[((0),(0),(0),(1),(0),(0),(0),(0)) ]
+stem:[ ((1,,,,-R,,,),(,1,,,,-p*L,,),(,,1,,,,-1/(pC),),(,,,1,,,,),(,,,,1,-1,,),(,,,,,1,-1,),(,,,,,,1,-1),(1,1,1,-1,,,,)) times ((U_r),(U_l),(U_c),(U_e),(I_r),(I_l),(I_c),(I_v)) = ((0),(0),(0),(1),(0),(0),(0),(0)) ]
+
+// [.text-center]
+// stem:[ ((1,,,,-R,,,),(,1,,,,-p*L,,),(,,1,,,,-1/(p*C),),(,,,1,,,,),(,,,,1,-1,,),(,,,,,1,-1,),(,,,,,,1,-1),(1,1,1,-1,,,,)) times ] stem:[((U_r),(U_l),(U_c),(U_e),(I_r),(I_l),(I_c),(I_v)) = ] stem:[((0),(0),(0),(1),(0),(0),(0),(0)) ]
 
 In an electronic circuit, nodes are rarely connected to a large number of branches. As a result, in most cases, we obtain matrices composed mainly of zeros, known as sparse matrices <<R7>>. The example shown above is a good illustration of this.
 

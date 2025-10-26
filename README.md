@@ -3,7 +3,7 @@
 
 **asysc** is an analog system compiler based on the lightweight Computer Algebra System **lightcas**.
 
-With ASysC, you can write your own components by using algebraic descriptions. 
+Similar to the VHDL-AMS language, ASysC allows you to create your own components using algebraic descriptions.
 
 For instance, consider the resistor declaration:
 
@@ -13,18 +13,7 @@ For instance, consider the resistor declaration:
         NAME.U = R * NAME.I 
     };
 
-For more examples, see the [component.rule](https://github.com/analog-system-compiler/lightcas/blob/3b8b692d76aa31503276b9a10259393b8f68dcf0/rules/components.rule) and [examples](examples) directories.
-
-The analog system compiler is invoked with the following command (Example with the RLC circuit in AC mode analysis):
-
-```bash
-cd examples/ac/RLC
-../../../lightcas/bin/asysc -i RLC.cir -o RLC.py -t ac
-```
-
-This command generates Python code containing equations for AC simulation.
-
-Read this article to know more about ASysC : [discover ASysC](doc/build/index.pdf)
+Additional component definition examples can be found in [component.rule](https://github.com/analog-system-compiler/lightcas/blob/3b8b692d76aa31503276b9a10259393b8f68dcf0/rules/components.rule) file and [examples](examples) directories.
 
 ## Requirements
 
