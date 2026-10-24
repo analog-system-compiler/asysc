@@ -9,7 +9,7 @@ BIN_DIR       = ../lightcas/bin
 all : $(CIRCUITS_PY)
 
 %.py: %.cir	circuit_base.py	
-	-if [[ "$^" == *"ac/"* ]]; \
+	if [[ "$^" == *"ac/"* ]]; \
 	then \
 		ANALYSIS_MODE="ac"; \
 	else \
@@ -21,14 +21,14 @@ all : $(CIRCUITS_PY)
 ifeq ($(GPROF),1)
 	gprof $(BIN_DIR)/asysc > gmon.txt
 endif	
+	cp -fu circuit_base.py $(dir $@)
 	-[ -f debug.log ] && mv debug.log $(@D)
 	
 clean:
-	-rm -f $(CIRCUITS_PY) $(addsuffix "circuit_base.py", $(EXAMPLE_DIRS))
+	rm -f $(CIRCUITS_PY) $(addsuffix "circuit_base.py", $(EXAMPLE_DIRS))
 
 run: all
 	for EXAMPLE_DIR in $(EXAMPLE_DIRS); do \
-		cp -fu circuit_base.py $$EXAMPLE_DIR; \
 		pushd $$EXAMPLE_DIR > /dev/null; \
 		echo Executing $${EXAMPLE_DIR}simulation.py; \
 		python3 simulation.py; \

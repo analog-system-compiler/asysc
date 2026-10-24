@@ -2,13 +2,13 @@
 
 aop_integrator :=
 {
-    V.VSQR ( @vin, @gnd, 1, 200, 1m , 0 , 1n, 1n ); 
-    R1.CR ( @vin, @ao_minus, 10k );
-    R2.CR ( @ao_plus, @gnd, 0 );
-    C1.CC ( @ao_minus, @vout, 10n );
+    V.VSQR ( @vin, @gnd, 2, 200, 1m , 0 , 1n, 1n ); 
+    R1.CR  ( @vin, @ao_minus, 20k );
+    R2.CR  ( @ao_plus, @gnd, 0 );
+    C1.CC  ( @ao_minus, @vout, 10n );
     A.OPAMP( @ao_plus, @ao_minus, @vout, @gnd, @vccp, @vccn );
-    VP.CV( @vccp, @gnd, 7 );
-    VN.CV( @vccn, @gnd, -7 )
+    VP.CV  ( @vccp, @gnd, 5 );
+    VN.CV  ( @vccn, @gnd, -5 )
 };
 
 CIRCUIT := SOLVE_TRANS( aop_integrator )

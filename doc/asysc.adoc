@@ -267,7 +267,7 @@ _ASysC_ has been compiled and tested under both *Linux* and *MSYS2* environments
 
 Once the code has been compiled, the Makefile will automatically generate the _Python_ files needed to simulate the circuits. This operation can sometimes take several seconds.
 
-Before going any further, check that the *NumPy* and *Matplotlib* libraries are installed in your _Python_ environment.
+Before going any further, check that the *NumPy* and *Matplotlib* libraries are installed in your _Python_ environment. If you are running under WSL (Windows System for Linux), you may also install *PyQt6*.
 
 === _ASysC_ command-line options
 
