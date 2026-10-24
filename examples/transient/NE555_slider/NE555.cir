@@ -9,8 +9,8 @@ test_NE555( R ) :=
   RB.CR( @2, @1, R);
   RA.CR( @3, @2, 2.7K );
   U.NE555( @1, @1, @2, @4, @3, @0  ); //@trigger,  @threshold,  @discharge, @output,  @vcc, @gnd
-  P1.PROBE( @4, @0 );
-  P2.PROBE( @2, @0 )
+  P1.UPROBE( @4, @0 );
+  P2.UPROBE( @2, @0 )
 };
 
 CIRCUIT := SOLVE_TRANS( test_NE555( _getv( _RV ) ) )

@@ -13,7 +13,7 @@ Moreover, _ASysC_ can be integrated with *CocoTB* <<R11>>, another _Python_-base
 
 _ASysC_ is still an experimental tool and lacks many essential features needed to transform it into a full professional tool.
 
-// == ghatpgt
+// == 
 
 // Despite its small executable size of roughly 100 kilobytes, ASysC, when combined with Python libraries like Matplotlib and NumPy, can perform both time-domain and frequency-domain simulations of components defined through algebraic expressions. These components can be structured hierarchically to form more complex systems and organized into reusable libraries.
 

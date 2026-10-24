@@ -9,8 +9,8 @@
 	R2.CR    ( @emitter, @GND, 0 );
       R3.CR    ( @VCC, @collector, 1K );
 	Q1.NPN   ( @base, @collector, @emitter, 100 );
-      BASE.PROBE      ( @1, @GND );
-      COLLECTOR.PROBE ( @collector, @GND )
+      BASE.UPROBE      ( @1, @GND );
+      COLLECTOR.UPROBE ( @collector, @GND )
 };
 
 CIRCUIT := SOLVE_TRANS( NPN_TEST( ) )

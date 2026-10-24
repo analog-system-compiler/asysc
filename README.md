@@ -3,7 +3,9 @@
 
 **asysc** is an analog system compiler based on the lightweight Computer Algebra System **lightcas**.
 
-With ASysC, you can write your own components by using algebraic descriptions. For instance, consider the resistor declaration:
+With ASysC, you can write your own components by using algebraic descriptions. 
+
+For instance, consider the resistor declaration:
 
     NAME.CR(@1,@2,R) := { 
         NAME.U=ACROSS(@1,@2); 
@@ -25,12 +27,12 @@ This command generates Python code containing equations for AC simulation.
 ## Requirements
 
 ### C++ requirement
-    - g++ or clang
-    - make
+- g++ or clang
+- make
   
 ### Python requirements
-    - numpy
-    - matplotlib
+- numpy
+- matplotlib
   
 ## Getting source code
 ```bash
