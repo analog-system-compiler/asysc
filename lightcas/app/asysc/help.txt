@@ -1,0 +1,52 @@
+
+Commands:
+    help: this help
+    hex:  display in hexadecimal mode
+    bin:  display in binary mode
+    dec:  display in decimal mode
+    clr:  clear all assignments
+
+Assignments:
+    a:=5
+    a:=b
+
+Simplifications:
+    a:=5
+    b:=a
+
+Last assignment value:
+    ans
+
+Supported operators:
+    a?b:c a|b a~b a+b a-b a&b a*b a//b a^b a<<b a>>b a==b a<>b a<=b a<b a>=b a>b a||b a&&b a[B] -a /a !a ~a a!
+
+Supported functions:
+    MIN MAX MOD BOOL LNOT SIN COS TAN ASIN ACOS ATAN SINH COSH TANH ASINH ACOSH ATANH EXP LOG LOG10 SQRT SQR ABS FLOOR CEIL RAND
+
+Fonction definition:
+    f(x):=SIN(x)
+
+Derivatives:
+    DER(SIN(x),x)
+
+Taylor series:
+    TAYLOR(COS(x),x,0,10)
+
+Vectors:
+    Addition     : {a,b}+{5,6}
+    Substraction : {a,b}-{5,6}
+
+Equation and system solving:
+    SOLVE(x-2,x)
+    SOLVE(x^2-2*x+4,x)
+    SOLVE({x-y+1,x+y-5},{x,y})
+
+Complex numbers:
+    (2+3*j)*(5*j+1)
+    IM(x+j*y)
+    RE(x+j*y)
+
+Bases:
+    Binary      : 0b1110
+    Hexadecimal : 0xABCE
+

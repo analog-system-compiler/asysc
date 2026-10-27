@@ -1,3 +1,0 @@
-[submodule "lightcas"]
-	path = lightcas
-	url = https://github.com/analog-system-compiler/lightcas.git

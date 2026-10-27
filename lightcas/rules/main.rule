@@ -1,0 +1,363 @@
+
+
+/*
+ * Copyright (C) 2006-2025 The LightCAS project                        
+ *                                                                    
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or   
+ * any later version.                                                  
+ *                                                                    
+ * This program is distributed in the hope that it will be useful,     
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of      
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the       
+ * GNU General Public License for more details.                        
+ *                                                                    
+ * You should have received a copy of the GNU General Public License   
+ * along with this program; If not, see <https://www.gnu.org/licenses/>
+ */
+
+PI := 3.14159265358979323846264338327950288;
+
+IF2( a b ) := IF( b a );
+IF2( 0 (a:b) ) := b;
+IF2( 1 (a:b) ) := a;
+IF3( c (a:b) ) := IF2( BOOL(c) (a:b) );
+
+//Fract
+MONADD(a MONDIV(b c))            := MONDIV( MONADD( MONMUL(a c) b ) c );                          //a+b/c   := (a*c+b)/c
+MONADD(MONDIV(a c) b)            := MONDIV( MONADD( MONMUL(b c) a ) c );                          //a/c+b   := (a+b*c)/c
+MONADD(MONDIV(a b) MONDIV(c d))  := MONDIV( MONADD( MONMUL(a d)   MONMUL(b c) )  MONMUL( b d ) ); //a/b+c/d := (a*d+b*c)/(b*d)
+MONADD(MONDIV(a b) MONDIV(c b))  := MONDIV( MONADD(a c)  b );                                     //a/b+c/b := (a+c)/b
+MONMUL(a MONDIV(b c))            := MONDIV( MONMUL(a b)  c );                                     //a*b/c   := (a*b)/c
+MONMUL(MONDIV(a c) b)            := MONDIV( MONMUL(a b)  c );                                     //a/c*b   := (a*b)/c
+MONMUL(MONDIV(a b) MONDIV(c d))  := MONDIV( MONMUL(a c)  MONMUL(b d) );                           //a/b*c/d := (a*c)/(b*d)
+MONDIV(MONDIV(a b) c)            := MONDIV( a MONMUL(c b ) );                                     //(a/b)/c := a/(c*b)
+
+POLY(-a v)                       := MONNEG( POLY(a v) );
+POLY(/a v)                       := MONDIV( POLY(1 v)   POLY(a v)    );
+POLY(a+b v)                      := MONADD( POLY(a v)   POLY(b v)    );
+POLY(a-b v)                      := MONSUB( POLY(a v)   POLY(b v)    );
+POLY(a*b v)                      := MONMUL( POLY(a v)   POLY(b v)    );
+POLY(a/b v)                      := MONDIV( POLY(a v)   POLY(b v)    );
+POLY(a^b v)                      := MONPOW( POLY(a v)   SIMPLIFY(b)  );
+POLY(a[b] v)                     := POLY(a v)[SIMPLIFY(b)];
+
+IPOLY(a j())                     := IPOLY2(REDUCE_COMPLEX(a) j);
+IPOLY(a v)                       := IPOLY2(a v);
+
+//IPoly if simplication failure
+IPOLY2(MONADD(a b) v)            := IPOLY(a v) + IPOLY(b v);
+IPOLY2(MONDIV(a b) v)            := IPOLY(a v) / IPOLY(b v);
+IPOLY2(MONMUL(a b) v)            := IPOLY(a v) * IPOLY(b v);
+IPOLY2(MONPOWCONST((a,b),c) v)   := IPOLY(a v) ^ b;
+IPOLY2(a[b] v)                   := IPOLY(a v)[b];
+IPOLY2({a} v)                    := {IPOLY(a v)};
+
+IPOLY2(a&b v)                := IPOLY(a v) & IPOLY(b v);
+IPOLY2(a|b v)                := IPOLY(a v) | IPOLY(b v);
+IPOLY2(a^b v)                := IPOLY(a v) ^ IPOLY(b v);
+IPOLY2(~a  v)                := ~IPOLY(a v);
+
+//NORM2(a q)                       := IPOLY(NORM3(POLY(a q)) q);
+NORM(a, q)                        := IPOLY_NORM(POLY(a q) q);
+
+POLY( SOLVE(a,b)       1 )      := POLYF( SIMPLIFY(SOLVE(a,b)));
+POLY( _funct1( a b   ) 1 )      := POLYF( _funct1( SIMPLIFY(a) b ));
+POLY( _funct2( a b c ) 1 )      := POLYF( _funct2( SIMPLIFY(a) SIMPLIFY(b) c ));
+
+//Mult
+MONMUL( MON(a b)  MON(c d))               := MON((a*c) (b+d));
+MONMUL( a POLYSTORE(b MON(c d)) )         := MONADD(MONMUL(a b) MONMUL(a MON(c d)));
+MONMUL( POLYSTORE(a MON(b c)) d )         := MONADD(MONMUL(a d) MONMUL(d MON(b c)));
+
+//Add
+MONADD( MON(a b) MON(0 c)      )          := MON(a b);
+MONADD( MON(0 c) MON(a b)      )          := MON(a b);
+MONADD( MON(a b) MON(c b)      )          := MON(a+c b);
+MONADD( MON(a b) MON(c d)      )          := POLYSTORE(MON(a b) MON(c d));
+MONADD( POLYSTORE(a MON(b c)) MON(d c)  ) := POLYSTORE( a MON(d+b c));
+MONADD( POLYSTORE(a b) MON(d e)  )        := POLYSTORE( MONADD(a MON(d e)) b);
+MONADD( a POLYSTORE(b c)  )               := MONADD( MONADD(a b)  c );
+
+//Sub
+MONSUB( a  b) := MONADD(a MONNEG(b));
+
+//Neg
+MONNEG( MON(a b))             := MON(-a b);
+MONNEG( POLYSTORE(a b))       := POLYSTORE(MONNEG(a) MONNEG(b));
+MONNEG( MONDIV(a b))          := MONDIV(MONNEG(a) b);
+
+//Div
+MONDIV( MON(a b) MON(c d))                 := MON(a/c b-d);
+MONDIV( POLYSTORE(a MON(b c)) MON(d e) )   := MONADD(MONDIV(a MON(d e)) MONDIV(MON(b c) MON(d e)));
+
+//Pow
+MONPOW(a b)                      := MONPOWCONST(a, b, FLOOR(b)==b);
+MONPOW( MON(1 0)  b )            := MON(1 0);
+MONPOW( a 1 )                    := a;
+
+//Unevaluable exponent
+MONPOWCONST( MON(a b), c, FLOOR(c)==c ) := MON(a^c b*c);
+//Decimal exponent
+MONPOWCONST( MON(a b), c, 0 )    := MON(a^c b*c);
+//Integer exponent
+MONPOWCONST( a, 1, 1 )           := a;
+MONPOWCONST( a, e, 1 )           := MONMUL( MONPOWCONST(a, e-1, 1) a );
+MONPOWCONST( a,-e, 1 )           := MONDIV( MON(1 0) MONPOWCONST(a, e, 1) );
+
+//Logic
+MON(1 1) |  MON(1 1)      := MON(1 1);
+MON(a 0) |  MON(b 0)      := MON(a|b 0);
+MON(1 1) &  MON(1 1)      := MON(1 1);
+MON(a 0) &  MON(b 0)      := MON(a&b 0);
+~MON(a 0)                 := MON(~a 0);
+
+//Poly
+POLY(v v)             := MON(1 1);  
+//POLY(_const(a) v)      := MON(a 0);
+POLY(a v)             := MON(a 0);
+
+POLYF(a)              := MON(a 0);
+
+SIMPLIFY(MON(a b))               := MON(SIMPLIFY(a) SIMPLIFY(b));
+SIMPLIFY(POLYSTORE(a b))         := POLYSTORE(SIMPLIFY(a) SIMPLIFY(b));
+
+GET_POWER(POLYSTORE(a b) c)      := GET_POWER(a c)+GET_POWER(b c);
+GET_POWER(MON(a b) b)            := a;
+GET_POWER(a b)                   := 0;
+
+NORM3(a)                         := MONDIV(a MON(GET_POWER(a 1) 0));
+
+//IPoly
+IPOLY2(MON(a b) v)               := a*v^b;
+IPOLY2(POLYSTORE(a b) v)         := IPOLY2(a v)+IPOLY2(b v);
+IPOLY2(MONDIV(a b) v)            := IPOLY2(a v)/IPOLY2(b v);
+
+IPOLY3(MON(a 0) v)               := a;
+IPOLY3(MON(a b) v)               := (a^(1/b)*v)^b;
+IPOLY3(POLYSTORE(a b) v)         := IPOLY3(a v)+IPOLY3(b v);
+IPOLY5(((a,b),c),v)              := IPOLY3(MONDIV(a MON(c 0)) v)/IPOLY3(MONDIV(b MON(c 0)) v);
+
+IPOLY_NORM(MONDIV(a b) v)        := IPOLY5(((a,b),GET_POWER(b 0)),v);
+IPOLY_NORM(a v)                  := IPOLY3(a v);
+
+--a          := a    ;
+-0           := 0    ;
+
+a==a         :=1     ;
+a>=a         :=1     ;
+a<=a         :=1     ;
+a<>a         :=0     ;
+a>a          :=0     ;
+a<a          :=0     ;
+//!0           :=1     ;
+//!1           :=0     ;
+!(a==b)      := (a<>b) ;
+!(a<>b)      := (a==b) ;
+!(a<=b)      := (a>b ) ;
+!(a<b)       := (a>=b) ;
+!(a>=b)      := (a<b ) ;
+!(a>b)       := (a<=b) ;
+
+SIN(-a)      := -SIN(a) ;
+COS(-a)      := COS(a) ;
+// SIN(a+PI/2)  := COS(a)
+// COS(a+PI/2)  := -SIN(a)
+// SIN(PI/2+a)  := COS(a)
+// COS(PI/2+a)  := -SIN(a)
+EXP(-a)      := 1/EXP(a) ;
+
+0+b                := b       ;
+a+0                := a       ;
+-a+-b              := -(a+b)  ;
+-a+b               := b-a     ;
+a+-b               := a-b     ;
+SIN(a)+SIN(b)      := COS((a-b)/2)*SIN((a+b)/2)*2;
+LOG10(a)+LOG10(b)  := LOG10(a*b) ;
+
+0-b                := -b  ;
+a-0                := a  ;
+a--b               := a+b ;
+-a-b               := -(a+b) ;
+-a--b              := b-a ;
+-(a-b)             := b-a ;
+SIN(a)-SIN(b)      := COS((a+b)/2)*SIN((a-b)/2)*2;
+LOG10(a)-LOG10(b)  := LOG10(a/b)  ;
+
+0*b              := 0  ;
+a*0              := 0  ;
+1*b              := b  ;
+a*1              := a  ;
+-a*-b            := a*b  ;
+-a*b             := -(a*b) ; //allow simplification of (-1*a)=>-a
+a*-b             := -(a*b) ; // to simplify consts
+(a/b)*c          := (a*c)/b   ; //allow simplification of (1/a)*b=>a/b
+a*(b/c)          := (a*b)/c   ;
+EXP(a)*EXP(b)    := EXP(a+b)  ;
+SQRT(a)*SQRT(b)  := SQRT(a*b) ;
+SQR(a)*SQR(b)    := SQR(a*b)  ;
+
+0/b              := 0  ;
+a/1              := a  ;
+a/0              := DIVIDE_BY_ZERO_ERROR();
+-a/b             := -(a/b)  ; // to simplify consts
+a/-b             := -(a/b)  ; // to simplify consts
+a/-b             := -a/b    ;
+(a/b)/c          := a/(b*c) ;
+
+LOG(EXP(1))      := 1         ;
+EXP(a)/EXP(b)    := EXP(a-b)  ;
+SQRT(a)/SQRT(b)  := SQRT(a/b) ;
+SQRT(-_const(a)) := SQRT(a)*j ;
+SQR(a)/SQR(b)    := SQR(a/b)  ;
+
+a^0              := 1  ;
+0^b              := 0  ;
+1^b              := 1  ;
+a^1              := a  ;
+a^-b             := 1/(a^b) ;
+
+/******** Logic **************/
+
+~0       := -1 ;
+~-1      := 0  ;
+0|b      := b  ;
+a|0      := a  ;
+-1|b     := -1 ;
+a|-1     := -1 ;
+0&b      := 0  ;
+a&0      := 0  ;
+a&-1     := a  ;
+-1&b     := b  ;
+~a |  a  := -1 ;
+ a | ~a  := -1 ;
+~a &  a  := 0  ;
+ a & ~a  := 0  ;
+
+POLY(a&b v)               := POLY(a v) & POLY(b v);
+POLY(a|b v)               := POLY(a v) | POLY(b v);
+POLY(~a v)                := ~POLY(a v);
+
+BOOL(a==b)         := (a==b);
+BOOL(a<>b)         := (a<>b);
+BOOL(a>=b)         := (a>=b);
+BOOL(a<=b)         := (a<=b);
+BOOL(a>b)          := (a>b);
+BOOL(a<b)          := (a<b);
+BOOL(!a)           := !a   ;
+BOOL(a)            := (a<>0);
+
+/******** Imaginary **************/
+REDUCE_COMPLEX(MON(a 0))         := MON(a 0);
+REDUCE_COMPLEX(MON(a 1))         := MON(a 1);
+REDUCE_COMPLEX(MON(a _const(b)))  := REDUCE_COMPLEX(MON(-a b-2));
+REDUCE_COMPLEX(MON(a (-_const(b)))) := REDUCE_COMPLEX(MON(-a 2-b));
+REDUCE_COMPLEX(POLYSTORE(a b))   := MONADD(REDUCE_COMPLEX(a) REDUCE_COMPLEX(b));
+REDUCE_COMPLEX(MONDIV(a b))      := MONDIV(REDUCE_COMPLEX(a) REDUCE_COMPLEX(b));
+
+RE(POLYSTORE(a b))               := RE(a)+RE(b);
+RE(MON(a 1))                     := 0;
+RE(MON(b 0))                     := b;
+IM(POLYSTORE(a b))               := IM(a)+IM(b);
+IM(MON(a 1))                     := a;
+IM(MON(b 0))                     := 0;
+
+RE(a) := RE(REDUCE_COMPLEX(POLY(a j)));
+IM(a) := IM(REDUCE_COMPLEX(POLY(a j)));
+CONJ(a) := RE(a)-IM(a)*j;
+
+
+//HIER(a GLOBAL(b))     := b; // ??
+
+POLY((a,b) v)         := (POLY(a v),POLY(b v)); //parenthesis are important there!!!
+POLY({a} v)           := {POLY(a v)};
+
+IPOLY((a,b) v)        := (IPOLY(a v),IPOLY(b v)); //parenthesis are important there!!!
+IPOLY({a} v)          := {IPOLY(a v)};
+
+SIMPLIFY(_const(a))   := a ;
+SIMPLIFY(-_const(a))  := -a;
+SIMPLIFY(_set(a b))   := _set( a SIMPLIFY(b) ); //needed for console app
+SIMPLIFY(a)           := SIMPLIFY3(EXPAND2(a));
+
+SIMPLIFY3(a)          := SIMPLIFY2(a GETVAR(a));
+SIMPLIFYELEM(a v)     := SIMPLIFY2(a v);
+SIMPLIFY2(a 1)        := IPOLY(POLY(a 1) 1);
+SIMPLIFY2(a v)        := IPOLY(SIMPLIFY(POLY(a v)) v);
+
+//GETVAR(a,b)           := CHOOSEVAR(  GETVAR(a) GETVAR(b) );
+GETVAR(a+b)           := CHOOSEVAR(    GETVAR(a)  GETVAR(b) );
+GETVAR(a-b)           := CHOOSEVAR(    GETVAR(a)  GETVAR(b) );
+GETVAR(a*b)           := CHOOSEVAR(    GETVAR(a)  GETVAR(b) );
+GETVAR(a/b)           := CHOOSEVARDIV( GETVAR(a)  GETVAR(b) );
+GETVAR(a^b)           := GETVAR(a);
+GETVAR(-a)            := GETVAR(a);
+GETVAR(_elem(a))      := a;
+GETVAR(_funct0(a))    := a; // Needed to simplify equations with "j"
+GETVAR(a.b)           := a.b;
+GETVAR(a)             := 1;
+
+EXPAND(a+b)           := EXPAND2(a)+EXPAND2(b);
+EXPAND(a-b)           := EXPAND2(a)-EXPAND2(b);
+EXPAND(a*b)           := EXPAND2(a)*EXPAND2(b);
+EXPAND(a/b)           := EXPAND2(a)/EXPAND2(b);
+EXPAND(a^b)           := EXPAND2(a)^EXPAND2(b);
+EXPAND(-a)            := -EXPAND2(a);
+EXPAND(a)             := a;
+
+EXPAND2( a )          := EXPAND( _get(a) ); // replace element with its equivalent if any
+
+CMP_RANK( a b ) :=  _eval( _gt( _elemid(a) _elemid(b) ) );
+
+CHOOSEVAR(1 b)        := b;
+CHOOSEVAR(a 1)        := a;
+CHOOSEVAR(a.b c)      := a.b;
+CHOOSEVAR(a b.c)      := b.c;
+CHOOSEVAR(a b)        := ( CMP_RANK(a b ) ? a : b );
+CHOOSEVARDIV(1 b)     := b;
+CHOOSEVARDIV(a b)     := a; //No RANK there !!!
+
+//Range
+//RANGE( _const(a) _const(b) ) := ( (a < b) ? ( RANGE( a b-1 ), b ) : ( (a > b) ? ( RANGE( a b+1 ), b ) : b ) );
+//RANGE( _const(a) _const(b) ) := ( (a == b) ? a : ( (a < b) ? ( RANGE( a b-1 ), b ) : ( RANGE( a b+1 ), b ) ) );
+
+// SIN(a,b)                  := (SIN(a),SIN(b));
+// COS(a,b)                  := (COS(a),COS(b));
+// TAN(a,b)                  := (TAN(a),TAN(b));
+
+// _funct1( { a } b )  := { _funct1( a b ) };
+// _funct1( (a, b) c ) := ( _funct1( a c ), _funct1( b c ) );
+
+/******** Matrixes **************/
+
+VSIZE({a,b,c,d,e,f,g,h})  := VSIZE({a})+7;
+VSIZE({a,b,c,d})          := VSIZE({a})+3;
+VSIZE({a,b})              := VSIZE({a})+1;
+VSIZE({a})                  := 1;
+
+VSIZE2(a,b,c,d,e,f,g,h)  := VSIZE2(a)+7;
+VSIZE2(a,b,c,d)          := VSIZE2(a)+3;
+VSIZE2(a,b)              := VSIZE2(a)+1;
+VSIZE2(a)                := 1;
+
+{a}[_const(c)]            := INVAT({a}, VSIZE({a}) -1 - c );
+INVAT({a,b},0)            := b;
+INVAT({a,b},_const(c))    := INVAT({a},c-1);
+INVAT({a},0)              := a;
+INVAT({a},-_const(b))     := ERROR(0);
+
+SUBST2(a x xo)            := SIMPLIFY(SUBST(a x xo));
+
+SUBST( _funct1(   b c ) x xo  )   := _funct1( SUBST( b x xo ) c );
+SUBST( _funct2( a b c ) x xo  )   := _funct2( SUBST( a x xo ) SUBST( b x xo ) c );
+SUBST( x                x xo  )   := xo;
+SUBST( a                x xo  )   := a;
+
+ASSERT(1)    := 0;
+ASSERT(x)    := ERROR(1);
+
+_exec( _check(  a               b ) ) := _check( a  b );
+_exec( _check( _funct0( a )     b ) ) := _check( _funct0( a )     b );  
+_exec( _check( _funct1( a b )   c ) ) := _check( _funct1( a b )   c );
+_exec( _check( _funct2( a b c ) d ) ) := _check( _funct2( a b c ) d );

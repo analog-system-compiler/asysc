@@ -1,0 +1,98 @@
+
+
+/*
+ * Copyright (C) 2006-2025 The LightCAS project                        
+ *                                                                    
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or   
+ * any later version.                                                  
+ *                                                                    
+ * This program is distributed in the hope that it will be useful,     
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of      
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the       
+ * GNU General Public License for more details.                        
+ *                                                                    
+ * You should have received a copy of the GNU General Public License   
+ * along with this program; If not, see <https://www.gnu.org/licenses/>
+ */
+
+NAME.ANDC( @in1, @in2, @out, @vcc, @gnd ) :=
+{
+	/* nodal equations */
+	NAME.Uin1 = ACROSS( @in1, @gnd );
+	NAME.Uin2 = ACROSS( @in2, @gnd );
+	NAME.Uout = ACROSS( @out, @gnd );
+	NAME.Iout = THROUGH( @out, @gnd );
+	NAME.VCC  = ACROSS(  @vcc, @gnd );
+	
+	/* physical equation */				
+	NAME.Uout = NAME.VCC * ( ( NAME.Uin1 > (NAME.VCC/2)) & ( NAME.Uin2 > (NAME.VCC/2) ) )
+};
+
+NAME.ORC( @in1, @in2, @out,  @vcc, @gnd ) :=
+{
+	/* nodal equations */
+	NAME.Uin1 = ACROSS( @in1, @gnd );
+	NAME.Uin2 = ACROSS( @in2, @gnd );
+	NAME.Uout = ACROSS( @out, @gnd );
+	NAME.Iout = THROUGH( @out, @gnd );
+	NAME.VCC  = ACROSS(  @vcc, @gnd );
+	
+	/* physical equation */				
+	NAME.Uout = NAME.VCC * ( ( NAME.Uin1 > (NAME.VCC/2) ) | ( NAME.Uin2 > (NAME.VCC/2) ) )
+};
+
+NAME.XORC( @in1, @in2, @out,  @vcc, @gnd ) :=
+{
+	/* nodal equations */
+	NAME.Uin1 = ACROSS( @in1, @gnd );
+	NAME.Uin2 = ACROSS( @in2, @gnd );
+	NAME.Uout = ACROSS( @out, @gnd );
+	NAME.Iout = THROUGH( @out, @gnd );
+	NAME.VCC  = ACROSS(  @vcc, @gnd );
+	
+	/* physical equation */				
+	NAME.Uout = NAME.VCC * XOR( ( NAME.Uin1 > (NAME.VCC/2) ) ( NAME.Uin2 > (NAME.VCC/2) ) )	
+};
+
+NAME.NOTC( @in, @out, @vcc, @gnd ) :=
+{
+	/* nodal equations */
+	NAME.Uin = ACROSS( @in, @gnd );
+	NAME.Uout = ACROSS( @out, @gnd );
+	NAME.Iout = THROUGH( @out, @gnd );
+	NAME.VCC  = ACROSS(  @vcc, @gnd );
+	
+	/* physical equation */				
+	NAME.Uout = NAME.VCC * ( NAME.Uin <= (NAME.VCC/2))
+};
+
+NAME.SRFFC( @in1, @in2, @out, @vcc, @gnd ) :=
+{
+	/* nodal equations */
+	NAME.Uin1 = ACROSS( @in1, @gnd );
+	NAME.Uin2 = ACROSS( @in2, @gnd );
+	NAME.Uout = ACROSS( @out, @gnd );
+	NAME.Iout = THROUGH( @out, @gnd );
+	NAME.VCC  = ACROSS(  @vcc, @gnd );
+	
+	/* physical equation */				
+	//NAME.Uout = NAME.VCC * ( ( ( NAME.Uout>(NAME.VCC/2)) | ( NAME.Uin1 > (NAME.VCC/2)) ) & ( NAME.Uin2 > (NAME.VCC/2) ) )
+	NAME.Uout = NAME.VCC * ( ( ( NAME.Uout > 0.5) | ( NAME.Uin1 > 0.5) ) & ( NAME.Uin2 > 0.5 ) )
+};
+
+NAME.FFC( @in, @clk, @out, @vcc, @gnd ) :=
+{
+	/* nodal equations */
+	NAME.Uin  = ACROSS( @in, @gnd );
+	NAME.Uclk = ACROSS( @clk, @gnd );
+	NAME.Uout = ACROSS( @out, @gnd );
+	NAME.Iout = THROUGH( @out, @gnd );
+	NAME.VCC  = ACROSS(  @vcc, @gnd );
+	
+	/* physical equation */				
+	NAME.aux1  = ( NAME.Uclk > (NAME.VCC/2) );
+	NAME.aux2  = ( NAME.Uclk > (NAME.VCC/2) ) & ( NAME.aux1 == 0 );
+	NAME.Uout = NAME.VCC * ( NAME.aux2 == 1 ? NAME.Uin> (NAME.VCC/2) : NAME.Uout> (NAME.VCC/2) )
+};

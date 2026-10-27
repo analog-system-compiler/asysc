@@ -1,0 +1,39 @@
+
+
+/*
+ * Copyright (C) 2006-2025 The LightCAS project                        
+ *                                                                    
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or   
+ * any later version.                                                  
+ *                                                                    
+ * This program is distributed in the hope that it will be useful,     
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of      
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the       
+ * GNU General Public License for more details.                        
+ *                                                                    
+ * You should have received a copy of the GNU General Public License   
+ * along with this program; If not, see <https://www.gnu.org/licenses/>
+ */
+
+`include <logic.rule>
+
+NAME.NE555( @trigger,  @threshold,  @discharge, @output,  @vcc, @gnd ) :=
+{
+  NAME.VCC     = ACROSS(  @vcc,       @gnd );
+  NAME.UTRIG   = ACROSS(  @trigger,   @gnd );
+  NAME.UTRESH  = ACROSS(  @threshold, @gnd );
+  NAME.UOUT    = ACROSS(  @output,    @gnd );
+  NAME.UIN1    = ACROSS(  NAME.@in1,  @gnd );
+  NAME.UIN2    = ACROSS(  NAME.@in2,  @gnd );  
+  
+  NAME.UIN1    = ( NAME.UTRIG  <  ( NAME.VCC / 3 )     );
+  NAME.UIN2    = ( NAME.UTRESH <  ( NAME.VCC * 2 / 3 ) );
+  NAME.USW     = ( NAME.UOUT   <  ( NAME.VCC / 2 )     );
+
+  NAME.SW.SWITCH( @discharge, @gnd, NAME.USW );
+  NAME.SR.SRFFC( NAME.@in1, NAME.@in2, @output, @vcc, @gnd)
+};
+
+

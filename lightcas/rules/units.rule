@@ -1,0 +1,36 @@
+
+
+/*
+ * Copyright (C) 2006-2025 The LightCAS project                        
+ *                                                                    
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or   
+ * any later version.                                                  
+ *                                                                    
+ * This program is distributed in the hope that it will be useful,     
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of      
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the       
+ * GNU General Public License for more details.                        
+ *                                                                    
+ * You should have received a copy of the GNU General Public License   
+ * along with this program; If not, see <https://www.gnu.org/licenses/>
+ */
+
+`symbol "a$p" 31 UNIT_p( a )
+`symbol "a$n" 31 UNIT_n( a )
+`symbol "a$u" 31 UNIT_u( a )
+`symbol "a$m" 31 UNIT_m( a )
+`symbol "a$k" 31 UNIT_k( a )
+`symbol "a$K" 31 UNIT_K( a )
+`symbol "a$M" 31 UNIT_M( a )
+`symbol "a$G" 31 UNIT_G( a )
+
+UNIT_p(a) := a * 1e-12;
+UNIT_n(a) := a * 1e-9;
+UNIT_u(a) := a * 1e-6;
+UNIT_m(a) := a * 1e-3;
+UNIT_k(a) := a * 1e3;
+UNIT_K(a) := a * 1e3;
+UNIT_M(a) := a * 1e6;
+UNIT_G(a) := a * 1e9;

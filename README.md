@@ -29,15 +29,18 @@ Additional component definition examples can be found in [component.rule](https:
 ```bash
 git clone https://github.com/analog-system-compiler/asysc.git
 cd asysc
-git submodule update --init
 ```
 
 ## Code compilation
 
 ```bash
 make clean
-make
+make -j4
 ```
+
+LightCAS is included in this repository under `lightcas`; no submodule setup is
+required. The `-j4` option builds C++ sources in parallel; adjust it to match
+the number of available CPU cores.
 
 ## Run all tests
 
@@ -50,8 +53,7 @@ make run
 To execute a particular test, type:
 
 ```bash
-cd examples
-make
+make -C examples
 cd examples/<directory>
 python3 simulation.py
 ```
@@ -69,4 +71,3 @@ This project is licensed under the GNU General Public License - see the [LICENSE
 ### Some AC analysis examples
 
 ![AC examples](doc/ac_analysis.png)
-
