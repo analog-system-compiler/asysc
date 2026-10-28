@@ -36,7 +36,7 @@ run: all
 	done
 
 header:	
-	insert-license --license-filepath=LICENSE --use-current-year --comment-style "#" $$(find . -name "*.py")
+	python3 ../tools/add_license_headers.py --license ../LICENSE --style hash .
 
 .SILENT:
 .PHONY: all clean run header

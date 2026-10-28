@@ -10,7 +10,6 @@ LIB_OBJS    = $(LIB_SRC:%.cpp=$(OBJ_DIR)/%.o)
 INCDIR      = -I$(LIB_DIR)
 RULE_FILES  = $(addprefix $(RULES_DIR)/, $(shell awk -F '<|>' '$$1~/`include/ {print $$2}' $(RULES_DIR)/includes.rule))
 CPP_FILES   = $(addprefix $(LIB_DIR)/, $(LIB_SRC)) $(addprefix $(APP_DIR)/, $(APP_SRC))
-SRC_FILES   = $(shell find $(APP_DIR) $(LIB_DIR) -type f \( -name "*.cpp" -o -name "*.h" -o -name "*.txt" \))
 LDFLAGS     =
 
 USE_CLANG   ?= 0
@@ -133,13 +132,9 @@ cppcheck:
 clang-tidy:
 	clang-tidy $(CPP_FILES) -- $(INCDIR)
 
-header: header-python header-cpp
-
-header-python:
-	insert-license --license-filepath=LICENSE --use-current-year --comment-style "#" $$(find . -name "*.py")
-
-header-cpp:
-	insert-license --license-filepath=lightcas/LICENSE --use-current-year --comment-style "/*| *| */" $(SRC_FILES); sed -i -e 's|C:/msys64||' $(SRC_FILES)
+header:
+	python3 tools/add_license_headers.py --license LICENSE --style hash examples tools
+	python3 tools/add_license_headers.py --license LICENSE --style c app src
 
 pdf:
 	asciidoctor-pdf -D doc/build -r asciidoctor-kroki -r asciidoctor-mathematical -a allow-uri-read -a mathematical-format=svg -a pdf-theme=pdf -a pdf-themesdir=doc doc/index.adoc
@@ -147,5 +142,5 @@ pdf:
 html:
 	asciidoctor -D doc/build -r asciidoctor-kroki -a allow-uri-read doc/index.adoc
 
-.PHONY: all build clean run rules archive cppcheck clang-tidy header header-python header-cpp pdf html
+.PHONY: all build clean run rules archive cppcheck clang-tidy header pdf html
 .SILENT:
