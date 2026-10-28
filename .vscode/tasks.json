@@ -10,6 +10,7 @@
             "command": "make",
             "args": [
                 "-C", "lightcas",
+                "-f", "Makefile",
                 //"clean",
                 "all",
                 "DEBUG=1",
@@ -28,6 +29,7 @@
             "command": "make",
             "args": [
                 "-C", "lightcas",
+                "-f", "Makefile",
                 //"clean",
                 "all",
                 "DEBUG=1"
@@ -45,6 +47,7 @@
             "command": "make",
             "args": [
                 "-C", "lightcas",
+                "-f", "Makefile",
                 "clean"
             ],
             "presentation": {

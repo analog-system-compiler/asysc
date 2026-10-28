@@ -1,5 +1,10 @@
 *.pyc
 *.log
 stem-*
+bin/
+objs/
+/asysc
+/asysc.map
+/libasysc.a
 examples/gmon.out
 examples/gmon.txt

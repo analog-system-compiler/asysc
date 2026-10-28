@@ -13,7 +13,7 @@ For instance, consider the resistor declaration:
         NAME.U = R * NAME.I 
     };
 
-Additional component definition examples can be found in [component.rule](https://github.com/analog-system-compiler/lightcas/blob/3b8b692d76aa31503276b9a10259393b8f68dcf0/rules/components.rule) file and [examples](examples) directories.
+Additional component definition examples can be found in the [components.rule](https://github.com/analog-system-compiler/lightcas/blob/3b8b692d76aa31503276b9a10259393b8f68dcf0/rules/components.rule) file and [examples](examples) directories.
 
 ## Requirements
 
@@ -38,9 +38,10 @@ make clean
 make -j4
 ```
 
-LightCAS is included in this repository under `lightcas`; no submodule setup is
-required. The `-j4` option builds C++ sources in parallel; adjust it to match
-the number of available CPU cores.
+LightCAS source code is in the root-level `app`, `src`, and `rules` directories.
+Its build configuration and documentation remain in `lightcas/`. The `-j4`
+option builds C++ sources in parallel; adjust it to match the number of
+available CPU cores.
 
 ## Run all tests
 

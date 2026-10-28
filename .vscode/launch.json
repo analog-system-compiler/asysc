@@ -5,7 +5,7 @@
             "name": "ASysC DEBUG",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/lightcas/bin/asysc",
+            "program": "${workspaceFolder}/bin/asysc",
             "args": [
                 // "-i",
                 // //"../examples/ac/sallen_key/sallen_key.cir",
@@ -24,7 +24,7 @@
                 // "trans"
             ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/lightcas",
+            "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             //"MIMode": "gdb",

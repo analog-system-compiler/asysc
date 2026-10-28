@@ -124,6 +124,7 @@ A large number of rules are available, some generic, others specialized for elec
 [horizontal]
 units.rule:: rules on units,
 components.rule:: definition of analog components,
+evaluation.rule:: evaluation of constant expressions,
 ic.rule:: mixed components, such as the *NE555*.
 electricity.rule:: transformations for frequency and time analysis, as well as Kirchhoff's laws,
 includes.rule:: input files for rule definitions,
@@ -139,7 +140,7 @@ tests.rule:: non-regression tests
 Let's take a look at some concrete examples of how a *CAS* works.
 As a first example, let's use it as a simple calculator:
 
-    cd lightcas/bin
+    cd bin
     ./asysc
     *************************************
     *** ASysC Console                 ***
@@ -240,7 +241,7 @@ This capability makes it possible to perform complex transformations. But using 
     > my_factorial( 1 ) := 1 
     1
 
-If you look at the rules described in the files (*+*.rule+*) located in the `lightcas/rules` directory, you'll see that the vast majority of rules are recursive.
+If you look at the rules described in the files (*+*.rule+*) located in the `rules` directory, you'll see that the vast majority of rules are recursive.
 
 Now try `my_factorial(6)` for example:
 
@@ -282,7 +283,7 @@ The `asysc` command accepts the following options:
 Example :
 [source, console]
 ----
-../lightcas/bin/asysc -i ac/RLC/RLC.cir -o ac/RLC/RLC.py -t ac
+../../bin/asysc -i ac/RLC/RLC.cir -o ac/RLC/RLC.py -t ac
 ----
 
 This example will create a _Python_ model for frequency analysis from the input file *RLC.cir*. 

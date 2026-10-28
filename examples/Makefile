@@ -4,7 +4,7 @@ SHELL = /bin/bash
 CIRCUITS_SRC  = $(shell find -name "*.cir")
 CIRCUITS_PY   = $(CIRCUITS_SRC:.cir=.py)
 EXAMPLE_DIRS  = $(dir $(CIRCUITS_SRC))
-BIN_DIR       = ../lightcas/bin
+BIN_DIR       = ../bin
 
 all : $(CIRCUITS_PY)
 

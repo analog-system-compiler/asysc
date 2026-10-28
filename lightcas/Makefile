@@ -1,16 +1,16 @@
 EXE         = asysc
-BIN_DIR     = $(shell mkdir -p bin) bin
-LIB_DIR     = src
-APP_DIR     = app
-RULES_DIR   = rules
-OBJ_DIR     = $(shell mkdir -p objs objs/nostd objs/std objs/asysc ) objs
-LIB         = lib$(EXE).a
+BIN_DIR     = $(shell mkdir -p ../bin) ../bin
+LIB_DIR     = ../src
+APP_DIR     = ../app
+RULES_DIR   = ../rules
+OBJ_DIR     = $(shell mkdir -p ../objs/nostd ../objs/std ../objs/asysc ) ../objs
+LIB         = ../lib$(EXE).a
 EXE_OBJ     = $(APP_SRC:%.cpp=$(OBJ_DIR)/%.o) $(OBJ_DIR)/asysc/help.o
 LIB_OBJS    = $(LIB_SRC:%.cpp=$(OBJ_DIR)/%.o)
 INCDIR      = -I$(LIB_DIR)
 RULE_FILES  = $(addprefix $(RULES_DIR)/, $(shell awk -F '<|>' '$$1~/`include/ {print $$2}' $(RULES_DIR)/includes.rule))
 CPP_FILES   = $(addprefix $(LIB_DIR)/, $(LIB_SRC) ) $(addprefix $(APP_DIR)/, $(APP_SRC) ) 
-SRC_FILES   = $(shell find . -name "*.cpp"; find . -name "*.h"; find . -name "*.txt")
+SRC_FILES   = $(shell find ../app ../src -type f \( -name "*.cpp" -o -name "*.h" -o -name "*.txt" \))
 LDFLAGS     = 
 
 #options
@@ -106,7 +106,7 @@ $(OBJ_DIR)/%.ztxt: $(APP_DIR)/%.txt
 
 $(OBJ_DIR)/%.o: $(OBJ_DIR)/%.ztxt
 	echo 'Packaging  $(notdir $< )'	
-	$(LD) -r -b binary $< -o $@
+	cd .. && $(LD) -r -b binary $(patsubst ../%,%,$<) -o $(patsubst ../%,%,$@)
 	#objdump -t $@
 
 $(LIB): $(LIB_OBJS)

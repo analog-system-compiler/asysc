@@ -56,7 +56,7 @@ For this step, we'll use the following command:
 [source, console]
 ----
 cd examples/
-../lightcas/bin/asysc -i ac/RLC/RLC.cir -o ac/RLC/RLC.py -t ac
+../../bin/asysc -i ac/RLC/RLC.cir -o ac/RLC/RLC.py -t ac
 ----
 
 This command generates the circuit model in _Python_, as shown in the piece of code below:
@@ -272,7 +272,6 @@ The circuit shown in the example above contains probes *P1* and *P2*. These are 
 - *P2* and is connected to the *NE555*'s *DISH* input and ground. 
 
 The use of these probes is highly convenient, as they provide access to all the voltages within the circuit.
-
 
 
 
