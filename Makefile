@@ -17,7 +17,6 @@ USE_CLANG   ?= 0
 USE_STD     ?= 1
 DEBUG       ?= 0
 TEST        ?= 0
-EMBED_RULES ?= 0
 GPROF       ?= 0
 
 ifeq ($(USE_CLANG),1)
@@ -76,11 +75,6 @@ ifeq ($(TEST),1)
 	CPPFLAGS += -D_TEST
 endif
 
-ifeq ($(EMBED_RULES),1)
-	CPPFLAGS += -DEMBED_RULES
-	LIB_OBJS += $(OBJ_DIR)/Rules_concat.o
-endif
-
 all: build
 	echo "\nTo run the examples, type \"make run\"\n"
 
@@ -118,10 +112,8 @@ $(BIN_DIR)/$(EXE): $(EXE_OBJ) $(LIB)
 	$(CXX) -o $@ $(LDFLAGS) $(EXE_OBJ) $(LIB)
 
 rules: $(RULE_FILES)
-ifeq ($(EMBED_RULES),0)
 	echo 'Copying    $(notdir $^)'
 	cp -r $(RULES_DIR) $(BIN_DIR)
-endif
 
 clean:
 	@echo 'Cleaning  ...'
