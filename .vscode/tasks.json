@@ -9,10 +9,8 @@
             "group": "build",
             "command": "make",
             "args": [
-                "-C", "lightcas",
-                "-f", "Makefile",
                 //"clean",
-                "all",
+                "bin/asysc",
                 "DEBUG=1",
                 "TEST=1"
             ],
@@ -28,10 +26,8 @@
             "group": "build",
             "command": "make",
             "args": [
-                "-C", "lightcas",
-                "-f", "Makefile",
                 //"clean",
-                "all",
+                "bin/asysc",
                 "DEBUG=1"
             ],
             "presentation": {
@@ -46,8 +42,6 @@
             "group": "build",
             "command": "make",
             "args": [
-                "-C", "lightcas",
-                "-f", "Makefile",
                 "clean"
             ],
             "presentation": {

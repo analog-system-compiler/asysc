@@ -38,10 +38,9 @@ make clean
 make -j4
 ```
 
-LightCAS source code is in the root-level `app`, `src`, and `rules` directories.
-Its build configuration and documentation remain in `lightcas/`. The `-j4`
-option builds C++ sources in parallel; adjust it to match the number of
-available CPU cores.
+LightCAS source code and build configuration are in the project root. Its
+documentation and license remain in `lightcas/`. The `-j4` option builds C++
+sources in parallel; adjust it to match the number of available CPU cores.
 
 ## Run all tests
 
