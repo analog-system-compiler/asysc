@@ -38,9 +38,9 @@ make clean
 make -j4
 ```
 
-LightCAS source code and build configuration are in the project root. Its
-documentation and license remain in `lightcas/`. The `-j4` option builds C++
-sources in parallel; adjust it to match the number of available CPU cores.
+LightCAS library code is in `src/lib/`, and the ASysC application code is in
+`src/app/`. The `-j4` option builds C++ sources in parallel; adjust it to match
+the number of available CPU cores.
 
 ## Run all tests
 

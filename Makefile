@@ -1,7 +1,7 @@
 EXE         = asysc
 BIN_DIR     = $(shell mkdir -p bin) bin
-LIB_DIR     = src
-APP_DIR     = app
+LIB_DIR     = src/lib
+APP_DIR     = src/app
 RULES_DIR   = rules
 OBJ_DIR     = $(shell mkdir -p objs/nostd objs/std objs/asysc) objs
 LIB         = lib$(EXE).a
@@ -134,7 +134,7 @@ clang-tidy:
 
 header:
 	python3 tools/add_license_headers.py --license LICENSE --style hash examples tools
-	python3 tools/add_license_headers.py --license LICENSE --style c app src
+	python3 tools/add_license_headers.py --license LICENSE --style c src
 
 pdf:
 	asciidoctor-pdf -D doc/build -r asciidoctor-kroki -r asciidoctor-mathematical -a allow-uri-read -a mathematical-format=svg -a pdf-theme=pdf -a pdf-themesdir=doc doc/index.adoc

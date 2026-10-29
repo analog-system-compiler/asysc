@@ -54,7 +54,6 @@ void CElementDataBase::Check(const char *s1, const char *s2)
 
 void CElementDataBase::CheckEval(const char *s1, const CValue &v1)
 {
-  CDisplay ds;
   CMathExpression equ(this);
   CParser IC(s1);
   equ.Parse(IC);
@@ -63,10 +62,10 @@ void CElementDataBase::CheckEval(const char *s1, const CValue &v1)
   if (v2.GetValue() != v1.GetValue())
   {
     ASSERT(false);
-    ds.Log(LOG_ERR, "FAIL: %s => %g != %g", s1, v2.GetValue(), v1.GetValue());
+    CDisplay::Log(LOG_ERR, "FAIL: %s => %g != %g", s1, v2.GetValue(), v1.GetValue());
     return;
   }
-  ds.Log(LOG_INFO, "OK: %s => %g", s1, v1.GetValue());
+  CDisplay::Log(LOG_INFO, "OK: %s => %g", s1, v1.GetValue());
 }
 
 void CElementDataBase::CheckSyntaxError(const char *s1)

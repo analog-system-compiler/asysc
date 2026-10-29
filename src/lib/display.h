@@ -19,10 +19,18 @@
 
 #include <cstdio>
 #include <cstdarg>
+#include <cstdlib>
 #include "lcstring.h"
 
 #ifdef _WIN32
+#include <io.h>
 #define vsnprintf _vsnprintf_s
+#define DISPLAY_ISATTY(fd) _isatty(fd)
+#define DISPLAY_FILENO(stream) _fileno(stream)
+#else
+#include <unistd.h>
+#define DISPLAY_ISATTY(fd) isatty(fd)
+#define DISPLAY_FILENO(stream) fileno(stream)
 #endif
 
 typedef enum
@@ -70,7 +78,15 @@ public:
     else
     {
       Prepend(type == LOG_INFO ? CString("Info: ") : (type == LOG_WARN ? CString("Warning: ") : CString("Error: ")));
-      Print();
+      if (!m_File && DISPLAY_ISATTY(DISPLAY_FILENO(stdout)) && !std::getenv("NO_COLOR"))
+      {
+        const char *color = type == LOG_INFO ? "\033[34m" : (type == LOG_WARN ? "\033[33m" : "\033[31m");
+        ::printf("%s%s\033[0m\n", color, GetBufferPtr());
+      }
+      else
+      {
+        Print();
+      }
     }
   }
 
