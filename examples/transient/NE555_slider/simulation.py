@@ -15,51 +15,56 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; If not, see <https://www.gnu.org/licenses/>
 
-import math
-import numpy as np
 import matplotlib.pyplot as plt
-import NE555
-import circuit_base
+
 from matplotlib.widgets import Slider
 from NE555 import circuit
-from circuit_base import circuit_base, element
 
-ylabel = []
-first_time = True
 
-def update_R(val):    
-    global first_time, ylabel
-    global fig, axs
-    global UTRESH, UOUT
-    fig.canvas.draw_idle()
-    my_circuit._RV.init(val)
-    my_circuit.simulate_t(0.1, 200)
-    if first_time:
-        ylabel.append(my_circuit.U_UTRESH.name)
-        ylabel.append(my_circuit.U_UOUT.name)        
-        (UTRESH,) = axs.plot(
-            my_circuit.U_UTRESH.history_x, my_circuit.U_UTRESH.history_y
+def main():
+    model = circuit()
+    figure, axis = plt.subplots()
+    figure.subplots_adjust(bottom=0.22)
+    axis.set(
+        title="NE555 oscillator",
+        xlabel="Time (s)",
+        ylabel="Voltage (V)",
+    )
+    axis.grid(True)
+
+    # Adjust the timing resistance and redraw both oscillator node voltages.
+    model._RV.init(13000)
+    model.simulate_t(0.1, 200)
+    signals = (model.U_UTRESH, model.U_UOUT)
+    lines = []
+    for signal in signals:
+        (line,) = axis.plot(
+            signal.history_x, signal.history_y, label=signal.name
         )
-        (UOUT,) = axs.plot(my_circuit.U_UOUT.history_x, my_circuit.U_UOUT.history_y)
-        axs.legend(ylabel)
-        first_time = False
-    else:
-        UTRESH.set_ydata(my_circuit.U_UTRESH.history_y)
-        UOUT.set_ydata(my_circuit.U_UOUT.history_y)
-        fig.canvas.draw_idle()
+        lines.append(line)
+    axis.legend()
 
-my_circuit = circuit()
+    resistance_axis = figure.add_axes([0.2, 0.1, 0.65, 0.03])
+    resistance_slider = Slider(
+        ax=resistance_axis,
+        label="R (Ω)",
+        valmin=2000,
+        valmax=50000,
+        valinit=13000,
+    )
 
-fig, axs = plt.subplots()
-fig.subplots_adjust(bottom=0.22)
-axs.set_xlabel("Time [s]")
-axs.set_ylabel("Voltage [V]")
-plt.title('NE555 in oscillator mode simulation example')
-plt.grid(True)
+    def update_resistance(resistance):
+        model._RV.init(resistance)
+        model.simulate_t(0.1, 200)
+        for line, signal in zip(lines, signals):
+            line.set_data(signal.history_x, signal.history_y)
+        axis.relim()
+        axis.autoscale_view()
+        figure.canvas.draw_idle()
 
-r_axe = plt.axes([0.2, 0.1, 0.65, 0.03])
-r_slider = Slider(ax=r_axe, label="R", valmin=2000, valmax=50000, valinit=13000)
-r_slider.on_changed(update_R)
-update_R(13000)
+    resistance_slider.on_changed(update_resistance)
+    plt.show()
 
-plt.show()
+
+if __name__ == "__main__":
+    main()

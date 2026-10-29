@@ -14,29 +14,28 @@
 # You should have received a copy of the GNU General Public License   
 # along with this program; If not, see <https://www.gnu.org/licenses/>
 
-import math
-import numpy as np
 import matplotlib.pyplot as plt
-import div4
-import circuit_base
+
 from div4 import circuit
-from circuit_base import circuit_base, element
 
-ylabel = []
-def add_plot( axs, element ):
-    axs.plot( element.history_x, element.history_y )
-    axs.legend(element.name)
 
-my_circuit = circuit()
-my_circuit.simulate_t(0.001,512)
+def main():
+    # Simulate one millisecond to show the input and both divider stages.
+    model = circuit()
+    model.simulate_t(0.001, 512)
 
-fig, axs = plt.subplots(3, 1, layout='constrained')
-axs[0].set_title('Divider-by-4 digital simulation example')
-add_plot( axs[0], my_circuit.V2_U )
-add_plot( axs[1], my_circuit.FF0_Uout )
-add_plot( axs[2], my_circuit.FF1_Uout )
-axs[1].set_xlabel('Time (s)')
-axs[0].grid(True)
-axs[1].grid(True)
+    figure, axes = plt.subplots(3, 1, sharex=True, layout="constrained")
+    figure.suptitle("Divider-by-4 digital simulation")
+    signals = (model.V2_U, model.FF0_Uout, model.FF1_Uout)
+    for axis, signal in zip(axes, signals):
+        axis.plot(signal.history_x, signal.history_y, label=signal.name)
+        axis.set_ylabel("Voltage (V)")
+        axis.legend()
+        axis.grid(True)
 
-plt.show()
+    axes[-1].set_xlabel("Time (s)")
+    plt.show()
+
+
+if __name__ == "__main__":
+    main()

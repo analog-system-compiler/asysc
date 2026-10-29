@@ -16,27 +16,29 @@
 # You should have received a copy of the GNU General Public License   
 # along with this program; If not, see <https://www.gnu.org/licenses/>
 
-import math
-import numpy as np
 import matplotlib.pyplot as plt
-import integrator
-import circuit_base
+
 from integrator import circuit
-from circuit_base import circuit_base, element
 
-ylabel = []
-def add_plot( element ):
-    plt.plot( element.history_x, element.history_y )
-    ylabel.append(element.name)
 
-my_circuit = circuit()
-my_circuit.simulate_t(0.02,400,1/50,100)
+def main():
+    # Simulate the input and integrated output over a 20 ms transient.
+    model = circuit()
+    model.simulate_t(0.02, 400, 1 / 50, 100)
 
-add_plot( my_circuit.V_U  )
-add_plot( my_circuit.A_Uout  )
-plt.title('Operational Amplifier Integrator simulation example')
-plt.ylabel('Voltage [V]')
-plt.legend(ylabel)
-plt.xlabel('Time [s]')
-plt.grid(True)
-plt.show()
+    figure, axis = plt.subplots(layout="constrained")
+    for signal in (model.V_U, model.A_Uout):
+        axis.plot(signal.history_x, signal.history_y, label=signal.name)
+
+    axis.set(
+        title="Operational amplifier integrator",
+        xlabel="Time (s)",
+        ylabel="Voltage (V)",
+    )
+    axis.legend()
+    axis.grid(True)
+    plt.show()
+
+
+if __name__ == "__main__":
+    main()

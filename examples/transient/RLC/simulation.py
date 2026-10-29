@@ -14,42 +14,52 @@
 # You should have received a copy of the GNU General Public License   
 # along with this program; If not, see <https://www.gnu.org/licenses/>
 
-import math
-import numpy as np
 import matplotlib.pyplot as plt
-import RLC
-import circuit_base
 
 from matplotlib.widgets import Slider
 from RLC import circuit
-from circuit_base import circuit_base, element
 
-ylabel = []
 
-def add_plot( axs, element ):
-    axs.plot( element.history_x, element.history_y )
-    ylabel.append(element.name)
+def main():
+    model = circuit()
+    model._RV.init(5)
+    model.simulate_t(1e-6, 500)
 
-def update_R(val):
-    my_circuit._RV.init( val )
-    my_circuit.simulate_t(1e-6, 500)
-    axs.cla()  
-    add_plot( axs, my_circuit.R1_U )
-    add_plot( axs, my_circuit.C1_U )
-    add_plot( axs, my_circuit.VP_U )
-    axs.set_xlabel('Time (s)')
-    axs.set_ylabel('Voltage (V)')
-    axs.set_title('RLC step response simulation example')
-    axs.legend(ylabel)
-    axs.grid(True)
+    figure, axis = plt.subplots()
+    figure.subplots_adjust(bottom=0.2)
+    signals = (model.R1_U, model.C1_U, model.VP_U)
+    lines = []
+    for signal in signals:
+        (line,) = axis.plot(
+            signal.history_x, signal.history_y, label=signal.name
+        )
+        lines.append(line)
 
-my_circuit = circuit()
+    axis.set(
+        title="RLC step response",
+        xlabel="Time (s)",
+        ylabel="Voltage (V)",
+    )
+    axis.legend()
+    axis.grid(True)
 
-fig, axs = plt.subplots()
-fig.subplots_adjust(bottom=0.20)
-r_axe = plt.axes([0.1, 0.06, 0.80, 0.03])
-r_slider = Slider(ax=r_axe, label='R', valmin=0, valmax=10, valinit=5)
-r_slider.on_changed(update_R)
-update_R( 5 )
+    resistance_axis = figure.add_axes([0.1, 0.06, 0.8, 0.03])
+    resistance_slider = Slider(
+        resistance_axis, label="R", valmin=0, valmax=10, valinit=5
+    )
 
-plt.show()
+    def update_response(resistance):
+        model._RV.init(resistance)
+        model.simulate_t(1e-6, 500)
+        for line, signal in zip(lines, signals):
+            line.set_data(signal.history_x, signal.history_y)
+        axis.relim()
+        axis.autoscale_view()
+        figure.canvas.draw_idle()
+
+    resistance_slider.on_changed(update_response)
+    plt.show()
+
+
+if __name__ == "__main__":
+    main()

@@ -16,71 +16,74 @@
 # You should have received a copy of the GNU General Public License   
 # along with this program; If not, see <https://www.gnu.org/licenses/>
 
-import math
 import numpy as np
 import matplotlib.pyplot as plt
-import RLC
 
 from matplotlib.widgets import Slider
 from RLC import circuit
 
-ylabel = []
-first_time = True
 
-def add_gain_plot(axs, element):
-    global ylabel
-    ylabel.append(element.name)
-    return axs.plot(element.history_x, 20 * np.log10(np.absolute(element.history_y)))    
+def main():
+    model = circuit()
+    model.R.init(5)
+    model.C.init(1e-5)
+    model.L.init(1e-5)
 
-def update_R(val):
-    my_circuit.R.init( val )
-    update_all()
+    # Recompute the frequency response whenever any component slider changes.
+    model.simulate_f(10, 1e6, 100)
+    frequency = model.R1_U.history_x
+    figure, axis = plt.subplots()
+    figure.subplots_adjust(bottom=0.28)
+    axis.set(
+        title="RLC filter response",
+        xlabel="Frequency (Hz)",
+        ylabel="Gain (dB)",
+    )
+    axis.set_xscale("log")
+    axis.grid(True, which="both")
 
-def update_L(val):
-    my_circuit.L.init( val )
-    update_all()
+    signals = (model.R1_U, model.C1_U, model.L1_U)
+    lines = []
+    for signal in signals:
+        gain_db = 20 * np.log10(np.abs(signal.history_y))
+        (line,) = axis.plot(frequency, gain_db, label=signal.name)
+        lines.append(line)
+    axis.legend()
 
-def update_C(val):
-    my_circuit.C.init( val )
-    update_all()    
+    resistance_axis = figure.add_axes([0.15, 0.16, 0.7, 0.03])
+    capacitance_axis = figure.add_axes([0.15, 0.10, 0.7, 0.03])
+    inductance_axis = figure.add_axes([0.15, 0.04, 0.7, 0.03])
+    resistance_slider = Slider(
+        resistance_axis, "R", valmin=1, valmax=10, valinit=5
+    )
+    capacitance_slider = Slider(
+        capacitance_axis, "C (F)", valmin=1e-6, valmax=1e-4, valinit=1e-5
+    )
+    inductance_slider = Slider(
+        inductance_axis, "L (H)", valmin=1e-6, valmax=1e-4, valinit=1e-5
+    )
 
-def update_all():    
-    global first_time, axs, fig
-    global lineR, lineC, lineL
-    my_circuit.simulate_f(10, 1e6, 100)    
-    if first_time:
-        lineR, =add_gain_plot(axs, my_circuit.R1_U)
-        lineC, =add_gain_plot(axs, my_circuit.C1_U)
-        lineL, =add_gain_plot(axs, my_circuit.L1_U)        
-        first_time = False
-    else:
-        lineR.set_ydata(20 * np.log10(np.absolute(my_circuit.R1_U.history_y)))
-        lineL.set_ydata(20 * np.log10(np.absolute(my_circuit.L1_U.history_y)))
-        lineC.set_ydata(20 * np.log10(np.absolute(my_circuit.C1_U.history_y)))
-        fig.canvas.draw_idle()
+    def update_response(_value):
+        model.R.init(resistance_slider.val)
+        model.C.init(capacitance_slider.val)
+        model.L.init(inductance_slider.val)
+        model.simulate_f(10, 1e6, 100)
 
-my_circuit = circuit()
+        for line, signal in zip(lines, signals):
+            line.set_data(
+                signal.history_x,
+                20 * np.log10(np.abs(signal.history_y)),
+            )
 
-fig, axs = plt.subplots()
-plt.title('RLC filter simulation example')
-fig.subplots_adjust(bottom=0.22)
-r_axe= plt.axes([0.1, 0.0, 0.65, 0.03])
-l_axe= plt.axes([0.1, 0.04, 0.65, 0.03])
-c_axe= plt.axes([0.1, 0.08, 0.65, 0.03])
-r_slider = Slider(ax=r_axe, label='R', valmin=1,    valmax=10,   valinit=5)
-c_slider = Slider(ax=l_axe, label='C', valmin=1e-6, valmax=1e-4, valinit=1e-5)
-l_slider = Slider(ax=c_axe, label='L', valmin=1e-6, valmax=1e-4, valinit=1e-5)
-my_circuit.R.init( 5 )
-my_circuit.C.init( 1e-5)
-my_circuit.L.init( 1e-5)
-axs.set_xlabel("Freq (Hz)")
-axs.set_ylabel("Gain")
-axs.grid(True, which="both")
-axs.set_xscale('log')
-r_slider.on_changed(update_R)
-c_slider.on_changed(update_C)
-l_slider.on_changed(update_L)
-update_all()
-axs.legend(ylabel)
-plt.show()
+        axis.relim()
+        axis.autoscale_view()
+        figure.canvas.draw_idle()
 
+    resistance_slider.on_changed(update_response)
+    capacitance_slider.on_changed(update_response)
+    inductance_slider.on_changed(update_response)
+    plt.show()
+
+
+if __name__ == "__main__":
+    main()

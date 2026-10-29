@@ -16,29 +16,29 @@
 # You should have received a copy of the GNU General Public License   
 # along with this program; If not, see <https://www.gnu.org/licenses/>
 
-import math
 import matplotlib.pyplot as plt
-import simple_rectifier
-import circuit_base
+
 from simple_rectifier import circuit
-from circuit_base import circuit_base, element
 
-ylabel = []
-def add_plot( element ):
-    plt.plot( element.history_x, element.history_y )
-    ylabel.append(element.name)
 
-my_circuit = circuit()
-my_circuit.simulate_t(0.001,1000,1/50,100)
+def main():
+    # Run a 1 ms transient, allowing up to 100 iterations per time step.
+    model = circuit()
+    model.simulate_t(0.001, 1000, 1 / 50, 100)
 
-plt.subplot(1, 1 , 1)
-add_plot( my_circuit.V_U  )
-add_plot( my_circuit.R_U )
-ax = plt.gca()
-ax.set_ylabel('Voltage [V]')
-ax.set_xlabel('Time [s]')
-plt.legend(ylabel)
-plt.grid(True)
-plt.title('Simple rectifier simulation example')
+    figure, axis = plt.subplots(layout="constrained")
+    for signal in (model.V_U, model.R_U):
+        axis.plot(signal.history_x, signal.history_y, label=signal.name)
 
-plt.show()
+    axis.set(
+        title="Simple rectifier",
+        xlabel="Time (s)",
+        ylabel="Voltage (V)",
+    )
+    axis.legend()
+    axis.grid(True)
+    plt.show()
+
+
+if __name__ == "__main__":
+    main()

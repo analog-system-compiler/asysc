@@ -14,31 +14,26 @@
 # You should have received a copy of the GNU General Public License   
 # along with this program; If not, see <https://www.gnu.org/licenses/>
 
-import math
-import numpy as np
 import matplotlib.pyplot as plt
-import oscillator
-import circuit_base
+
 from oscillator import circuit
-from circuit_base import circuit_base, element
 
-ylabel = []
-def add_plot( axs, element ):
-    axs.plot( element.history_x, element.history_y )
-    ylabel.append(element.name)
 
-my_circuit = circuit()
-my_circuit.NOT1_Uin.init( 5 )
+def main():
+    model = circuit()
+    # Set an initial logic level so the feedback oscillator starts switching.
+    model.NOT1_Uin.init(5)
+    model.simulate_t(0.01, 512)
 
-my_circuit.simulate_t(0.01, 512)
+    figure, axis = plt.subplots(layout="constrained")
+    for signal in (model.NOT1_Uin, model.NOT1_Uout):
+        axis.plot(signal.history_x, signal.history_y, label=signal.name)
 
-fig, axs = plt.subplots(1, 1, layout='constrained')
-add_plot( axs, my_circuit.NOT1_Uin )
-add_plot( axs, my_circuit.NOT1_Uout )
-axs.set_xlabel('Time (s)')
-axs.set_ylabel('V')
-axs.legend(ylabel)
-axs.grid(True)
-plt.title('Not-gates based oscillator simulation example')
+    axis.set(title="NOT-gate oscillator", xlabel="Time (s)", ylabel="Voltage (V)")
+    axis.legend()
+    axis.grid(True)
+    plt.show()
 
-plt.show()
+
+if __name__ == "__main__":
+    main()

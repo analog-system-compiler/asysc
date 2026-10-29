@@ -16,37 +16,35 @@
 # You should have received a copy of the GNU General Public License   
 # along with this program; If not, see <https://www.gnu.org/licenses/>
 
-import math
-import numpy as np
 import matplotlib.pyplot as plt
-import graetz_bridge
-import circuit_base
+
 from graetz_bridge import circuit
-from circuit_base import circuit_base, element
 
 
-def add_plot( element ):
-    plt.plot( element.history_x, element.history_y )
-    ylabel.append(element.name)
+def main():
+    # Capture the bridge's input/output voltages and load current.
+    model = circuit()
+    model.simulate_t(1e-3, 500, 1 / 10, 100)
 
-my_circuit = circuit()
-my_circuit.simulate_t(1e-3,500,1/10,100)
+    figure, (voltage_axis, current_axis) = plt.subplots(
+        2, 1, sharex=True, layout="constrained"
+    )
+    for signal in (model.V_U, model.R1_U):
+        voltage_axis.plot(signal.history_x, signal.history_y, label=signal.name)
+    voltage_axis.set_ylabel("Voltage (V)")
+    voltage_axis.set_title("Graetz bridge")
+    voltage_axis.legend()
+    voltage_axis.grid(True)
 
-plt.subplot(2, 1, 1)
-ylabel = []
-add_plot( my_circuit.V_U )
-add_plot( my_circuit.R1_U )
-plt.ylabel('Voltage [V]')
-plt.title('Graetz bridge simulation example')
-plt.legend(ylabel)
-plt.grid(True)
+    current_axis.plot(
+        model.R2_I.history_x, model.R2_I.history_y, label=model.R2_I.name
+    )
+    current_axis.set(xlabel="Time (s)", ylabel="Current (A)")
+    current_axis.legend()
+    current_axis.grid(True, which="both")
 
-plt.subplot(2, 1, 2)
-ylabel = []
-add_plot( my_circuit.R2_I )
-plt.xlabel('Time [s]')
-plt.ylabel('Intensity [A]')
-plt.legend(ylabel)
-plt.grid(True)
+    plt.show()
 
-plt.show()
+
+if __name__ == "__main__":
+    main()

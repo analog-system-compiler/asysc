@@ -16,36 +16,35 @@
 # You should have received a copy of the GNU General Public License   
 # along with this program; If not, see <https://www.gnu.org/licenses/>
 
-import math
-import numpy as np
 import matplotlib.pyplot as plt
-import NPN
-import circuit_base
+
 from NPN import circuit
-from circuit_base import circuit_base, element
 
-def add_plot( element ):
-    plt.plot( element.history_x, element.history_y )
-    ylabel.append(element.name)
 
-my_circuit = circuit()
-my_circuit.simulate_t(1,200,1/20,50)
+def main():
+    # Run a one-second transient to observe transistor bias settling.
+    model = circuit()
+    model.simulate_t(1, 200, 1 / 20, 50)
 
-plt.subplot(2, 1, 1)
-ylabel = []
-add_plot( my_circuit.BASE_U )
-add_plot( my_circuit.COLLECTOR_U )
-plt.ylabel('Voltage [V]')
-plt.legend(ylabel)
-plt.title('NPN transistor biasing simulation example')
-plt.grid(True)
+    figure, (voltage_axis, current_axis) = plt.subplots(
+        2, 1, sharex=True, layout="constrained"
+    )
+    for signal in (model.BASE_U, model.COLLECTOR_U):
+        voltage_axis.plot(signal.history_x, signal.history_y, label=signal.name)
+    voltage_axis.set_ylabel("Voltage (V)")
+    voltage_axis.set_title("NPN transistor bias")
+    voltage_axis.legend()
+    voltage_axis.grid(True)
 
-plt.subplot(2, 1, 2)
-ylabel = []
-add_plot( my_circuit.Q1_IBE )
-plt.xlabel('Time [s]')
-plt.ylabel('Intensity [A]')
-plt.legend(ylabel)
-plt.grid(True)
+    current_axis.plot(
+        model.Q1_IBE.history_x, model.Q1_IBE.history_y, label=model.Q1_IBE.name
+    )
+    current_axis.set(xlabel="Time (s)", ylabel="Base current (A)")
+    current_axis.legend()
+    current_axis.grid(True)
 
-plt.show()
+    plt.show()
+
+
+if __name__ == "__main__":
+    main()

@@ -20,14 +20,27 @@ import matplotlib.pyplot as plt
 from envelope_detector import circuit
 
 
-my_circuit = circuit()
-my_circuit.simulate_t(0.02, 500, 1 / 50, 100)
+def main():
+    # Simulate 20 ms of a 1 kHz input to show the capacitor charging.
+    model = circuit()
+    model.simulate_t(0.005, 500, 1 / 50, 100)
 
-plt.plot(my_circuit.IN_U.history_x, my_circuit.IN_U.history_y, label="Input")
-plt.plot(my_circuit.OUT_U.history_x, my_circuit.OUT_U.history_y, label="Detected envelope")
-plt.xlabel("Time (s)")
-plt.ylabel("Voltage (V)")
-plt.title("Diode RC envelope detector (1 kHz, R = 100 kΩ, C = 100 nF)")
-plt.grid(True)
-plt.legend()
-plt.show()
+    figure, axis = plt.subplots(layout="constrained")
+    axis.plot(model.IN_U.history_x, model.IN_U.history_y, label="Input")
+    axis.plot(
+        model.OUT_U.history_x,
+        model.OUT_U.history_y,
+        label="Detected envelope",
+    )
+    axis.set(
+        title="Diode RC envelope detector (1 kHz, R = 100 kΩ, C = 100 nF)",
+        xlabel="Time (s)",
+        ylabel="Voltage (V)",
+    )
+    axis.grid(True)
+    axis.legend()
+    plt.show()
+
+
+if __name__ == "__main__":
+    main()

@@ -16,43 +16,45 @@
 # You should have received a copy of the GNU General Public License   
 # along with this program; If not, see <https://www.gnu.org/licenses/>
 
-import math
 import numpy as np
 import matplotlib.pyplot as plt
-import sallen_key
 
 from sallen_key import circuit
-from circuit_base import circuit_base, element
 
-ylabel1 = []
-ylabel2 = []
 
-def add_gain_plot(element):
-    plt.plot(element.history_x, 20 * np.log10(np.absolute(element.history_y)))
-    ylabel1.append('gain('+element.name+')')
+def main():
+    model = circuit()
+    model.simulate_f(1e5, 1e8, 500)
 
-def add_phase_plot(element):
-    plt.plot(element.history_x, np.angle(element.history_y))
-    ylabel2.append('phase('+element.name+')')
+    frequency = model.A_Uout.history_x
+    response = np.asarray(model.A_Uout.history_y)
 
-my_circuit = circuit()
-my_circuit.simulate_f(1e5, 1e8, 500)
+    figure, (gain_axis, phase_axis) = plt.subplots(2, 1, sharex=True)
+    figure.suptitle("Sallen-Key filter")
 
-plt.subplot(2, 1, 1)
-plt.title('Sallen-Key filter simulation example')
+    gain_axis.plot(
+        frequency,
+        20 * np.log10(np.abs(response)),
+        label=f"Gain ({model.A_Uout.name})",
+    )
+    gain_axis.set_ylabel("Gain (dB)")
+    gain_axis.set_xscale("log")
+    gain_axis.legend()
+    gain_axis.grid(True, which="both")
 
-add_gain_plot(my_circuit.A_Uout)
-plt.ylabel("Gain")
-plt.xscale('log')
-plt.legend(ylabel1)
-plt.grid(True, which="both")
+    # Express phase in degrees to match the usual filter-response convention.
+    phase_axis.plot(
+        frequency,
+        np.angle(response, deg=True),
+        label=f"Phase ({model.A_Uout.name})",
+    )
+    phase_axis.set(xlabel="Frequency (Hz)", ylabel="Phase (degrees)")
+    phase_axis.set_xscale("log")
+    phase_axis.legend()
+    phase_axis.grid(True, which="both")
 
-plt.subplot(2, 1, 2)
-add_phase_plot(my_circuit.A_Uout)
-plt.xlabel("Freq (Hz)")
-plt.ylabel("Phase")
-plt.xscale('log')
-plt.legend(ylabel2)
-plt.grid(True, which="both")
+    plt.show()
 
-plt.show()
+
+if __name__ == "__main__":
+    main()

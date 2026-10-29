@@ -21,25 +21,31 @@ import matplotlib.pyplot as plt
 from rc_low_pass import circuit
 
 
-my_circuit = circuit()
-my_circuit.simulate_f(10, 1e5, 500)
+def main():
+    model = circuit()
+    model.simulate_f(10, 1e5, 500)
 
-transfer = np.asarray(my_circuit.OUT_U.history_y) / np.asarray(my_circuit.IN_U.history_y)
-frequency = my_circuit.OUT_U.history_x
+    # Divide output by input to calculate the circuit's complex transfer function.
+    transfer = np.asarray(model.OUT_U.history_y) / np.asarray(model.IN_U.history_y)
+    frequency = model.OUT_U.history_x
 
-fig, (gain_axis, phase_axis) = plt.subplots(2, 1, sharex=True)
-fig.suptitle("RC low-pass filter (R = 1 kΩ, C = 100 nF)")
+    figure, (gain_axis, phase_axis) = plt.subplots(2, 1, sharex=True)
+    figure.suptitle("RC low-pass filter (R = 1 kΩ, C = 100 nF)")
 
-gain_axis.plot(frequency, 20 * np.log10(np.abs(transfer)), label="Output")
-gain_axis.set_ylabel("Gain (dB)")
-gain_axis.grid(True, which="both")
-gain_axis.legend()
+    gain_axis.plot(frequency, 20 * np.log10(np.abs(transfer)), label="Output")
+    gain_axis.set_ylabel("Gain (dB)")
+    gain_axis.grid(True, which="both")
+    gain_axis.legend()
 
-phase_axis.plot(frequency, np.angle(transfer, deg=True), label="Output")
-phase_axis.set_xlabel("Frequency (Hz)")
-phase_axis.set_ylabel("Phase (degrees)")
-phase_axis.set_xscale("log")
-phase_axis.grid(True, which="both")
-phase_axis.legend()
+    phase_axis.plot(frequency, np.angle(transfer, deg=True), label="Output")
+    phase_axis.set_xlabel("Frequency (Hz)")
+    phase_axis.set_ylabel("Phase (degrees)")
+    phase_axis.set_xscale("log")
+    phase_axis.grid(True, which="both")
+    phase_axis.legend()
 
-plt.show()
+    plt.show()
+
+
+if __name__ == "__main__":
+    main()

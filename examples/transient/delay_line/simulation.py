@@ -14,29 +14,29 @@
 # You should have received a copy of the GNU General Public License   
 # along with this program; If not, see <https://www.gnu.org/licenses/>
 
-import math
-import numpy as np
 import matplotlib.pyplot as plt
-import delay_line
-import circuit_base
+
 from delay_line import circuit
-from circuit_base import circuit_base, element
 
-ylabel = []
-def add_plot( element ):
-    plt.plot( element.history_x, element.history_y )
-    ylabel.append(element.name)
 
-my_circuit = circuit()
-my_circuit.simulate_t(2e-7,300)
+def main():
+    # A short run captures the signal propagation and reflected wave.
+    model = circuit()
+    model.simulate_t(2e-7, 300)
 
-plt.subplot()
-plt.title('Delay line and impedance mismatch simulation example')
+    figure, axis = plt.subplots(layout="constrained")
+    for signal in (model.R1_U, model.VP_U):
+        axis.plot(signal.history_x, signal.history_y, label=signal.name)
 
-add_plot( my_circuit.R1_U )
-add_plot( my_circuit.VP_U )
-plt.xlabel('Time (s)')
-plt.ylabel('V')
-plt.legend(ylabel)
-plt.grid(True)
-plt.show()
+    axis.set(
+        title="Delay line and impedance mismatch",
+        xlabel="Time (s)",
+        ylabel="Voltage (V)",
+    )
+    axis.legend()
+    axis.grid(True)
+    plt.show()
+
+
+if __name__ == "__main__":
+    main()
