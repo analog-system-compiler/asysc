@@ -1,0 +1,12 @@
+`include <components.rule>
+
+rc_high_pass() :=
+{
+    V.VSIN(@1, @GND, 1);
+    C.CC(@1, @2, 100n);
+    R.CR(@2, @GND, 1K);
+    IN.UPROBE(@1, @GND);
+    OUT.UPROBE(@2, @GND)
+};
+
+CIRCUIT := SOLVE_AC(rc_high_pass)

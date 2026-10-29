@@ -1,0 +1,13 @@
+`include <components.rule>
+
+envelope_detector() :=
+{
+    V.VSIN(@1, @GND, 1, 1000);
+    D.IDIODE(@1, @2);
+    R.CR(@2, @GND, 100K);
+    C.CC(@2, @GND, 100n);
+    IN.UPROBE(@1, @GND);
+    OUT.UPROBE(@2, @GND)
+};
+
+CIRCUIT := SOLVE_TRANS(envelope_detector)
