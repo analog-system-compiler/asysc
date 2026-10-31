@@ -2,29 +2,53 @@
 
 == Frequency and time analysis
 
-If you are looking forward to see what _ASysC_ is capable of and want to pause before continuing the article, you can run all the examples with the following command typed in the root directory:
+ASysC combines circuit description with symbolic transformation. A netlist can
+be interpreted in different ways depending on the analysis mode: the same basic
+circuit may be expanded into frequency-domain equations or into time-domain
+equations for transient simulation. The structure of the circuit remains the
+same; only the equation set used for evaluation changes.
+
+To run all example simulations from the repository root:
 
 [source, console]
 ----
 make run
 ----
 
-This command starts the simulation of all the examples contained in the project and display the results.
-Now that you have been able to appreciate the performance of _ASysC_ let’s go into detail about the different analysis supported.
+This builds any out-of-date example models, runs each `simulation.py`, and
+displays its plots. The examples below explain the two main analysis modes
+that the project supports: frequency-domain AC analysis and transient time-domain
+analysis.
 
 === Frequency analysis
 
-Let’s start with the simulation of our first circuit and begin in a first step by a frequency analysis of the circuit (so-called «AC» analysis). The transformation of the system of equations to perform a frequency analysis is done by calling the *SOLVE_AC()* function:
+Frequency-domain analysis, commonly called AC analysis, is selected with
+`SOLVE_AC()`:
 
     CIRCUIT := SOLVE_AC( RLC )
 
-This function will start the system resolution by preapplying the Laplace transform. The converted circuit is then used for frequency analysis. It is called «CIRCUIT» because it is the default variable used by _ASysC_ to recognize the circuit that will be converted into a _Python_ model. This can be changed by a specific option in the command line.
+This directive tells the compiler to transform the circuit into a form suitable
+for sweeping frequency. The transformation is applied before the circuit
+equations are derived, and the resulting model is conventionally assigned to
+`CIRCUIT`, which is the symbol the compiler uses as the top-level model by
+default.
 
-NOTE: The bias point calculation is not yet implemented in the current version of _ASysC_.
+The purpose of this stage is to describe how the circuit responds across a range
+of frequencies, rather than how it behaves at a single instant in time. In
+engineering terms, this is the right tool for studying gain, phase, filtering,
+and frequency-selective behavior.
 
-==== Example with a conventional *R, L, C* circuit 
+NOTE: Automatic DC bias-point calculation is not implemented. Provide
+appropriate source and initial values for the analysis being modeled.
 
-Let's return to our initial example. Our circuit comprises four components: a voltage source *CV*, a resistor *CR*, an inductor *CL*, a capacitor *CC*, whose names are *V*, *R*, *L* and *C* respectively. Some component names are preceded by the letter '*C*' to avoid conflicts with instance names. Nodes are identified as *@1*, *@2*, *@3* and *@4*. The circuit is shown below:
+==== Example with a conventional *R, L, C* circuit
+
+A simple RLC network is a useful place to begin because it exercises the core
+idea of frequency-based circuit modeling without introducing additional
+nonlinear behavior. In this example, the circuit includes a voltage source
+(`CV`), a resistor (`CR`), an inductor (`CL`), and a capacitor (`CC`). The
+instances are named `V`, `R`, `L`, and `C`, and the nodes are labeled `@1`
+through `@4`.
 
 image::circuit_RLC.png[align="center", scale=50%]
 
@@ -43,63 +67,67 @@ RLC() := {
 CIRCUIT := SOLVE_AC( RLC )
 ----
 
-Components are declared in a list assigned to the *RLC()* rule, which is then given as a parameter to function *SOLVE_AC()*.
+The component instances form the body of the `RLC()` rule. Once the circuit is
+assembled, `SOLVE_AC()` derives the frequency-domain model from that topology.
+The result is a symbolic description of the network as a function of frequency,
+which is then evaluated by the generated Python code.
 
-The `+`include+` directive is used to include the definitions of components that are not included by default, unlike the basic rules. It is entirely possible to write your own component library and include it in your project.
+The `+`include+` directive loads component definitions that are not part of the
+default rule set. You can define additional components in your own `.rule`
+file and include it in the netlist.
 
 ==== Generating _Python_ code
 
-Having seen how to declare a circuit and instantiate components, let's move on to the most interesting part: generating a _Python_ model of our circuit. 
-
-For this step, we'll use the following command:
-
-[source, console]
-----
-cd examples/
-../../bin/asysc -i ac/RLC/RLC.cir -o ac/RLC/RLC.py -t ac
-----
-
-This command generates the circuit model in _Python_, as shown in the piece of code below:
-
-[source, python]
-----
-def compute_f(self):
-    self._setf(self.C_U, -(1/((0.001*self.s+1)+1e-08*self.s**2)), self.freq)
-    self._setf(self.V_I, -((1e-05*self.s)/((0.001*self.s+1)+1e-08*self.s**2)), self.freq)
-    self._setf(self.V_U, ((1e-08*self.s**2+0.001*self.s)+1)/((1e-08*self.s**2+0.001*self.s)+1), self.freq)
-    self._setf(self.R_U, -((0.001*self.s)/((0.001*self.s+1)+1e-08*self.s**2)), self.freq)
-    self._setf(self.R_I, -((1e-05*self.s)/((0.001*self.s+1e-08*self.s**2)+1)), self.freq)
-    self._setf(self.L_U, -((1e-08*self.s**2)/((1e-08*self.s**2+1)+0.001*self.s)), self.freq)
-    self._setf(self.L_I, -((1e-05*self.s)/((1+1e-08*self.s**2)+0.001*self.s)), self.freq)
-    self._setf(self.C_I, -((1e-05*self.s)/((0.001*self.s+1)+1e-08*self.s**2)), self.freq)
-----
-
-This code extract shows the classic transfer functions of an *R, L, C* circuit.
-To run the frequency simulation from the _Python_ code, create the circuit object in the *simulation.py* file and call the *simulate_f* function with the start frequency, end frequency and desired number of samples as parameters:
-
-[source, python]
-----
-my_circuit = circuit()
-my_circuit.simulate_f(10, 1e6, 100)    
-----
-
-For our example, the simulation is launched with the command :
+Once the circuit definition is ready, compiling the netlist from the repository
+root produces a Python model:
 
 [source, console]
 ----
-cd ac/RLC/
+./bin/asysc -i examples/ac/RLC_slider/RLC.cir \
+  -o examples/ac/RLC_slider/RLC.py -t ac
+----
+
+The generated file is not meant to be hand-edited. It contains the circuit
+equations and stores the computed values in each element's history, which is
+precisely the information used by the plotting code. In other words, the
+netlist is the source of truth; the generated Python file is a build artifact.
+
+To run the frequency simulation, create a circuit object in `simulation.py`
+and call `simulate_f(start, end, samples)`. The frequency points are distributed
+logarithmically between the start and end frequencies, which is useful for
+visualizing wide-band responses without over-sampling the lower end.
+
+[source, python]
+----
+model = circuit()
+model.simulate_f(10, 1e6, 100)
+----
+
+For the checked-in RLC slider example, generate the model and then run the
+simulation script from the example directory:
+
+[source, console]
+----
+cd examples/ac/RLC_slider
 python3 simulation.py
 ----
 
-After running the simulation, the remaining task is to visualize the data stored in *NumPy* arrays using the *MatPlotLib* library. The expected result is shown graphically:
+The model's element histories contain the computed data. The example uses NumPy
+and Matplotlib to display the frequency response, so each sweep can be inspected
+both numerically and visually:
 
 image::RLC_ac.png[align="center", scale=50%]
 
 ==== Frequency analysis with dynamic change of parameter values
 
-In some cases, it may be useful to be able to change the value of some parameters between simulation runs without recompiling the circuit. 
+One of the practical strengths of ASysC is that circuit parameters can be read
+from Python-side variables. This makes it possible to change values between
+simulation runs without recompiling the netlist. In a design workflow, that
+means the same circuit can be reused in a parameter sweep or interactive tuning
+session with minimal effort.
 
-To achieve this, the *_getv()* function is used. During simulation, this function retrieves the current value of the specified variable. The updated circuit is as follows:
+The `_getv()` rule reads the current value of a Python-side model variable.
+The RLC slider circuit uses it as follows:
 
 ----
 `include <components.rule>
@@ -115,17 +143,26 @@ RLC( PR, PL, PC ) := {
 CIRCUIT := SOLVE_AC( RLC( _getv( R ), _getv( L ), _getv( C ) ) )
 ----
 
-The *RLC()* circuit now admits three parameters *PR*, *PL* and *PC*, whose values will take the values of the _Python_ variables *self.R*, *self.L* and *self.C* through the *_getv()* function during simulation.
+The circuit accepts resistance, inductance, and capacitance as parameters.
+During simulation, `_getv()` retrieves the values stored on the generated Python
+model, allowing sliders or other UI controls to modify the component values live.
+This keeps the circuit representation compact while preserving a convenient path
+for interactive parameter exploration.
 
-The user can then dynamically change the values of the *R*, *L* and *C* components using the slider functionality available in the *MatplotLib* library. For more information, please refer to the *RLC_slider* _Python_ example code.
+The `examples/ac/RLC_slider/simulation.py` script demonstrates interactive
+sliders for these parameters.
 
 The simulation results window featuring sliders:
 
 image::ac_slider.png[align="center", scale=50%]
 
-==== Another circuit example: a *Sallen-Key* type filter. 
+==== Another circuit example: a *Sallen-Key* type filter
 
-In the example below is presented the simulation of a second-order *Sallen-Key* filter <<R9>> consisting of two RC-cells and an operational amplifier. The simulation displays gain and phase diagrams as a function of frequency.
+The next example demonstrates a second-order Sallen-Key filter <<R9>>, a classic
+active filter structure built from RC sections and an operational amplifier.
+This case is useful because it exercises both passive and active behavior in the
+same netlist, while also showing how the generated results can be displayed as a
+gain and phase plot.
 
 The circuit description:
 
@@ -149,22 +186,63 @@ The circuit schematic and simulation results with gain and phase display:
 
 image::sallen_key_circuit.png[align="center"]
 
+=== First-order RC filters
+
+The
+link:../examples/ac/rc_low_pass/rc_low_pass.cir[RC low-pass example] and
+link:../examples/ac/rc_high_pass/rc_high_pass.cir[RC high-pass example] use
+a 1 kΩ resistor and a 100 nF capacitor. These tiny examples are useful because
+they isolate the basic frequency-selective behavior of a simple RC network. The
+cutoff frequency is approximately
+
+[.text-center]
+stem:[ f_c = 1 / (2 pi R C) approx 1.59 kHz ]
+
+This is the kind of value that engineers quickly estimate by hand, then confirm
+with simulation. The examples iterate that same idea in a visual and interactive
+way: the AC sweep plots gain and phase over a range of frequencies, making the
+filter behavior easy to inspect.
+
+Each example's `simulation.py` runs an AC sweep and plots gain and phase. Run
+one from the repository root with:
+
+[source, console]
+----
+make -C examples
+cd examples/ac/rc_low_pass
+python3 simulation.py
+----
+
 == Time analysis, also known as "Transient Analysis"
 
-Transforming the system of equations to perform a transient analysis is done in the same way as above, but with a call to function *SOLVE_TRANS()*:
+Transient analysis is the time-domain counterpart to AC analysis. It is selected
+with `SOLVE_TRANS()`:
 
     CIRCUIT := SOLVE_TRANS( RLC )
 
-This directive solves the system by first performing all the necessary transformations on the non-linear and reactive elements. As previously stated, the transformed circuit must always be named “CIRCUIT”. This is the variable used by _ASysC_ to convert the circuit into a _Python_ model.
+This directive tells the compiler to generate equations that evolve with time,
+which is essential when the circuit contains reactive elements or nonlinear
+switching behavior. The solver then advances the system through a sequence of
+steps, tracking how currents and voltages evolve as the signal changes.
 
-There are several methods for solving a non-linear system. The simplest is the Newton-Raphson method <<R10>>, also known as the “tangent” method. It involves replacing the system's non-linear functions with their tangents, calculated at the iteration point. Once the tangents have been calculated, the system solved and the unknowns variables determined, the tangents are recalculated at the new iteration point and the process is repeated. The problem thus comes down to solving a sequence of linear systems with their solutions gradually converging to the final result.
+This form of analysis is especially important when studying pulses, switching,
+rectification, startup behavior, and the build-up of charge on capacitors.
 
-For the simulation of reactive elements such as capacitors or inductors, the trapezoidal integration algorithm is used. This provides both acceptable results and a simple implementation.
+The nonlinear equations are handled with an iterative linearization based on
+the Newton-Raphson method <<R10>>. At each iteration, the equations are
+linearized around the current estimate, solved, and updated until the
+iteration limit or convergence condition is reached.
+
+Reactive elements such as capacitors and inductors use trapezoidal
+integration, a standard method for capturing the time-varying behavior of energy
+storage elements while retaining numerical stability over a step sequence.
 
 === Example of a Graetz bridge simulation in transient analysis
 
-In this example, the circuit consists of a sinusoidal source *V*, a source resistor *R2*, four diodes (*D1*, *D2*, *D3* and *D4*) and a load represented by a resistor *R1* and a capacitor *C*.
-The circuit description is as follows:
+The Graetz bridge is a classic rectifier circuit: it converts an AC source into a
+pulsating DC output using four diodes and a load. In this example, the circuit
+contains a sinusoidal source `V`, source resistor `R2`, four diodes, and a load
+made of resistor `R1` and capacitor `C`.
 
 ----
 `include <components.rule>
@@ -188,35 +266,70 @@ The corresponding schematic and simulation result:
 
 image::graetz_bridge.png[align="center"]
 
-Similar to the frequency simulation, the time simulation is initiated from the *simulation.py* Python code by creating the circuit object and invoking the *simulate_t()* function.
-
-This function receives as parameters the simulation time, the number of samples, the desired resolution and the maximum number of iterations for the nonlinear convergence algorithm.
-
-[source, python]
-----
-my_circuit = circuit()
-my_circuit.simulate_t(duration=1e-6, nb=500, res=0.1, max_iter=50)
-----
-
-In certain cases, it may be necessary to initialize some variables before running the simulation. To do this, the `init()` function should be applied to the element object containing the variable, as shown in the `transient/oscillator` example:
+The generated model is run from `simulation.py` by calling
+`simulate_t(duration, nb, res, max_iter)`. Here, `duration` is the total
+simulated time, `nb` is the number of time steps, `res` controls the iterative
+update and convergence check, and `max_iter` limits iterations per step.
 
 [source, python]
 ----
-my_circuit.NOT1_Uin.init( 5 )
+model = circuit()
+model.simulate_t(duration=1e-3, nb=500, res=0.1, max_iter=100)
+----
+
+Before simulating, it is often useful to initialize a model variable by calling
+`init()` on its element. The `transient/oscillator` example does exactly that to
+set an initial logic level before the transient begins:
+
+[source, python]
+----
+model.NOT1_Uin.init(5)
+----
+
+=== Example: diode RC envelope detector
+
+The
+link:../examples/transient/envelope_detector/envelope_detector.cir[envelope
+detector netlist] drives a diode and a 100 kΩ / 100 nF RC load with a 1 kHz
+sinusoid. The load's time constant is 10 ms, which is long enough for the
+capacitor to charge near the input peaks and discharge between them. This is the
+basic principle behind envelope detection: the output follows the peaks of the
+input signal while smoothing the high-frequency ripple.
+
+The generated model exposes both input and output probes. The simulation script
+plots them over a 20 ms transient so that the charging and discharging waveform is
+easy to compare with the original signal.
+
+Run the example after building its model:
+
+[source, console]
+----
+make -C examples
+cd examples/transient/envelope_detector
+python3 simulation.py
 ----
 
 == Compact modeling
 
-To illustrate compact modeling, let's consider the *NE555*, a relatively complex component, as an example.
+The NE555 timer is a particularly instructive example of compact behavioral
+modeling. In a full transistor-level description, the internal structure of the
+chip would be large and cumbersome. A compact model instead captures the
+behavior that matters to the surrounding circuit: the control thresholds,
+timing relationships, and switching behavior that determine the oscillation.
 
-Rather than modeling its behavior with all its transistors, which would lead to an extremely long simulation, it is often more efficient to use a compact behavioral description that consists of just a few equations. This is known as “compact modeling”. 
+This is a common engineering strategy. Rather than trying to reproduce every
+internal detail, a compact model focuses on the externally observable
+relationships that matter for circuit-level simulation. The result is a smaller,
+more readable description that can still be used to reason about system behavior.
 
-As an example, the *NE555*'s compact behavioral description includes just two subcomponents:
+As an example, the *NE555*'s compact behavioral description includes just two
+subcomponents:
 
-- a *SWITCH* component 
+- a *SWITCH* component
 - a *SRFFC* set-reset type flip-flop
 
-plus a few logic equations. It all fits into just a few lines, as illustrated in the netlist below:
+plus a few logic equations. It all fits into just a few lines, as illustrated in
+the netlist below:
 
 ----
 NAME.NE555( @trigger, @threshold, @discharge, @output, @vcc, @gnd ) :=
@@ -226,8 +339,8 @@ NAME.NE555( @trigger, @threshold, @discharge, @output, @vcc, @gnd ) :=
     NAME.UTRESH = ACROSS( @threshold, @gnd );
     NAME.UOUT   = ACROSS( @output, @gnd );
     NAME.UIN1   = ACROSS( NAME.@in1, @gnd );
-    NAME.UIN2   = ACROSS( NAME.@in2, @gnd );  
-    
+    NAME.UIN2   = ACROSS( NAME.@in2, @gnd );
+
     NAME.UIN1 = ( NAME.UTRIG < ( NAME.VCC / 3 ) );
     NAME.UIN2 = ( NAME.UTRESH < ( NAME.VCC * 2 / 3 ) );
 
@@ -236,7 +349,13 @@ NAME.NE555( @trigger, @threshold, @discharge, @output, @vcc, @gnd ) :=
 };
 ----
 
-The *NE555* test circuit:
+The logic is intentionally simple and expressive: the trigger and threshold
+signals are compared against fractions of the supply voltage, and the flip-flop
+state is updated according to those conditions. This is a compact but faithful
+representation of the circuit's control logic.
+
+The following test circuit uses the model. The `include` directives load the
+analog components and integrated-circuit definitions it needs:
 
 ----
 `include <components.rule>
@@ -249,7 +368,7 @@ test_NE555( R ) :=
   C1.CC     ( @1, @0, 1u );
   RB.CR     ( @2, @1, R);
   RA.CR     ( @3, @2, 2.7K );
-  U.NE555   ( @1, @1, @2, @4, @3, @0  ); 
+  U.NE555   ( @1, @1, @2, @4, @3, @0  );
   P1.UPROBE ( @4, @0 );
   P2.UPROBE ( @2, @0 )
 };
@@ -257,25 +376,29 @@ test_NE555( R ) :=
 CIRCUIT := SOLVE_TRANS( test_NE555( _getv( _RV ) ) )
 ----
 
+The compact model's internal nodes `NAME.@in1` and `NAME.@in2` are namespaced by
+the instance name. For instance, `U` leads to internal nodes `U.@in1` and
+`U.@in2`, so they do not conflict with external circuit nodes. This is one of
+those small but important implementation details that makes hierarchical models
+manageable.
 
-Note that the compact model contains sub-nodes `NAME.@in1` and `NAME.@in2`. As our *NE555* instance is called *U*, once instantiated, these two nodes will be called `U.@in1` and `U.@in2` respectively, and will not conflict with nodes external to the component.
-
-Below is presented the result of a simulation with the *NE555* in an oscillator configuration:
+Below is the result of a simulation with the *NE555* in an oscillator
+configuration:
 
 image::ne555.png[align="center"]
 
-This example shows that a compact behavioral description of a component gives a simulation result close to a real description, while reducing computation time.
+This compact description provides a simpler model for system-level simulation;
+it is not intended to replace the detailed physical structure of the device, but
+rather to retain the behavior that matters. Its accuracy depends on the
+assumptions encoded in the equations, which is often exactly what is desired in
+early-stage modeling or subsystem exploration.
 
-The circuit shown in the example above contains probes *P1* and *P2*. These are used to visualize the voltages between two given nodes.
+The circuit shown in the example above contains probes *P1* and *P2*. These are
+used to visualize the voltages between two given nodes.
 
-- *P1* is connected to the *NE555*'s *OUT* output and ground. 
-- *P2* and is connected to the *NE555*'s *DISH* input and ground. 
+- `P1` measures the NE555 output relative to ground.
+- `P2` measures the discharge node relative to ground.
 
-The use of these probes is highly convenient, as they provide access to all the voltages within the circuit.
-
-
-
-
-
-
-
+Probes make selected internal and external voltages available to the generated
+Python model, which makes debugging and interpretation of the behavior much more
+straightforward.

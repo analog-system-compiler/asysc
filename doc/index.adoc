@@ -1,10 +1,9 @@
 
-= Analog System Compiler
+= ASysC: Symbolic circuit modeling and simulation
 Cyril Collineau
 v1.0
-//:revdate: 06/03/2025
-:description: 
-:sectanchors: 
+:description: Symbolic circuit modeling and simulation with ASysC and LightCAS.
+:sectanchors:
 :toc: left
 :toclevels: 4
 :stem:
@@ -14,7 +13,6 @@ v1.0
 :pygments-style: arduino
 :cachedir: doc/build
 :imagesoutdir: images
-:autofit-option:
 :data-uri:
 
 include::intro.adoc[]

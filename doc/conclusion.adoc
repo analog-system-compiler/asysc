@@ -1,45 +1,45 @@
-
 == Conclusion
 
-Despite its small executable size of roughly 100 kilobytes, _ASysC_, when combined with _Python_ libraries like *Matplotlib* and *NumPy*, can perform both time-domain and frequency-domain simulations of components defined through algebraic expressions. These components can be structured hierarchically to form more complex systems and organized into reusable libraries.
+The examples in this document show how ASysC turns a schematic description into
+an executable model. The initial circuit is written as a collection of
+component rules and equations, then transformed symbolically before being
+compiled into Python code. This is not simply a convenience in code generation;
+it reflects a deeper philosophy: model structure matters, and the symbolic
+representation of the circuit can be manipulated before numerical values are
+introduced.
 
-Simulation results can be customized with *Matplotlib*, allowing them to be displayed on a single graph or on separate graphs with distinct scales.
+That distinction is useful in analog design because it encourages a clearer view
+of how a system is built. A resistor, capacitor, inductor, source, or logic
+block is not just a black-box object in a library; it is a relation between
+voltages and currents, or between internal states and external behavior. Once
+those relations are expressed formally, they can be composed, simplified, and
+reused to construct larger models.
 
-_ASysC_ provides an interesting alternative to more complex commercial simulators, offering significant flexibility for creation and experimentation. It is portable and compatible with both Linux and Windows.
+The generated Python model then becomes the numerical execution layer. It keeps
+track of the calculated histories, supports transient and frequency-domain
+simulations, and allows the user to work with the results using the rich Python
+ecosystem. NumPy and Matplotlib are not afterthoughts here; they are natural
+partners for inspecting and plotting generated waveforms, gain curves, and
+parameter sweeps.
 
-While it may not match the performance of simulators like *Spice* and others, it still provides valuable capabilities. Since the simulation runs in _Python_, users can easily process the results, perform operations like Fourier transforms (*FFT*), and conduct measurements at specific points to identify optimal conditions. Additionally, users can run multiple simulations with different sets of random parameters, similar to a Monte Carlo approach. It also allows for direct modification of variables through _Python_ code to observe how the system reacts.
+This makes _ASysC_ especially valuable in an educational and exploratory
+setting. It allows the user to see the equations behind the simulation and to
+study the behavior of a circuit as a coherent system rather than as a collection
+of opaque numerical routines. The same symbolic approach also lends itself to
+compact modeling, where only the relevant external behavior is encoded instead of
+an exhaustive physical description of every internal detail.
 
-Moreover, _ASysC_ can be integrated with *CocoTB* <<R11>>, another _Python_-based tool designed to facilitate the testing of modules written in _VHDL_ and _Verilog_. This integration allows for the simultaneous simulation of both analog and digital processes. The combination of these tools opens up exciting new possibilities, enabling the creation of advanced test benches for developers working with mixed analog/digital systems.
+At the same time, the project remains intentionally modest. ASysC is
+experimental and is not meant to replace mature commercial or open-source
+simulators in all production contexts. For large-scale circuit design, broad
+validated device libraries, and industrial-grade analysis workflows, established
+simulators still provide the strongest ecosystem and the most extensive
+verification. ASysC instead offers a compact symbolic environment for studying
+analog behavior, experimenting with model structure, and understanding how a
+circuit can be expressed as equations before it is evaluated numerically.
 
-_ASysC_ is still an experimental tool and lacks many essential features needed to transform it into a full professional tool.
-
-// == 
-
-// Despite its small executable size of roughly 100 kilobytes, ASysC, when combined with Python libraries like Matplotlib and NumPy, can perform both time-domain and frequency-domain simulations of components defined through algebraic expressions. These components can be structured hierarchically to form more complex systems and organized into reusable libraries.
-
-// Simulation results can be customized using Matplotlib, allowing them to be visualized either within a single graph or across multiple plots with distinct scales.
-
-// ASysC presents a flexible alternative to more complex commercial simulators, making it well-suited for experimentation and system design. It is portable and runs on both Linux and Windows.
-
-// While it may not match the computational performance of simulators like Spice, it still offers valuable capabilities. Since the simulation runs in Python, users can easily process results, apply operations such as Fourier transforms (FFT), and perform targeted measurements to identify optimal conditions. Moreover, it supports running multiple simulations with randomized parameters, akin to a Monte Carlo approach. Users can also modify variables dynamically within the Python code to analyze system responses in real time.
-
-// Furthermore, ASysC can integrate with CocoTB <<R11>>, a Python-based framework for testing modules written in VHDL and Verilog. This integration enables the simultaneous simulation of analog and digital processes, opening up new possibilities for developing sophisticated test benches in mixed-signal environments.
-
-// Currently, ASysC remains an experimental tool and lacks several key features required for professional-grade applications.
-
-// == Le chat
-
-// ASysC is a compact executable, roughly a hundred kilobytes in size, that leverages Python libraries like Matplotlib and NumPy to perform both time and frequency simulations of components defined using algebraic formulations. These components can be organized hierarchically to create more complex structures and grouped into libraries.
-
-// Simulation results can be customized with Matplotlib, allowing them to be displayed on a single graph or on separate graphs with distinct scales.
-
-// ASysC provides a flexible alternative to more complex commercial simulators, offering significant versatility for creation and experimentation. It is portable and compatible with both Linux and Windows.
-
-// While it may not match the performance of simulators like Spice, it still offers valuable capabilities.
-
-// Since simulations are conducted in Python, users can easily process results, perform operations like Fourier transforms (FFT), and conduct measurements at specific points to identify optimal conditions. Additionally, users can run multiple simulations with different sets of random parameters, similar to a Monte Carlo approach. It also allows for direct modification of variables through Python code to observe system reactions.
-
-// Moreover, ASysC can be integrated with CocoTB, a Python-based tool designed to facilitate the testing of modules written in VHDL and Verilog. This integration enables the simultaneous simulation of both analog and digital processes, opening up new possibilities for creating advanced test benches for developers working with mixed analog/digital systems.
+That is its real strength: not simply that it can simulate circuits, but that it
+reveals the structure behind the simulation itself.
 
 [bibliography]
 = References
@@ -47,11 +47,10 @@ _ASysC_ is still an experimental tool and lacks many essential features needed t
 * [[[R1,1]]] Verilog-AMS: https://fr.wikipedia.org/wiki/Verilog-AMS
 * [[[R2,2]]] VHDL-AMS: https://fr.wikipedia.org/wiki/VHDL-AMS
 * [[[R3,3]]] ADMS: https://en.wikipedia.org/wiki/ADMS
-* [[[R4,4]]] Compact Modeling: https://www.amcad-engineering.com/transistor-model-extraction
-* [[[R5,5]]] Formal computation: https://en.wikipedia.org/wiki/Computer_algebra_system
+* [[[R4,4]]] Compact modeling: https://www.amcad-engineering.com/transistor-model-extraction
+* [[[R5,5]]] Computer algebra systems: https://en.wikipedia.org/wiki/Computer_algebra_system
 * [[[R6,6]]] Laplace transforms: https://en.wikipedia.org/wiki/Laplace_transform
 * [[[R7,7]]] Sparse matrices: https://en.wikipedia.org/wiki/Sparse_matrix
 * [[[R8,8]]] LU decomposition: https://qucs.sourceforge.net/docs/technical/technical.pdf §15.2.4
 * [[[R9,9]]] Sallen-Key filters: https://en.wikipedia.org/wiki/Sallen%E2%80%93Key_topology
-* [[[R10,10]]] Newton-Raphson: https://en.wikipedia.org/wiki/Newton%27s_method
-* [[[R11,11]]] CocoTB: https://www.cocotb.org/
+* [[[R10,10]]] Newton-Raphson method: https://en.wikipedia.org/wiki/Newton%27s_method
