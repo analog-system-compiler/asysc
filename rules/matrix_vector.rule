@@ -193,7 +193,7 @@ MAT_REM_HEAD(    {c,d}) := {c};
 //Matrix inversion
 // common defined matrix determinant { {a,b,...}, {c,d,...}, ... }
 MAT_INV( {a,b} ) := { MAT_INV_COLS( {a,b}, b ) } / DET( {a,b} );
-MAT_INV( {a}   ) := { a };
+MAT_INV( {a}   ) := { 1/a };
 
 MAT_INV_COLS( {a}, {b,c} ) := ( MAT_INV_COLS( { -MAT_ROR_LINES( {a} ) }, {b} ), { MAT_INV_LINES( { MAT_REM_HEAD(a) }, {a} ) } ); // {b,c} is used as an iterator
 MAT_INV_COLS( {a}, {b} )   :=                                                   { MAT_INV_LINES( { MAT_REM_HEAD(a) }, {a} ) };
