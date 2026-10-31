@@ -32,7 +32,7 @@ config:
 flowchart TB
     subgraph a [ ]
     direction TB
-    A((\-)) --> B((\-))
+    A((−)) --> B((−))
     B --> C((a))
     B --> D((b))
     end
@@ -58,13 +58,13 @@ config:
 flowchart LR
     subgraph a [ ]
         direction TB
-        A((\-)) --> B((\-))
+        A((−)) --> B((−))
         B --> C((a))
         B --> D((b))
     end
     subgraph b [ ]
         direction TB
-        E((\-))
+        E((−))
         E --> F((b))
         E --> G((a))
     end
@@ -88,9 +88,9 @@ config:
 flowchart LR
     subgraph a [ ]
         direction TB
-        A((\-)) --> B((\-))
-        B --> C((\+))
-        B --> D((\+))
+        A((−)) --> B((−))
+        B --> C((+))
+        B --> D((+))
         C --> H((3))
         C --> I((x))
         D --> J((z))
@@ -98,9 +98,9 @@ flowchart LR
     end
     subgraph b [ ]
         direction TB
-        E((\-))
-        E --> F((\+))
-        E --> G((\+))
+        E((−))
+        E --> F((+))
+        E --> G((+))
         F --> L((z))
         F --> M((5))
         G --> N((3))
@@ -229,13 +229,13 @@ config:
 flowchart LR
     subgraph a [ ]
         direction TB
-        B((\+))
+        B((+))
         B --> C((a))
         B --> D((b))
     end
     subgraph b [ ]
         direction TB
-        E((\*))
+        E((×))
         E --> F((a))
         E --> G((b))
     end
