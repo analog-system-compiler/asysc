@@ -1,9 +1,9 @@
 EXE         = asysc
-BIN_DIR     = $(shell mkdir -p bin) bin
+BIN_DIR     = bin
 LIB_DIR     = src/lib
 APP_DIR     = src/app
 RULES_DIR   = rules
-OBJ_DIR     = $(shell mkdir -p objs/nostd objs/std objs/asysc) objs
+OBJ_DIR     = objs
 LIB         = lib$(EXE).a
 EXE_OBJ     = $(APP_SRC:%.cpp=$(OBJ_DIR)/%.o) $(OBJ_DIR)/asysc/help.o
 LIB_OBJS    = $(LIB_SRC:%.cpp=$(OBJ_DIR)/%.o)
@@ -84,10 +84,12 @@ build: $(BIN_DIR)/$(EXE) rules
 -include $(EXE_OBJ:.o=.d)
 
 $(OBJ_DIR)/%.o: $(APP_DIR)/%.cpp
+	mkdir -p $(dir $@)
 	echo 'Compiling  $(notdir $< )'
 	$(CXX) $(CPPFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/%.o: $(LIB_DIR)/%.cpp
+	mkdir -p $(dir $@)
 	echo 'Compiling  $(notdir $< )'
 	$(CXX) $(CPPFLAGS) -c $< -o $@
 
@@ -95,10 +97,12 @@ $(APP_DIR)/Rules_concat.txt: $(RULE_FILES)
 	cat $^ > $@
 
 $(OBJ_DIR)/%.ztxt: $(APP_DIR)/%.txt
+	mkdir -p $(dir $@)
 	cp $< $@
 	echo -e '\0' >> $@
 
 $(OBJ_DIR)/%.o: $(OBJ_DIR)/%.ztxt
+	mkdir -p $(dir $@)
 	echo 'Packaging  $(notdir $< )'
 	$(LD) -r -b binary $< -o $@
 
@@ -107,10 +111,12 @@ $(LIB): $(LIB_OBJS)
 	$(AR) rcs $@ $^
 
 $(BIN_DIR)/$(EXE): $(EXE_OBJ) $(LIB)
+	mkdir -p $(dir $@)
 	echo 'Linking    $(notdir $@)'
 	$(CXX) -o $@ $(LDFLAGS) $(EXE_OBJ) $(LIB)
 
 rules: $(RULE_FILES)
+	mkdir -p $(BIN_DIR)
 	echo 'Copying    $(notdir $^)'
 	cp -r $(RULES_DIR) $(BIN_DIR)
 
