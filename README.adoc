@@ -164,6 +164,6 @@ link:LICENSE[LICENSE] file for details.
 
 == Example analyses
 
-image::doc/trans_analysis.png[Transient examples]
+image::doc/images/trans_analysis.png[Transient examples]
 
-image::doc/ac_analysis.png[AC examples]
+image::doc/images/ac_analysis.png[AC examples]
