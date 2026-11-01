@@ -16,17 +16,22 @@
 
 import matplotlib.pyplot as plt
 
+from matplotlib.widgets import Slider
 from delay_line import circuit
 
 
 def main():
-    # A short run captures the signal propagation and reflected wave.
     model = circuit()
+    model._RL.init(100)
     model.simulate_t(2e-7, 300)
 
-    figure, axis = plt.subplots(layout="constrained")
-    for signal in (model.R1_U, model.VP_U):
-        axis.plot(signal.history_x, signal.history_y, label=signal.name)
+    figure, axis = plt.subplots()
+    figure.subplots_adjust(bottom=0.2)
+    signals = (model.R1_U, model.VP_U)
+    lines = []
+    for signal in signals:
+        (line,) = axis.plot(signal.history_x, signal.history_y, label=signal.name)
+        lines.append(line)
 
     axis.set(
         title="Delay line and impedance mismatch",
@@ -35,6 +40,26 @@ def main():
     )
     axis.legend()
     axis.grid(True)
+
+    impedance_axis = figure.add_axes([0.15, 0.06, 0.7, 0.03])
+    impedance_slider = Slider(
+        impedance_axis,
+        label="Load impedance (Ω)",
+        valmin=10,
+        valmax=200,
+        valinit=100,
+    )
+
+    def update_response(impedance):
+        model._RL.init(impedance)
+        model.simulate_t(2e-7, 300)
+        for line, signal in zip(lines, signals):
+            line.set_data(signal.history_x, signal.history_y)
+        axis.relim()
+        axis.autoscale_view()
+        figure.canvas.draw_idle()
+
+    impedance_slider.on_changed(update_response)
     plt.show()
 
 
