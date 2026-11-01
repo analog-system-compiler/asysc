@@ -2,7 +2,7 @@
 = ASysC: Symbolic circuit modeling and simulation
 Cyril Collineau
 v1.0
-:description: Symbolic circuit modeling and simulation with ASysC and LightCAS.
+:description: Symbolic circuit modeling and simulation with ASysC.
 :sectanchors:
 :toc: left
 :toclevels: 4

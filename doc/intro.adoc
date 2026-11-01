@@ -54,15 +54,13 @@ system from the circuit description itself. Once these symbolic expressions are
 produced, the compiler generates Python code that evaluates them during the
 simulation.
 
-This document introduces _ASysC_, an open-source analog system compiler built on
-LightCAS, a computer algebra system. ASysC does not replace the Python runtime;
-it builds the symbolic model and lets Python handle the numerical evaluation for
+This document introduces _ASysC_, an open-source analog system compiler that
+builds symbolic models and lets Python handle their numerical evaluation for
 time-domain or frequency-domain analysis. In that sense, the compiler is best
 seen as a front end that transforms design intent into executable mathematical
 expressions.
 
-LightCAS belongs to the *computer algebra system* (CAS) family <<R5>>. A CAS
-lets mathematical objects be represented symbolically, so they can be inspected,
+ASysC represents mathematical objects symbolically, so they can be inspected,
 rearranged, simplified, or transformed before numerical values are substituted.
 That is exactly the kind of capability needed when building a circuit compiler:
 component equations and circuit interconnections are not just numerical

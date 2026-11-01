@@ -1,10 +1,9 @@
 
 = ASysC
 
-**ASysC** (Analog System Compiler) is a circuit compiler built on **LightCAS**,
-a lightweight computer algebra system. Circuit equations are written in a
-compact rule-based language, compiled to Python models, and simulated for
-transient or AC behavior.
+**ASysC** (Analog System Compiler) is a circuit compiler that symbolically
+processes circuit equations written in a compact rule-based language, compiles
+them to Python models, and simulates transient or AC behavior.
 
 The component rules describe physical relationships. For example, a resistor
 connects its voltage and current using Ohm's law:
@@ -28,7 +27,7 @@ link:rules/components.rule[components.rule].
 [cols="1,3",options="header"]
 |===
 |Path | Contents
-|link:src/lib/[src/lib/] | LightCAS library and expression engine
+|link:src/lib/[src/lib/] | Symbolic expression engine
 |link:src/app/[src/app/] | ASysC command-line compiler
 |link:rules/[rules/] | Component, algebra, and evaluation rules
 |link:examples/ac/[examples/ac/] | AC-analysis circuits and plotting scripts
@@ -87,7 +86,7 @@ Optional build settings can be passed as Make variables:
 ----
 make USE_CLANG=1       # Build with clang++ instead of g++.
 make DEBUG=1           # Include debug symbols and enable assertions.
-make TEST=1 bin/asysc  # Enable the built-in LightCAS checks at startup.
+make TEST=1 bin/asysc  # Enable the built-in checks at startup.
 ----
 
 The `TEST=1` checks run when the resulting `bin/asysc` executable starts.

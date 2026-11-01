@@ -302,9 +302,10 @@ cd asysc
 make -j4
 ----
 
-The source and build configuration are in the repository root. The LightCAS
-library is in `src/lib/`, the ASysC application in `src/app/`, and component
-rules in `rules/`. The build also generates Python models for the examples.
+The source and build configuration are in the repository root. The symbolic
+expression engine is in `src/lib/`, the ASysC application in `src/app/`, and
+component rules in `rules/`. The build also generates Python models for the
+examples.
 
 Install NumPy and Matplotlib in the Python environment used to run the
 simulation scripts. A graphical Matplotlib backend is needed to display plots;
