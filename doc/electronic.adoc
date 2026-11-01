@@ -203,6 +203,8 @@ with simulation. The examples iterate that same idea in a visual and interactive
 way: the AC sweep plots gain and phase over a range of frequencies, making the
 filter behavior easy to inspect.
 
+image::rc_low_pass.png[align="center",scale=75%]
+
 Each example's `simulation.py` runs an AC sweep and plots gain and phase. Run
 one from the repository root with:
 
