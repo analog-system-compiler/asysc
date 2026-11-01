@@ -139,8 +139,10 @@ Enter `exit` to leave the interactive console.
 
 == Documentation and contributing
 
-The link:doc/index.adoc[full documentation] is maintained in AsciiDoc under
-link:doc/[doc/]. Build the HTML or PDF version with:
+The full documentation is available on
+https://analog-system-compiler.github.io/asysc/[GitHub Pages].
+
+Build the HTML or PDF version with:
 
 [source,shell]
 ----
