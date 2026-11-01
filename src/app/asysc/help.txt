@@ -1,52 +1,108 @@
+ASysC - Analog System Compiler
 
-Commands:
-    help: this help
-    hex:  display in hexadecimal mode
-    bin:  display in binary mode
-    dec:  display in decimal mode
-    clr:  clear all assignments
+Command-line usage:
+    asysc -h
+    asysc -i input.cir [-o output.py] [-t ac|trans] [-l python] [-c circuit]
 
-Assignments:
-    a:=5
-    a:=b
+Command-line options:
+    -h             display this help and exit
+    -i input.cir   compile a circuit netlist; without -i, start the console
+    -o output.py   generated model path (default: out)
+    -t ac|trans    analysis mode (default: trans)
+    -l python      generated model language (Python)
+    -c circuit     top-level circuit symbol (default: CIRCUIT)
 
-Simplifications:
-    a:=5
-    b:=a
+Example:
+    asysc -i rc_low_pass.cir -o rc_low_pass.py -t ac
 
-Last assignment value:
-    ans
+Interactive console
+-------------------
 
-Supported operators:
-    a?b:c a|b a~b a+b a-b a&b a*b a//b a^b a<<b a>>b a==b a<>b a<=b a<b a>=b a>b a||b a&&b a[B] -a /a !a ~a a!
+Console commands:
+    help        display this help
+    exit        leave the console
+    clr         clear user assignments and definitions
+    dec         display numbers in decimal
+    hex         display numbers in hexadecimal
+    bin         display numbers in binary
 
-Supported functions:
-    MIN MAX MOD BOOL LNOT SIN COS TAN ASIN ACOS ATAN SINH COSH TANH ASINH ACOSH ATANH EXP LOG LOG10 SQRT SQR ABS FLOOR CEIL RAND
+Expressions and assignments:
+    2 + 3 * 4                 evaluate an expression
+    a := 5                    assign a value
+    b := a^2                  use an earlier assignment
+    ans                       show the last evaluated result
+    f(x) := SIN(x)             define a function
+    f(PI/2)                    call a user-defined function
 
-Fonction definition:
-    f(x):=SIN(x)
+Expressions are simplified automatically. Assignments and function definitions
+remain available until they are cleared with clr or the console is exited.
 
-Derivatives:
-    DER(SIN(x),x)
+Operators:
+    Arithmetic:       +  -  *  /  %  ^  !
+    Comparisons:      ==  !=  <>  <  <=  >  >=
+    Logic and bits:   &&  ||  &  |  ~  <<  >>
+    Other:            :=  ? :  ->  ;  ,  .  [ ]  { }
+    Unary:            -x  /x  !x  ~x
 
-Taylor series:
-    TAYLOR(COS(x),x,0,10)
+Use parentheses to make grouping explicit. The factorial operator is postfix:
+    5!                        120
 
-Vectors:
-    Addition     : {a,b}+{5,6}
-    Substraction : {a,b}-{5,6}
+Built-in mathematical functions:
+    MIN MAX MOD POW
+    BOOL LNOT
+    SIN COS TAN ASIN ACOS ATAN
+    SINH COSH TANH ASINH ACOSH ATANH
+    EXP LOG LOG10 SQRT SQR ABS FLOOR CEIL FACT RAND
 
-Equation and system solving:
-    SOLVE(x-2,x)
-    SOLVE(x^2-2*x+4,x)
-    SOLVE({x-y+1,x+y-5},{x,y})
+Trigonometric functions use radians. PI is predefined.
 
 Complex numbers:
-    (2+3*j)*(5*j+1)
-    IM(x+j*y)
-    RE(x+j*y)
+    j                         imaginary unit (j^2 = -1)
+    (2+3*j)*(5*j+1)           complex arithmetic
+    RE(4+j)                   real part
+    IM(4+j)                   imaginary part
 
-Bases:
-    Binary      : 0b1110
-    Hexadecimal : 0xABCE
+Derivatives and series:
+    DER(SIN(x),x)              differentiate with respect to x
+    DIFF(x^3,x,2)              second derivative
+    TAYLOR(COS(x),x,0,10)      Taylor expansion about x=0 through order 10
 
+Vectors and equation solving:
+    {a,b}                      construct a vector
+    {a,b}+{5,6}                add vectors element by element
+    {a,b}-{5,6}                subtract vectors element by element
+    SOLVE(x-2,x)               solve a single equation
+    SOLVE(x^2-2*x+4,x)         solve for real or complex roots
+    SOLVE({x-y+1,x+y-5},{x,y}) solve a system of equations
+
+Electrical circuit modeling:
+    ACROSS(a,b)                voltage from node a to node b
+    THROUGH(a,b)               current through the branch from a to b
+    DER(value,t)                derivative with respect to time
+    SOLVE_AC(circuit)           derive and solve an AC circuit model
+    SOLVE_TRANS(circuit)        derive and solve a transient circuit model
+
+Example AC netlist (save as examples/ac/rc_low_pass/rc_low_pass.cir):
+    `include <components.rule>
+
+    rc_low_pass() := {
+        V.VSIN(@1, @GND, 1);
+        R.CR(@1, @2, 1k);
+        C.CC(@2, @GND, 100n);
+        IN.UPROBE(@1, @GND);
+        OUT.UPROBE(@2, @GND)
+    };
+
+    CIRCUIT := SOLVE_AC(rc_low_pass)
+
+Compile the netlist and run its simulation from the repository root:
+    make
+    ./bin/asysc -i examples/ac/rc_low_pass/rc_low_pass.cir \
+        -o examples/ac/rc_low_pass/rc_low_pass.py -t ac
+    cd examples/ac/rc_low_pass
+    python3 simulation.py
+
+Engineering suffixes on numeric values:
+    p = 1e-12    n = 1e-9    u = 1e-6    m = 1e-3
+    k or K = 1e3  M = 1e6     G = 1e9
+    Example: 1k is 1000 and 100n is 0.0000001.

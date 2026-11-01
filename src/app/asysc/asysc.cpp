@@ -49,8 +49,11 @@ int main(int argc, char *argv[])
 
   while (true)
   {
-    switch (::getopt(argc, argv, "i:o:t:l:"))
+    switch (::getopt(argc, argv, "hi:o:t:l:c:"))
     {
+    case 'h':
+      Help();
+      return 0;
     case 'i':
       input_filename = optarg;
       continue;
@@ -75,7 +78,7 @@ int main(int argc, char *argv[])
       circuit_name = optarg;
       continue;
     case '?':
-      if (optopt == 'i' or optopt == 'o')
+      if (optopt == 'i' or optopt == 'o' or optopt == 't' or optopt == 'l' or optopt == 'c')
         ::fprintf(stderr, "Option -%c requires an argument.\n", optopt);
       else if (isprint(optopt))
         ::fprintf(stderr, "Unknown option `-%c'.\n", optopt);

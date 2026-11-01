@@ -58,10 +58,10 @@ The netlist description of this circuit is:
 `include <components.rule>
 
 RLC() := {
-    V.CV(@1, @2, 1);
-    R.CR(@2, @3, 100);
-    L.CL(@3, @4, 1m);
-    C.CC(@4, @1, 10u)
+    V.CV (@1, @2, 1);
+    R.CR (@2, @3, 100);
+    L.CL (@3, @4, 1m);
+    C.CC (@4, @1, 10u)
 };
 
 CIRCUIT := SOLVE_AC( RLC )
@@ -134,10 +134,10 @@ The RLC slider circuit uses it as follows:
 
 RLC( PR, PL, PC ) := {
 
-    V.CV (@1, @2, 1);
-    R1.CR(@2, @3, PR );
-    L1.CL(@3, @4, PL );
-    C1.CC(@4, @1, PC )
+    V.CV  (@1, @2, 1);
+    R1.CR (@2, @3, PR );
+    L1.CL (@3, @4, PL );
+    C1.CC (@4, @1, PC )
 };
 
 CIRCUIT := SOLVE_AC( RLC( _getv( R ), _getv( L ), _getv( C ) ) )
@@ -308,6 +308,37 @@ Run the example after building its model:
 ----
 make -C examples
 cd examples/transient/envelope_detector
+python3 simulation.py
+----
+
+=== Enhancement-mode NMOS common-source amplifier
+
+The component library includes a three-terminal enhancement-mode NMOS model.
+It uses a long-channel square-law model, linearized about the previous solver
+iterate for transient simulation. Its parameters are threshold voltage `VTO`,
+transconductance parameter `KP` (in A/V²), and channel-length modulation
+parameter `LAMBDA`. The convenience form supplies `VTO = 1.5 V`, `KP = 5
+mA/V²`, and `LAMBDA = 0.02`:
+
+[source]
+----
+M1.NMOS(@gate, @drain, @source);
+M2.NMOS(@gate, @drain, @source, VTO, KP, LAMBDA);
+----
+
+The model omits body effect, gate current, capacitances, and body-diode
+conduction, so it is intended for basic circuit-level exploration rather than
+detailed device prediction.
+
+The
+link:../examples/transient/NMOS_common_source/NMOS_common_source.cir[common-source
+example] biases the transistor with a DC gate level and a small 1 kHz signal,
+then plots the inverted drain response:
+
+[source, console]
+----
+make -C examples
+cd examples/transient/NMOS_common_source
 python3 simulation.py
 ----
 

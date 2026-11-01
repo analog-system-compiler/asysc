@@ -1,0 +1,13 @@
+`include <components.rule>
+
+nmos_common_source() :=
+{
+    V.VSIN(@gate, @GND, 0.15, 1000, 0, 2.2);
+    VDD.CV(@VDD, @GND, 5);
+    RD.CR(@VDD, @drain, 1K);
+    M1.NMOS(@gate, @drain, @GND);
+    IN.UPROBE(@gate, @GND);
+    OUT.UPROBE(@drain, @GND)
+};
+
+CIRCUIT := SOLVE_TRANS(nmos_common_source)

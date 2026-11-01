@@ -407,3 +407,39 @@ NAME.PNP( @base, @collector, @emitter, beta, ISS, UT ) := {
 // Simplified PNP transistors with default parameters
 NAME.PNP( @base, @collector, @emitter, beta ) := NAME.PNP( @base, @collector, @emitter, beta, 1e-15, 26e-3 );
 NAME.PNP( @base, @collector, @emitter ) := NAME.PNP( @base, @collector, @emitter, 100 );
+
+/********************************/
+/* N-channel MOSFETs            */
+/********************************/
+
+// Long-channel enhancement NMOS square-law model, linearized about the last
+// iterate for transient solving. Gate current, body effect, capacitances, and
+// body-diode conduction are omitted.
+NAME.NMOS( @gate, @drain, @source, VTO, KP, LAMBDA ) := {
+	NAME.UGS = ACROSS( @gate, @source );
+	NAME.UDS = ACROSS( @drain, @source );
+	NAME.IG = THROUGH( @gate, @source );
+	NAME.IDS = THROUGH( @drain, @source );
+
+	NAME.IG = 0;
+	NAME.IDS = ( NAME.UGS > VTO ) ?
+		( NAME.UDS < NAME.UGS - VTO ?
+			KP * (
+				( (LAST(NAME.UGS)-VTO)*LAST(NAME.UDS) - LAST(NAME.UDS)^2/2 )
+					* (1+LAMBDA*LAST(NAME.UDS))
+				+ LAST(NAME.UDS)*(1+LAMBDA*LAST(NAME.UDS))
+					* (NAME.UGS-LAST(NAME.UGS))
+				+ ( ((LAST(NAME.UGS)-VTO)-LAST(NAME.UDS))
+					* (1+LAMBDA*LAST(NAME.UDS))
+					+ LAMBDA*((LAST(NAME.UGS)-VTO)*LAST(NAME.UDS)-LAST(NAME.UDS)^2/2) )
+					* (NAME.UDS-LAST(NAME.UDS))
+			) :
+			KP/2 * (LAST(NAME.UGS)-VTO)^2 * (1+LAMBDA*LAST(NAME.UDS))
+				+ KP*(LAST(NAME.UGS)-VTO)*(1+LAMBDA*LAST(NAME.UDS))
+					*(NAME.UGS-LAST(NAME.UGS))
+				+ KP/2*(LAST(NAME.UGS)-VTO)^2*LAMBDA
+					*(NAME.UDS-LAST(NAME.UDS)) ) :
+		0
+};
+
+NAME.NMOS( @gate, @drain, @source ) := NAME.NMOS( @gate, @drain, @source, 1.5, 5m, 0.02 );
