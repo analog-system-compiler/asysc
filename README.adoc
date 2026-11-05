@@ -42,7 +42,7 @@ the script runs the simulation and plots its results.
 == Requirements
 
 - GNU Make
-- A C++ compiler: `g++` or `clang++`
+- A `C++` compiler: `g++` or `clang++`
 - Python 3
 - Python packages: NumPy and Matplotlib
 
@@ -70,7 +70,7 @@ Build the compiler and generate the Python models for the examples:
 make -j4
 ----
 
-The `-j4` option compiles up to four C++ files in parallel; adjust the number
+The `-j4` option compiles up to four `C++` files in parallel; adjust the number
 to suit your machine. To remove compiler and generated example outputs before
 building again, run:
 
