@@ -165,6 +165,17 @@ link:LICENSE[LICENSE] file for details.
 
 == Example analyses
 
-image::doc/images/trans_analysis.png[Transient examples]
+The transient examples show how circuit voltages and currents evolve over time.
+They include a delay line, a divide-by-four circuit, Graetz-bridge and
+single-diode rectifiers, an op-amp integrator, an NE555 oscillator, NPN biasing,
+a logic-gate oscillator, and an RLC step response. Several examples expose
+component values with sliders so you can explore how parameter changes affect
+the waveform.
 
-image::doc/images/ac_analysis.png[AC examples]
+image::doc/images/trans_analysis.png[Transient-analysis examples]
+
+The AC examples show frequency-dependent circuit behavior. The RLC filter plot
+shows the individual response curves as component values vary, while the
+Sallen-Key plot shows the filter's gain and phase across frequency.
+
+image::doc/images/ac_analysis.png[AC-analysis examples]
