@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 
@@ -33,6 +34,19 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: doc/build
+      - name: Verify Pages artifact exists
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Checking artifacts for run ${{ github.run_id }}"
+          gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts \
+            --jq '.artifacts[] | {name, id}'
+          gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts \
+            --jq '.artifacts[].name' | grep -qx 'github-pages'
 
   deploy:
     environment:
